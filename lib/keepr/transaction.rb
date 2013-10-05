@@ -4,6 +4,7 @@ class Keepr::Transaction < ActiveRecord::Base
   validates_presence_of :date
 
   has_many :items, :foreign_key => 'keepr_transaction_id', :dependent => :delete_all
+  belongs_to :accountable, :polymorphic => true
 
   accepts_nested_attributes_for :items, :allow_destroy => true, :reject_if => :all_blank
 

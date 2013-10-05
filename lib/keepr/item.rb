@@ -5,7 +5,6 @@ class Keepr::Item < ActiveRecord::Base
 
   belongs_to :account, :foreign_key => 'keepr_account_id'
   belongs_to :transaction, :foreign_key => 'keepr_transaction_id'
-  belongs_to :accountable, :polymorphic => true
 
   def credit?
     amount < 0
