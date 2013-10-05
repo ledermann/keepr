@@ -68,14 +68,14 @@ describe Keepr::Transaction do
   describe :credit_items do
     it 'should return items with positive amount' do
       simple_transaction.should have(1).credit_items
-      complex_transaction.should have(2).credit_items
+      complex_transaction.should have(1).credit_items
     end
   end
 
   describe :debit_items do
     it 'should return items with negative amount' do
       simple_transaction.should have(1).debit_items
-      complex_transaction.should have(1).debit_items
+      complex_transaction.should have(2).debit_items
     end
   end
 

@@ -8,10 +8,10 @@ class Keepr::Item < ActiveRecord::Base
   belongs_to :accountable, :polymorphic => true
 
   def credit?
-    amount > 0
+    amount < 0
   end
 
   def debit?
-    amount < 0
+    amount > 0
   end
 end
