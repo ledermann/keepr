@@ -1,7 +1,7 @@
 require 'rails/generators'
 require 'rails/generators/migration'
 
-module RailsSettings
+module Keepr
   class MigrationGenerator < Rails::Generators::Base
     include Rails::Generators::Migration
 
