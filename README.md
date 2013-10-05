@@ -27,3 +27,15 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+
+## Similar projects
+
+https://github.com/mbulat/plutus
+https://github.com/betterplace/acts_as_account
+https://github.com/steveluscher/bookkeeper
+https://github.com/mstrauss/double-entry-accounting
+https://github.com/logicleague/double_booked
+https://github.com/telent/pacioli
+https://github.com/astrails/deb
+https://github.com/bigfleet/accountable
