@@ -2,8 +2,8 @@ class Keepr::Account < ActiveRecord::Base
   self.table_name = 'keepr_accounts'
 
   KIND = [ 'Asset',
-           'Capital',
            'Liability',
+           'Equity',
            'Revenue',
            'Expense',
            'Neutral' ]
@@ -27,6 +27,6 @@ class Keepr::Account < ActiveRecord::Base
 
 private
   def sign_factor
-    %w(Asset Capital Expense).include?(kind) ? 1 : -1
+    %w(Asset Equity Expense).include?(kind) ? 1 : -1
   end
 end
