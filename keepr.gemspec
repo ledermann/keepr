@@ -6,12 +6,13 @@ require 'keepr/version'
 Gem::Specification.new do |spec|
   spec.name          = "keepr"
   spec.version       = Keepr::VERSION
-  spec.authors       = ['Georg Ledermann']
-  spec.email         = ['mail@georg-ledermann.de']
+  spec.authors       = 'Georg Ledermann'
+  spec.email         = 'mail@georg-ledermann.de'
   spec.description   = %q{Double entry bookkeeping with Ruby}
-  spec.summary       = %q{Some basic models to build a double entry bookkeeping application}
-  spec.homepage      = ""
+  spec.summary       = %q{Some basic ActiveRecord models to build a double entry bookkeeping application}
+  spec.homepage      = 'https://github.com/ledermann/keepr'
   spec.license       = 'MIT'
+  spec.required_ruby_version = '>= 1.9.1'
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
