@@ -41,9 +41,9 @@ private
 
   def validate_items
     if items.length < 2
-      self.errors.add(:base, 'At least two items required!')
+      errors.add(:base, 'At least two items required!')
     elsif debit_amount != credit_amount
-      self.errors.add(:base, 'Debit does not match credit!')
+      errors.add(:base, 'Debit does not match credit!')
     end
   end
 end

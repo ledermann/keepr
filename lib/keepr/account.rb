@@ -18,11 +18,11 @@ class Keepr::Account < ActiveRecord::Base
   default_scope { order('number ASC') }
 
   def balance
-    @balance ||= self.items.sum(:amount) * sign_factor
+    @balance ||= items.sum(:amount) * sign_factor
   end
 
   def to_s
-    "#{self.number} (#{self.name})"
+    "#{number} (#{name})"
   end
 
 private
