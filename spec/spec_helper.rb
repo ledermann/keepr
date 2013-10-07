@@ -1,7 +1,6 @@
 require 'active_record'
 require 'keepr'
 require 'generators/keepr/migration/templates/migration.rb'
-require 'factory_girl'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -23,8 +22,6 @@ RSpec.configure do |config|
   config.before(:each) do
     clear_db
   end
-
-  config.include FactoryGirl::Syntax::Methods
 end
 
 def setup_db
