@@ -11,13 +11,13 @@ class Keepr::Account < ActiveRecord::Base
   validates_uniqueness_of :number
   validates_inclusion_of :kind, :in => KIND
 
-  has_many :items, :foreign_key => 'keepr_account_id'
+  has_many :postings, :foreign_key => 'keepr_account_id'
   belongs_to :accountable, :polymorphic => true
 
   default_scope { order('number ASC') }
 
   def balance
-    @balance ||= items.sum(:amount) * sign_factor
+    @balance ||= postings.sum(:amount) * sign_factor
   end
 
   def to_s
