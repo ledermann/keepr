@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Keepr::Account do
-  include AccountSystem
-
   describe :balance do
     context 'without transactions' do
       it 'should be zero' do

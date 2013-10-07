@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Keepr::Transaction do
-  include AccountSystem
-
   let :simple_transaction do
     Keepr::Transaction.create :items_attributes => [
                                 { :account => skr03(1000), :amount =>  100 },
