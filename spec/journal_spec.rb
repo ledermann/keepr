@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe Keepr::Journal do
   let :simple_journal do
-    Keepr::Journal.create :postings_attributes => [
+    Keepr::Journal.create :keepr_postings_attributes => [
                                 { :keepr_account => skr03(1000), :amount =>  100 },
                                 { :keepr_account => skr03(1200), :amount => -100 }
                               ]
   end
 
   let :complex_journal do
-    Keepr::Journal.create :postings_attributes => [
+    Keepr::Journal.create :keepr_postings_attributes => [
                                 { :keepr_account => skr03(4920), :amount =>   8.40 },
                                 { :keepr_account => skr03(1576), :amount =>   1.60 },
                                 { :keepr_account => skr03(1600), :amount => -10.00 }
@@ -17,13 +17,13 @@ describe Keepr::Journal do
   end
 
   let :journal_with_only_one_posting do
-    Keepr::Journal.create :postings_attributes => [
+    Keepr::Journal.create :keepr_postings_attributes => [
                                 { :keepr_account => skr03(4920), :amount => 8.40 }
                               ]
   end
 
   let :unbalanced_journal do
-    Keepr::Journal.create :postings_attributes => [
+    Keepr::Journal.create :keepr_postings_attributes => [
                                 { :keepr_account => skr03(1000), :amount => 10 },
                                 { :keepr_account => skr03(1200), :amount => 10 }
                               ]
@@ -58,8 +58,8 @@ describe Keepr::Journal do
 
   describe :postings do
     it 'should return postings' do
-      simple_journal.should have(2).postings
-      complex_journal.should have(3).postings
+      simple_journal.should have(2).keepr_postings
+      complex_journal.should have(3).keepr_postings
     end
   end
 

@@ -3,21 +3,21 @@ class Keepr::Journal < ActiveRecord::Base
 
   validates_presence_of :date
 
-  has_many :postings, :foreign_key => 'keepr_journal_id', :dependent => :delete_all
+  has_many :keepr_postings, :class_name => 'Keepr::Posting', :foreign_key => 'keepr_journal_id', :dependent => :delete_all
   belongs_to :accountable, :polymorphic => true
 
-  accepts_nested_attributes_for :postings, :allow_destroy => true, :reject_if => :all_blank
+  accepts_nested_attributes_for :keepr_postings, :allow_destroy => true, :reject_if => :all_blank
 
   default_scope { order('date ASC, id ASC') }
 
   validate :validate_postings
 
   def credit_postings
-    postings.select(&:credit?)
+    keepr_postings.select(&:credit?)
   end
 
   def debit_postings
-    postings.select(&:debit?)
+    keepr_postings.select(&:debit?)
   end
 
   def amount
@@ -40,7 +40,7 @@ private
   end
 
   def validate_postings
-    if postings.length < 2
+    if keepr_postings.length < 2
       errors.add(:base, 'At least two postings required!')
     elsif debit_amount != credit_amount
       errors.add(:base, 'Debit does not match credit!')

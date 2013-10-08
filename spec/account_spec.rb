@@ -12,13 +12,13 @@ describe Keepr::Account do
     context 'with journals' do
       before :each do
         Keepr::Journal.create! :subject          => 'Get cash from bank account',
-                               :postings_attributes => [
+                               :keepr_postings_attributes => [
                                  { :keepr_account => skr03(1000), :amount =>  200 },
                                  { :keepr_account => skr03(1200), :amount => -200 }
                                 ]
 
         Keepr::Journal.create! :subject          => 'Bring cash to bank account',
-                               :postings_attributes => [
+                               :keepr_postings_attributes => [
                                  { :keepr_account => skr03(1000), :amount => -100 },
                                  { :keepr_account => skr03(1200), :amount =>  100 },
                                 ]
