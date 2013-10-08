@@ -9,7 +9,7 @@ module Keepr
     end
 
     def load!
-      CSV.foreach(filename_with_path, :encoding => 'iso-8859-1', :col_sep => ';', :headers => true) do |row|
+      CSV.foreach(filename_with_path, :encoding => 'utf-8', :col_sep => ';', :headers => true) do |row|
         number, name, kind = row[0], row[1], row[2]
 
         if Keepr::Account.respond_to?(:find_or_create_by!)
