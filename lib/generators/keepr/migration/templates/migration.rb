@@ -19,7 +19,7 @@ class KeeprMigration < ActiveRecord::Migration
     add_index :keepr_journals, [:accountable_type, :accountable_id], :name => 'index_keepr_journals_on_accountable'
 
     create_table :keepr_accounts, force: true do |t|
-      t.string     :number, :null => false
+      t.integer    :number, :null => false
       t.string     :name, :null => false
       t.string     :kind, :null => false
       t.references :accountable, :polymorphic => true
