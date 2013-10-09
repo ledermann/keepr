@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Keepr::Journal do
   let :simple_journal do
     Keepr::Journal.create :keepr_postings_attributes => [
-                                { :keepr_account => skr03(1000), :amount =>  100 },
-                                { :keepr_account => skr03(1200), :amount => -100 }
+                                { :keepr_account => skr03(1000), :amount =>  100.99 },
+                                { :keepr_account => skr03(1200), :amount => -100.99 }
                               ]
   end
 
@@ -79,7 +79,7 @@ describe Keepr::Journal do
 
   describe :amount do
     it 'should return absolute amount' do
-      simple_journal.amount.should == 100
+      simple_journal.amount.should == 100.99
       complex_journal.amount.should == 10
     end
   end

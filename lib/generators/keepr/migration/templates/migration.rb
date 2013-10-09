@@ -3,7 +3,7 @@ class KeeprMigration < ActiveRecord::Migration
     create_table :keepr_postings, force: true do |t|
       t.integer    :keepr_account_id, :null => false
       t.integer    :keepr_journal_id, :null => false
-      t.decimal    :amount, :null => false
+      t.decimal    :amount, :precision => 8, :scale => 2, :null => false
     end
     add_index :keepr_postings, :keepr_account_id
     add_index :keepr_postings, :keepr_journal_id
