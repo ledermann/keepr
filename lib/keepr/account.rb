@@ -15,6 +15,7 @@ class Keepr::Account < ActiveRecord::Base
   belongs_to :accountable, :polymorphic => true
 
   default_scope { order('number ASC') }
+  scope :with_postings, -> { where('keepr_postings_count > 0') }
 
   def balance
     @balance ||= keepr_postings.sum(:amount) * sign_factor
