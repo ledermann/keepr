@@ -16,6 +16,7 @@ class Keepr::Account < ActiveRecord::Base
 
   default_scope { order('number ASC') }
   scope :with_postings, -> { where('keepr_postings_count > 0') }
+  scope :not_zero_balance, -> { where('keepr_postings_sum_amount <> 0.0') }
 
   def balance
     keepr_postings_sum_amount * sign_factor
