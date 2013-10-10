@@ -28,8 +28,8 @@ class Keepr::Account < ActiveRecord::Base
   def update_cache_columns!
     total = self.keepr_postings.select("COUNT(*) AS postings_count, SUM(amount) AS postings_sum").first
 
-    self.update_attributes! :keepr_postings_count      => total[:postings_count],
-                            :keepr_postings_sum_amount => total[:postings_sum]
+    self.update_attributes! :keepr_postings_count      => total[:postings_count] || 0.0,
+                            :keepr_postings_sum_amount => total[:postings_sum] || 0.0
   end
 
 private
