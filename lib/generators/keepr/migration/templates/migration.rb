@@ -24,6 +24,7 @@ class KeeprMigration < ActiveRecord::Migration
       t.string     :kind, :null => false
       t.references :accountable, :polymorphic => true
       t.integer    :keepr_postings_count, :default => 0
+      t.decimal    :keepr_postings_sum_amount, :precision => 8, :scale => 2, :default => 0.0
       t.datetime   :created_at
       t.datetime   :updated_at
     end

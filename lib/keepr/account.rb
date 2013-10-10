@@ -25,6 +25,13 @@ class Keepr::Account < ActiveRecord::Base
     "#{number} (#{name})"
   end
 
+  def update_cache_columns!
+    total = self.keepr_postings.select("COUNT(*) AS postings_count, SUM(amount) AS postings_sum").first
+
+    self.update_attributes! :keepr_postings_count      => total[:postings_count],
+                            :keepr_postings_sum_amount => total[:postings_sum]
+  end
+
 private
   def sign_factor
     %w(Asset Expense).include?(kind) ? 1 : -1

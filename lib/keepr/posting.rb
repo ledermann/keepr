@@ -3,7 +3,7 @@ class Keepr::Posting < ActiveRecord::Base
 
   validates_presence_of :keepr_account_id, :amount
 
-  belongs_to :keepr_account, :class_name => 'Keepr::Account', :counter_cache => 'keepr_postings_count'
+  belongs_to :keepr_account, :class_name => 'Keepr::Account'
   belongs_to :keepr_journal, :class_name => 'Keepr::Journal'
 
   def credit?

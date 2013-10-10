@@ -25,10 +25,18 @@ class Keepr::Journal < ActiveRecord::Base
   end
 
   after_initialize :set_defaults
+  after_save :update_accounts
+  after_destroy :update_accounts
 
 private
   def set_defaults
     self.date ||= Date.today
+  end
+
+  def update_accounts
+    transaction do
+      keepr_postings.map(&:keepr_account).each(&:update_cache_columns!)
+    end
   end
 
   def credit_amount
