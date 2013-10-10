@@ -18,7 +18,7 @@ class Keepr::Account < ActiveRecord::Base
   scope :with_postings, -> { where('keepr_postings_count > 0') }
 
   def balance
-    @balance ||= keepr_postings.sum(:amount) * sign_factor
+    keepr_postings_sum_amount * sign_factor
   end
 
   def to_s
