@@ -18,11 +18,27 @@ class Keepr::Account < ActiveRecord::Base
   scope :with_postings, -> { where('keepr_postings_count > 0') }
   scope :not_zero_balance, -> { where('keepr_postings_sum_amount <> 0.0') }
 
-  def balance(date=nil)
+  def self.with_balance(date=nil)
+    scope = Keepr::Account.joins(:keepr_postings)
+
     if date
-      keepr_postings.joins(:keepr_journal).where("keepr_journals.date <= '#{date.to_s(:db)}'").sum(:amount)
+      scope = scope.joins(:keepr_postings => :keepr_journal).where("keepr_journals.date <= '#{date.to_s(:db)}'")
+    end
+
+    scope.group('keepr_accounts.id').
+          select('keepr_accounts.*, SUM(keepr_postings.amount) AS preloaded_sum_amount')
+  end
+
+  def balance(date=nil)
+    if attributes['preloaded_sum_amount']
+      raise ArgumentError if date
+      attributes['preloaded_sum_amount']
     else
-      keepr_postings_sum_amount
+      if date
+        keepr_postings.joins(:keepr_journal).where("keepr_journals.date <= '#{date.to_s(:db)}'").sum(:amount)
+      else
+        keepr_postings_sum_amount
+      end
     end * sign_factor
   end
 

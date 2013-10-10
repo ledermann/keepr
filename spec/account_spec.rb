@@ -1,45 +1,81 @@
 require 'spec_helper'
 
 describe Keepr::Account do
+  before :all do
+    Keepr::Journal.create! :date => Date.yesterday,
+                           :keepr_postings_attributes => [
+                             { :keepr_account => skr03(1000), :amount =>  20 },
+                             { :keepr_account => skr03(1200), :amount => -20 }
+                            ]
+
+    Keepr::Journal.create! :date => Date.yesterday,
+                           :keepr_postings_attributes => [
+                             { :keepr_account => skr03(1000), :amount => -10 },
+                             { :keepr_account => skr03(1200), :amount =>  10 },
+                            ]
+
+    Keepr::Journal.create! :date => Date.today,
+                           :keepr_postings_attributes => [
+                             { :keepr_account => skr03(1000), :amount =>  200 },
+                             { :keepr_account => skr03(1200), :amount => -200 }
+                            ]
+
+    Keepr::Journal.create! :date => Date.today,
+                           :keepr_postings_attributes => [
+                             { :keepr_account => skr03(1000), :amount => -100 },
+                             { :keepr_account => skr03(1200), :amount =>  100 },
+                            ]
+  end
+
   describe :balance do
-    context 'without journals' do
-      it 'should be zero' do
-        skr03(1000).balance.should be_zero
-        skr03(1200).balance.should be_zero
-      end
+    it 'should calc total' do
+      skr03(1000).balance.should ==  110
+      skr03(1200).balance.should == -110
     end
 
-    context 'with journals' do
-      before :all do
-        Keepr::Journal.create! :subject          => 'Get cash from bank account',
-                               :date => Date.today,
-                               :keepr_postings_attributes => [
-                                 { :keepr_account => skr03(1000), :amount =>  200 },
-                                 { :keepr_account => skr03(1200), :amount => -200 }
-                                ]
+    it 'should calc total for a given date (including)' do
+      skr03(1000).balance(Date.today).should ==  110
+      skr03(1200).balance(Date.today).should == -110
+    end
 
-        Keepr::Journal.create! :subject          => 'Bring cash to bank account',
-                               :date => Date.today,
-                               :keepr_postings_attributes => [
-                                 { :keepr_account => skr03(1000), :amount => -100 },
-                                 { :keepr_account => skr03(1200), :amount =>  100 },
-                                ]
-      end
+    it 'should calc total for a given date (excluding)' do
+      skr03(1000).balance(Date.yesterday).should == 10
+      skr03(1200).balance(Date.yesterday).should == -10
+    end
+  end
 
-      it 'should calc total' do
-        skr03(1000).balance.should ==  100
-        skr03(1200).balance.should == -100
-      end
+  describe :with_balance do
+    it 'should work without date' do
+      account1, account2 = Keepr::Account.with_balance
 
-      it 'should calc total for a given date (including)' do
-        skr03(1000).balance(Date.today).should ==  100
-        skr03(1200).balance(Date.today).should == -100
-      end
+      account1.number.should == 1000
+      account1.balance.should == 110
+      account2.number.should == 1200
+      account2.balance.should == -110
+    end
 
-      it 'should calc total for a given date (excluding)' do
-        skr03(1000).balance(Date.yesterday).should == 0
-        skr03(1200).balance(Date.yesterday).should == 0
-      end
+    it 'should work with date (including)' do
+      account1, account2 = Keepr::Account.with_balance(Date.today)
+
+      account1.number.should == 1000
+      account1.balance.should == 110
+      account2.number.should == 1200
+      account2.balance.should == -110
+    end
+
+    it 'should work with date (excluding)' do
+      account1, account2 = Keepr::Account.with_balance(Date.yesterday)
+
+      account1.number.should == 1000
+      account1.balance.should == 10
+      account2.number.should == 1200
+      account2.balance.should == -10
+    end
+
+    it 'should not allow calling #balance with date' do
+      account1, account2 = Keepr::Account.with_balance(Date.yesterday)
+
+      lambda { account1.balance(Date.today) }.should raise_error(ArgumentError)
     end
   end
 end
