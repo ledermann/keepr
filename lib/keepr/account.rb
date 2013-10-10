@@ -18,8 +18,12 @@ class Keepr::Account < ActiveRecord::Base
   scope :with_postings, -> { where('keepr_postings_count > 0') }
   scope :not_zero_balance, -> { where('keepr_postings_sum_amount <> 0.0') }
 
-  def balance
-    keepr_postings_sum_amount * sign_factor
+  def balance(date=nil)
+    if date
+      keepr_postings.joins(:keepr_journal).where("keepr_journals.date <= '#{date.to_s(:db)}'").sum(:amount)
+    else
+      keepr_postings_sum_amount
+    end * sign_factor
   end
 
   def to_s
