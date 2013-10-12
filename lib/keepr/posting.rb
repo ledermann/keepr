@@ -9,8 +9,6 @@ class Keepr::Posting < ActiveRecord::Base
   KIND_DEBIT  = 'debit'
   KIND_CREDIT = 'credit'
 
-  attr_reader :kind
-
   def kind=(value)
     @kind = value
 
@@ -21,6 +19,10 @@ class Keepr::Posting < ActiveRecord::Base
     else
       raise ArgumentError
     end
+  end
+
+  def kind
+    @kind || (read_attribute(:amount) < 0 ? KIND_CREDIT : KIND_DEBIT)
   end
 
   def debit?

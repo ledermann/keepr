@@ -46,6 +46,22 @@ describe Keepr::Posting do
       posting.amount.should == 0.5
     end
 
+    it 'should recognized saved debit posting' do
+      posting = Keepr::Posting.create!(:amount => 10, :kind => 'debit', :keepr_account_id => 42, :keepr_journal_id => 43)
+      posting.reload
+
+      posting.should be_debit
+      posting.amount.should == 10
+    end
+
+    it 'should recognized saved credit posting' do
+      posting = Keepr::Posting.create!(:amount => 10, :kind => 'credit', :keepr_account_id => 42, :keepr_journal_id => 43)
+      posting.reload
+
+      posting.should be_credit
+      posting.amount.should == 10
+    end
+
     it 'should fail for negative amount' do
       lambda {
         Keepr::Posting.new(:amount => -10)
