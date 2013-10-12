@@ -3,29 +3,29 @@ require 'spec_helper'
 describe Keepr::Journal do
   let :simple_journal do
     Keepr::Journal.create :keepr_postings_attributes => [
-                                { :keepr_account => skr03(1000), :amount =>  100.99 },
-                                { :keepr_account => skr03(1200), :amount => -100.99 }
+                                { :keepr_account => skr03(1000), :amount => 100.99, :kind => 'debit' },
+                                { :keepr_account => skr03(1200), :amount => 100.99, :kind => 'credit' }
                               ]
   end
 
   let :complex_journal do
     Keepr::Journal.create :keepr_postings_attributes => [
-                                { :keepr_account => skr03(4920), :amount =>   8.40 },
-                                { :keepr_account => skr03(1576), :amount =>   1.60 },
-                                { :keepr_account => skr03(1600), :amount => -10.00 }
+                                { :keepr_account => skr03(4920), :amount =>  8.40, :kind => 'debit' },
+                                { :keepr_account => skr03(1576), :amount =>  1.60, :kind => 'debit' },
+                                { :keepr_account => skr03(1600), :amount => 10.00, :kind => 'credit' }
                                ]
   end
 
   let :journal_with_only_one_posting do
     Keepr::Journal.create :keepr_postings_attributes => [
-                                { :keepr_account => skr03(4920), :amount => 8.40 }
+                                { :keepr_account => skr03(4920), :amount => 8.40, :kind => 'debit' }
                               ]
   end
 
   let :unbalanced_journal do
     Keepr::Journal.create :keepr_postings_attributes => [
-                                { :keepr_account => skr03(1000), :amount => 10 },
-                                { :keepr_account => skr03(1200), :amount => 10 }
+                                { :keepr_account => skr03(1000), :amount => 10, :kind => 'debit' },
+                                { :keepr_account => skr03(1200), :amount => 10, :kind => 'debit' }
                               ]
   end
 
@@ -90,8 +90,8 @@ describe Keepr::Journal do
 
     subject do
       lambda { Keepr::Journal.create! :keepr_postings_attributes => [
-                                        { :keepr_account => debit_account,  :amount =>  100.99 },
-                                        { :keepr_account => credit_account, :amount => -100.99 }
+                                        { :keepr_account => debit_account,  :amount => 100.99, :kind => 'debit' },
+                                        { :keepr_account => credit_account, :amount => 100.99, :kind => 'credit' }
                                       ] }
     end
 
