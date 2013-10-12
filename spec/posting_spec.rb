@@ -2,6 +2,12 @@ require 'spec_helper'
 
 describe Keepr::Posting do
   describe 'kind/amount' do
+    it 'should handle empty object' do
+      posting = Keepr::Posting.new
+      posting.amount.should be_nil
+      posting.kind.should be_nil
+    end
+
     it 'should set credit amount' do
       posting = Keepr::Posting.new :amount => 10, :kind => 'credit'
 

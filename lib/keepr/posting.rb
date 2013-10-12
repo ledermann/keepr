@@ -22,7 +22,10 @@ class Keepr::Posting < ActiveRecord::Base
   end
 
   def kind
-    @kind || (read_attribute(:amount) < 0 ? KIND_CREDIT : KIND_DEBIT)
+    @kind || begin
+      raw_amount = read_attribute(:amount)
+      (raw_amount < 0 ? KIND_CREDIT : KIND_DEBIT) if raw_amount
+    end
   end
 
   def debit?
