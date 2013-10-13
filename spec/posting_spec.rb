@@ -1,38 +1,38 @@
 require 'spec_helper'
 
 describe Keepr::Posting do
-  describe 'kind/amount' do
+  describe 'side/amount' do
     it 'should handle empty object' do
       posting = Keepr::Posting.new
       posting.amount.should be_nil
-      posting.kind.should be_nil
+      posting.side.should be_nil
     end
 
     it 'should set credit amount' do
-      posting = Keepr::Posting.new :amount => 10, :kind => 'credit'
+      posting = Keepr::Posting.new :amount => 10, :side => 'credit'
 
       posting.should be_credit
       posting.amount.should == 10
     end
 
     it 'should set debit amount' do
-      posting = Keepr::Posting.new :amount => 10, :kind => 'debit'
+      posting = Keepr::Posting.new :amount => 10, :side => 'debit'
 
       posting.should be_debit
       posting.amount.should == 10
     end
 
     it 'should change to credit' do
-      posting = Keepr::Posting.new :amount => 10, :kind => 'debit'
-      posting.kind = 'credit'
+      posting = Keepr::Posting.new :amount => 10, :side => 'debit'
+      posting.side = 'credit'
 
       posting.should be_credit
       posting.amount.should == 10
     end
 
     it 'should change to debit' do
-      posting = Keepr::Posting.new :amount => 10, :kind => 'credit'
-      posting.kind = 'debit'
+      posting = Keepr::Posting.new :amount => 10, :side => 'credit'
+      posting.side = 'debit'
 
       posting.should be_debit
       posting.amount.should == 10
@@ -53,7 +53,7 @@ describe Keepr::Posting do
     end
 
     it 'should recognized saved debit posting' do
-      posting = Keepr::Posting.create!(:amount => 10, :kind => 'debit', :keepr_account_id => 42, :keepr_journal_id => 43)
+      posting = Keepr::Posting.create!(:amount => 10, :side => 'debit', :keepr_account_id => 42, :keepr_journal_id => 43)
       posting.reload
 
       posting.should be_debit
@@ -61,7 +61,7 @@ describe Keepr::Posting do
     end
 
     it 'should recognized saved credit posting' do
-      posting = Keepr::Posting.create!(:amount => 10, :kind => 'credit', :keepr_account_id => 42, :keepr_journal_id => 43)
+      posting = Keepr::Posting.create!(:amount => 10, :side => 'credit', :keepr_account_id => 42, :keepr_journal_id => 43)
       posting.reload
 
       posting.should be_credit
@@ -74,9 +74,9 @@ describe Keepr::Posting do
       }.should raise_error(ArgumentError)
     end
 
-    it 'should fail for unknown kind' do
+    it 'should fail for unknown side' do
       lambda {
-        Keepr::Posting.new(:kind => 'foo')
+        Keepr::Posting.new(:side => 'foo')
       }.should raise_error(ArgumentError)
     end
   end

@@ -6,11 +6,11 @@ class Keepr::Posting < ActiveRecord::Base
   belongs_to :keepr_account, :class_name => 'Keepr::Account'
   belongs_to :keepr_journal, :class_name => 'Keepr::Journal'
 
-  KIND_DEBIT  = 'debit'
-  KIND_CREDIT = 'credit'
+  SIDE_DEBIT  = 'debit'
+  SIDE_CREDIT = 'credit'
 
-  def kind=(value)
-    @kind = value
+  def side=(value)
+    @side = value
 
     if credit?
       write_attribute(:amount, -amount)
@@ -21,19 +21,19 @@ class Keepr::Posting < ActiveRecord::Base
     end
   end
 
-  def kind
-    @kind || begin
+  def side
+    @side || begin
       raw_amount = read_attribute(:amount)
-      (raw_amount < 0 ? KIND_CREDIT : KIND_DEBIT) if raw_amount
+      (raw_amount < 0 ? SIDE_CREDIT : SIDE_DEBIT) if raw_amount
     end
   end
 
   def debit?
-    kind == KIND_DEBIT
+    side == SIDE_DEBIT
   end
 
   def credit?
-    kind == KIND_CREDIT
+    side == SIDE_CREDIT
   end
 
   def amount
@@ -42,7 +42,7 @@ class Keepr::Posting < ActiveRecord::Base
 
   def amount=(value)
     raise ArgumentError unless value.to_f > 0
-    @kind ||= KIND_DEBIT
+    @side ||= SIDE_DEBIT
 
     write_attribute(:amount, value)
   end

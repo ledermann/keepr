@@ -4,26 +4,26 @@ describe Keepr::Account do
   before :all do
     Keepr::Journal.create! :date => Date.yesterday,
                            :keepr_postings_attributes => [
-                             { :keepr_account => skr03(1000), :amount => 20, :kind => 'debit' },
-                             { :keepr_account => skr03(1200), :amount => 20, :kind => 'credit' }
+                             { :keepr_account => skr03(1000), :amount => 20, :side => 'debit' },
+                             { :keepr_account => skr03(1200), :amount => 20, :side => 'credit' }
                             ]
 
     Keepr::Journal.create! :date => Date.yesterday,
                            :keepr_postings_attributes => [
-                             { :keepr_account => skr03(1000), :amount =>  10, :kind => 'credit' },
-                             { :keepr_account => skr03(1200), :amount =>  10, :kind => 'debit' },
+                             { :keepr_account => skr03(1000), :amount =>  10, :side => 'credit' },
+                             { :keepr_account => skr03(1200), :amount =>  10, :side => 'debit' },
                             ]
 
     Keepr::Journal.create! :date => Date.today,
                            :keepr_postings_attributes => [
-                             { :keepr_account => skr03(1000), :amount => 200, :kind => 'debit' },
-                             { :keepr_account => skr03(1200), :amount => 200, :kind => 'credit' }
+                             { :keepr_account => skr03(1000), :amount => 200, :side => 'debit' },
+                             { :keepr_account => skr03(1200), :amount => 200, :side => 'credit' }
                             ]
 
     Keepr::Journal.create! :date => Date.today,
                            :keepr_postings_attributes => [
-                             { :keepr_account => skr03(1000), :amount => 100, :kind => 'credit' },
-                             { :keepr_account => skr03(1200), :amount => 100, :kind => 'debit' },
+                             { :keepr_account => skr03(1000), :amount => 100, :side => 'credit' },
+                             { :keepr_account => skr03(1200), :amount => 100, :side => 'debit' },
                             ]
   end
 
