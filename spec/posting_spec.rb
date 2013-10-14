@@ -22,6 +22,18 @@ describe Keepr::Posting do
       posting.amount.should == 10
     end
 
+    it 'should set side and amount in different steps' do
+      posting = Keepr::Posting.new
+
+      posting.side = 'credit'
+      posting.should be_credit
+      posting.amount.should be_nil
+
+      posting.amount = 10
+      posting.should be_credit
+      posting.amount.should == 10
+    end
+
     it 'should change to credit' do
       posting = Keepr::Posting.new :amount => 10, :side => 'debit'
       posting.side = 'credit'

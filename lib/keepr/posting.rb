@@ -13,9 +13,9 @@ class Keepr::Posting < ActiveRecord::Base
     @side = value
 
     if credit?
-      write_attribute(:amount, -amount)
+      write_attribute(:amount, -amount) if amount
     elsif debit?
-      write_attribute(:amount,  amount)
+      write_attribute(:amount,  amount) if amount
     else
       raise ArgumentError
     end
