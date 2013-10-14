@@ -3,6 +3,8 @@ require 'keepr/account'
 require 'keepr/posting'
 require 'keepr/journal'
 require 'keepr/chart'
+require 'keepr/active_record_extension'
 
-module Keepr
+class ActiveRecord::Base
+  include Keepr::ActiveRecordExtension
 end

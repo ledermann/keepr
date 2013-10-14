@@ -37,6 +37,7 @@ def setup_db
   end
 
   KeeprMigration.up
+  SpecMigration.up
 
   Keepr::Chart.new('skr03').load!
 end
