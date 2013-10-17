@@ -1,3 +1,3 @@
 class Contact < ActiveRecord::Base
-  has_keepr_accounts
+  belongs_to_default_keepr_account
 end
