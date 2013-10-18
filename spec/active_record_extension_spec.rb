@@ -11,14 +11,6 @@ describe Keepr::ActiveRecordExtension do
     it { subject.keepr_account.should be_present }
   end
 
-  describe 'Contact with associated default account' do
-    subject do
-      Contact.create! :name => 'United Parcel Service', :default_keepr_account => skr03(4910)
-    end
-
-    it { subject.default_keepr_account.should be_present }
-  end
-
   describe 'Document with associated journal' do
     subject do
       document = Document.create! :number => 'RE-2013-10-12345'

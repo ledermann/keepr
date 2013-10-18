@@ -17,9 +17,5 @@ module Keepr::ActiveRecordExtension
         end
       EOT
     end
-
-    def belongs_to_default_keepr_account
-      belongs_to :default_keepr_account, :class_name => 'Keepr::Account'
-    end
   end
 end
