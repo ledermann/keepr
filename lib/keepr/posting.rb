@@ -41,7 +41,7 @@ class Keepr::Posting < ActiveRecord::Base
   end
 
   def amount=(value)
-    raise ArgumentError unless value.to_f > 0
+    raise ArgumentError.new('Negative amount not allowed!') if value.to_f < 0
     @side ||= SIDE_DEBIT
 
     write_attribute(:amount, value)
