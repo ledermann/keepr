@@ -50,6 +50,13 @@ describe Keepr::Journal do
       complex_journal.should be_valid
     end
 
+    it 'should accept journal with postings marked for destruction' do
+      complex_journal.keepr_postings.first.mark_for_destruction
+      complex_journal.keepr_postings.build :keepr_account => skr03(4910), :amount => 8.4, :side => 'debit'
+
+      complex_journal.should be_valid
+    end
+
     it 'should fail for invalid journals' do
       journal_with_only_one_posting.should_not be_valid
       unbalanced_journal.should_not be_valid
@@ -81,6 +88,11 @@ describe Keepr::Journal do
     it 'should return absolute amount' do
       simple_journal.amount.should == 100.99
       complex_journal.amount.should == 10
+    end
+
+    it 'should ignore postings marked for destruction' do
+      complex_journal.keepr_postings.last.mark_for_destruction
+      complex_journal.amount.should == 0
     end
   end
 

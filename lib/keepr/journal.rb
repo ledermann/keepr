@@ -32,11 +32,11 @@ private
   end
 
   def credit_amount
-    credit_postings.sum(&:amount).abs
+    credit_postings.delete_if(&:marked_for_destruction?).sum(&:amount).abs
   end
 
   def debit_amount
-    debit_postings.sum(&:amount).abs
+    debit_postings.delete_if(&:marked_for_destruction?).sum(&:amount).abs
   end
 
   def validate_postings
