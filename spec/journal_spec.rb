@@ -84,7 +84,7 @@ describe Keepr::Journal do
     end
   end
 
-  describe :after_save do
+  describe :create do
     let(:debit_account) { skr03(1000) }
     let(:credit_account) { skr03(1200) }
 
@@ -103,6 +103,63 @@ describe Keepr::Journal do
     describe 'credit account' do
       it { should change(credit_account, :keepr_postings_count).by(1) }
       it { should change(credit_account, :keepr_postings_sum_amount).by(-100.99) }
+    end
+  end
+
+  describe :destroy do
+    let(:debit_account) { skr03(1000) }
+    let(:credit_account) { skr03(1200) }
+
+    before :each do
+      @journal = Keepr::Journal.create! :keepr_postings_attributes => [
+                                          { :keepr_account => debit_account,  :amount => 100.99, :side => 'debit' },
+                                          { :keepr_account => credit_account, :amount => 100.99, :side => 'credit' }
+                                        ]
+    end
+
+    subject do
+      lambda { @journal.destroy }
+    end
+
+    describe 'debit_account' do
+      it { should change(debit_account, :keepr_postings_count).by(-1) }
+      it { should change(debit_account, :keepr_postings_sum_amount).by(-100.99) }
+    end
+
+    describe 'credit_account' do
+      it { should change(credit_account, :keepr_postings_count).by(-1) }
+      it { should change(credit_account, :keepr_postings_sum_amount).by(100.99) }
+    end
+  end
+
+  describe :update do
+    let(:debit_account) { skr03(1000) }
+    let(:credit_account) { skr03(1200) }
+    let(:other_account) { skr03(1210) }
+
+    before :each do
+      @journal = Keepr::Journal.create! :keepr_postings_attributes => [
+                                          { :keepr_account => debit_account,  :amount => 100.99, :side => 'debit' },
+                                          { :keepr_account => credit_account, :amount => 100.99, :side => 'credit' }
+                                        ]
+    end
+
+    subject do
+      lambda {
+        @journal.credit_postings.first.keepr_account = other_account
+        @journal.save!
+        credit_account.reload
+      }
+    end
+
+    describe 'credit_account' do
+      it { should change(credit_account, :keepr_postings_count).by(-1) }
+      it { should change(credit_account, :keepr_postings_sum_amount).by(100.99) }
+    end
+
+    describe 'other_account' do
+      it { should change(other_account, :keepr_postings_count).by(1) }
+      it { should change(other_account, :keepr_postings_sum_amount).by(-100.99) }
     end
   end
 end

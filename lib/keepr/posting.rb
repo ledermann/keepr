@@ -9,6 +9,9 @@ class Keepr::Posting < ActiveRecord::Base
   SIDE_DEBIT  = 'debit'
   SIDE_CREDIT = 'credit'
 
+  after_destroy :update_account_cache_columns
+  after_save :update_account_cache_columns
+
   def side=(value)
     @side = value
 
@@ -45,5 +48,16 @@ class Keepr::Posting < ActiveRecord::Base
     @side ||= SIDE_DEBIT
 
     write_attribute(:amount, value)
+  end
+
+private
+  def update_account_cache_columns
+    if keepr_account_id_changed? && keepr_account_id_was
+      if previous_account = Keepr::Account.find(keepr_account_id_was)
+        previous_account.update_cache_columns!
+      end
+    end
+
+    keepr_account.update_cache_columns!
   end
 end

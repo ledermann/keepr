@@ -3,7 +3,7 @@ class Keepr::Journal < ActiveRecord::Base
 
   validates_presence_of :date
 
-  has_many :keepr_postings, :class_name => 'Keepr::Posting', :foreign_key => 'keepr_journal_id', :dependent => :delete_all
+  has_many :keepr_postings, :class_name => 'Keepr::Posting', :foreign_key => 'keepr_journal_id', :dependent => :destroy
   belongs_to :accountable, :polymorphic => true
 
   accepts_nested_attributes_for :keepr_postings, :allow_destroy => true, :reject_if => :all_blank
@@ -25,18 +25,10 @@ class Keepr::Journal < ActiveRecord::Base
   end
 
   after_initialize :set_defaults
-  after_save :update_accounts
-  after_destroy :update_accounts
 
 private
   def set_defaults
     self.date ||= Date.today
-  end
-
-  def update_accounts
-    transaction do
-      keepr_postings.map(&:keepr_account).each(&:update_cache_columns!)
-    end
   end
 
   def credit_amount
