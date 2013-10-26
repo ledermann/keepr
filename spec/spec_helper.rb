@@ -1,4 +1,5 @@
 require 'active_record'
+require 'database_cleaner'
 require 'keepr'
 require 'generators/keepr/migration/templates/migration.rb'
 
@@ -19,8 +20,19 @@ RSpec.configure do |config|
   #     --seed 1234
   #  config.order = 'random'
 
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+
+    Keepr::Chart.new('skr03').load!
+  end
+
   config.before(:each) do
-    clear_db
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
   end
 end
 
@@ -38,11 +50,6 @@ def setup_db
 
   KeeprMigration.up
   SpecMigration.up
-
-  Keepr::Chart.new('skr03').load!
-end
-
-def clear_db
 end
 
 setup_db
