@@ -46,36 +46,61 @@ describe Keepr::Account do
 
   describe :with_balance do
     it 'should work without date' do
-      account1, account2 = Keepr::Account.with_balance
+      account1, account2 = Keepr::Account.with_balance.having('preloaded_sum_amount <> 0')
 
       account1.number.should == 1000
       account1.balance.should == 110
       account2.number.should == 1200
       account2.balance.should == -110
     end
+  end
+end
 
-    it 'should work with date (including)' do
-      account1, account2 = Keepr::Account.with_balance(Date.today)
+describe Keepr::Account, 'with subaccounts' do
+  before :each do
+    Keepr::Account.create! :number => 10000, :kind => 'Asset', :name => 'Diverse Debitoren', :parent => skr03(1400)
 
-      account1.number.should == 1000
-      account1.balance.should == 110
-      account2.number.should == 1200
-      account2.balance.should == -110
+    Keepr::Journal.create! :date => Date.yesterday,
+                           :keepr_postings_attributes => [
+                             { :keepr_account => skr03(10000), :amount => 20, :side => 'debit' },
+                             { :keepr_account => skr03( 8400), :amount => 20, :side => 'credit' }
+                            ]
+  end
+
+  describe :keepr_postings do
+    it 'should include postings from descendant accounts' do
+      skr03(1400).should have(1).keepr_postings
+      skr03(10000).should have(1).keepr_postings
+    end
+  end
+
+  describe :balance do
+    it 'should include postings from descendant accounts' do
+      skr03(1400).balance.should == 20
+      skr03(10000).balance.should == 20
     end
 
-    it 'should work with date (excluding)' do
-      account1, account2 = Keepr::Account.with_balance(Date.yesterday)
-
-      account1.number.should == 1000
-      account1.balance.should == 10
-      account2.number.should == 1200
-      account2.balance.should == -10
+    it 'should include postings from descendant accounts with date given' do
+      skr03(1400).balance(Date.today).should == 20
+      skr03(10000).balance(Date.today).should == 20
     end
+  end
 
-    it 'should not allow calling #balance with date' do
-      account1, account2 = Keepr::Account.with_balance(Date.yesterday)
+  describe :with_balance do
+    it 'should calc balance' do
+      Keepr::Account.with_balance.
+                     select { |a| (a.preloaded_sum_amount || 0) != 0 }.
+                     map { |a| [a.number, a.preloaded_sum_amount] }.
+                     should == [[8400, -20], [10000, 20]]
+    end
+  end
 
-      lambda { account1.balance(Date.today) }.should raise_error(ArgumentError)
+  describe :merged_with_balance do
+    it 'should calc merged balance' do
+      Keepr::Account.merged_with_balance.
+                     select { |a| (a.preloaded_sum_amount || 0) != 0 }.
+                     map { |a| [a.number, a.preloaded_sum_amount] }.
+                     should == [[1400, 20], [8400, -20]]
     end
   end
 end

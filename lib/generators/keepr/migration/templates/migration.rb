@@ -20,6 +20,7 @@ class KeeprMigration < ActiveRecord::Migration
 
     create_table :keepr_accounts, force: true do |t|
       t.integer    :number, :null => false
+      t.string     :ancestry
       t.string     :name, :null => false
       t.string     :kind, :null => false
       t.references :accountable, :polymorphic => true
@@ -29,6 +30,7 @@ class KeeprMigration < ActiveRecord::Migration
       t.datetime   :updated_at
     end
     add_index :keepr_accounts, :number
+    add_index :keepr_accounts, :ancestry
     add_index :keepr_accounts, [:accountable_type, :accountable_id]
   end
 

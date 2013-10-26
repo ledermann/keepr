@@ -1,3 +1,5 @@
+require 'ancestry'
+
 require 'keepr/version'
 require 'keepr/account'
 require 'keepr/posting'

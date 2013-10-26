@@ -1,6 +1,8 @@
 class Keepr::Account < ActiveRecord::Base
   self.table_name = 'keepr_accounts'
 
+  has_ancestry :orphan_strategy => :restrict
+
   KIND = [ 'Asset',
            'Liability',
            'Revenue',
@@ -20,18 +22,48 @@ class Keepr::Account < ActiveRecord::Base
   scope :not_zero_balance, -> { where('keepr_postings_sum_amount <> 0.0') }
 
   def self.with_balance(date=nil)
-    scope = Keepr::Account.joins(:keepr_postings)
+    scope = select('keepr_accounts.*, SUM(amount) AS preloaded_sum_amount').
+              group('keepr_accounts.id').
+              joins('LEFT JOIN keepr_postings ON keepr_postings.keepr_account_id = keepr_accounts.id')
 
     if date
-      scope = scope.joins(:keepr_postings => :keepr_journal).where("keepr_journals.date <= '#{date.to_s(:db)}'")
+      scope = scope.
+                joins('LEFT JOIN keepr_journals ON keepr_journals.id = keepr_postings.keepr_journal_id').
+                where("keepr_journals.id IS NULL OR keepr_journals.date <= '#{date.to_s(:db)}'")
     end
 
-    scope.group('keepr_accounts.id').
-          select('keepr_accounts.*, SUM(keepr_postings.amount) AS preloaded_sum_amount')
+    scope
+  end
+
+  def self.merged_with_balance(date=nil)
+    array = with_balance(date).to_a
+
+    position = 0
+    while account = array[position] do
+      if account.parent_id
+        if parent = array.find { |a| a.id == account.parent_id }
+          parent.preloaded_sum_amount ||= 0
+          parent.preloaded_sum_amount += account.preloaded_sum_amount
+          array.delete_at(position)
+        else
+          raise
+        end
+      else
+        position += 1
+      end
+    end
+
+    array
+  end
+
+  def keepr_postings
+    Keepr::Posting.
+      joins(:keepr_account).
+      where(subtree_conditions)
   end
 
   def balance(date=nil)
-    if attributes['preloaded_sum_amount']
+    if attributes['preloaded_sum_amount'].present?
       raise ArgumentError if date
       attributes['preloaded_sum_amount']
     else
@@ -48,10 +80,15 @@ class Keepr::Account < ActiveRecord::Base
   end
 
   def update_cache_columns!
-    total = self.keepr_postings.select("COUNT(*) AS postings_count, SUM(amount) AS postings_sum").first
+    account = self
+    while account do
+      total = account.keepr_postings.select('COUNT(*) AS postings_count, SUM(amount) AS postings_sum').first
 
-    self.update_attributes! :keepr_postings_count      => total[:postings_count] || 0.0,
-                            :keepr_postings_sum_amount => total[:postings_sum] || 0.0
+      account.update_attributes! :keepr_postings_count      => total[:postings_count] || 0.0,
+                                 :keepr_postings_sum_amount => total[:postings_sum] || 0.0
+
+      account = account.parent
+    end
   end
 
 private
