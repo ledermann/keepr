@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Keepr::Account do
-  before :all do
+  before :each do
     Keepr::Journal.create! :date => Date.yesterday,
                            :keepr_postings_attributes => [
                              { :keepr_account => skr03(1000), :amount => 20, :side => 'debit' },
