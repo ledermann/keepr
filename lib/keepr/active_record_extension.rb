@@ -15,6 +15,12 @@ module Keepr::ActiveRecordExtension
         def keepr_booked?
           keepr_journals.exists?
         end
+
+        scope :keepr_unbooked, -> {
+                                    joins('LEFT JOIN keepr_journals ON keepr_journals.accountable_id = #{table_name}.id AND keepr_journals.accountable_type="#{base_class.name}"').
+                                    where('keepr_journals.id' => nil)
+                                  }
+        scope :keepr_booked,   -> { joins(:keepr_journals) }
       EOT
     end
   end
