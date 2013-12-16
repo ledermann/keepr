@@ -1,31 +1,39 @@
 require 'spec_helper'
 
 describe Keepr::Journal do
+  let!(:account_1000) { FactoryGirl.create(:account, :number => 1000, :kind => 'Asset') }
+  let!(:account_1200) { FactoryGirl.create(:account, :number => 1200, :kind => 'Asset') }
+  let!(:account_1210) { FactoryGirl.create(:account, :number => 1210, :kind => 'Asset') }
+  let!(:account_4910) { FactoryGirl.create(:account, :number => 4910, :kind => 'Expense') }
+  let!(:account_4920) { FactoryGirl.create(:account, :number => 4920, :kind => 'Expense') }
+  let!(:account_1576) { FactoryGirl.create(:account, :number => 1576, :kind => 'Asset') }
+  let!(:account_1600) { FactoryGirl.create(:account, :number => 1600, :kind => 'Liability') }
+
   let :simple_journal do
     Keepr::Journal.create :keepr_postings_attributes => [
-                                { :keepr_account => skr03(1000), :amount => 100.99, :side => 'debit' },
-                                { :keepr_account => skr03(1200), :amount => 100.99, :side => 'credit' }
+                                { :keepr_account => account_1000, :amount => 100.99, :side => 'debit' },
+                                { :keepr_account => account_1200, :amount => 100.99, :side => 'credit' }
                               ]
   end
 
   let :complex_journal do
     Keepr::Journal.create :keepr_postings_attributes => [
-                                { :keepr_account => skr03(4920), :amount =>  8.40, :side => 'debit' },
-                                { :keepr_account => skr03(1576), :amount =>  1.60, :side => 'debit' },
-                                { :keepr_account => skr03(1600), :amount => 10.00, :side => 'credit' }
+                                { :keepr_account => account_4920, :amount =>  8.40, :side => 'debit' },
+                                { :keepr_account => account_1576, :amount =>  1.60, :side => 'debit' },
+                                { :keepr_account => account_1600, :amount => 10.00, :side => 'credit' }
                                ]
   end
 
   let :journal_with_only_one_posting do
     Keepr::Journal.create :keepr_postings_attributes => [
-                                { :keepr_account => skr03(4920), :amount => 8.40, :side => 'debit' }
+                                { :keepr_account => account_4920, :amount => 8.40, :side => 'debit' }
                               ]
   end
 
   let :unbalanced_journal do
     Keepr::Journal.create :keepr_postings_attributes => [
-                                { :keepr_account => skr03(1000), :amount => 10, :side => 'debit' },
-                                { :keepr_account => skr03(1200), :amount => 10, :side => 'debit' }
+                                { :keepr_account => account_1000, :amount => 10, :side => 'debit' },
+                                { :keepr_account => account_1200, :amount => 10, :side => 'debit' }
                               ]
   end
 
@@ -52,7 +60,7 @@ describe Keepr::Journal do
 
     it 'should accept journal with postings marked for destruction' do
       complex_journal.keepr_postings.first.mark_for_destruction
-      complex_journal.keepr_postings.build :keepr_account => skr03(4910), :amount => 8.4, :side => 'debit'
+      complex_journal.keepr_postings.build :keepr_account => account_4910, :amount => 8.4, :side => 'debit'
 
       complex_journal.should be_valid
     end
@@ -97,8 +105,8 @@ describe Keepr::Journal do
   end
 
   describe :create do
-    let(:debit_account) { skr03(1000) }
-    let(:credit_account) { skr03(1200) }
+    let(:debit_account) { account_1000 }
+    let(:credit_account) { account_1200 }
 
     subject do
       lambda { Keepr::Journal.create! :keepr_postings_attributes => [
@@ -119,8 +127,8 @@ describe Keepr::Journal do
   end
 
   describe :destroy do
-    let(:debit_account) { skr03(1000) }
-    let(:credit_account) { skr03(1200) }
+    let(:debit_account) { account_1000 }
+    let(:credit_account) { account_1200 }
 
     before :each do
       @journal = Keepr::Journal.create! :keepr_postings_attributes => [
@@ -145,9 +153,9 @@ describe Keepr::Journal do
   end
 
   describe :update do
-    let(:debit_account) { skr03(1000) }
-    let(:credit_account) { skr03(1200) }
-    let(:other_account) { skr03(1210) }
+    let(:debit_account) { account_1000 }
+    let(:credit_account) { account_1200 }
+    let(:other_account) { account_1210 }
 
     before :each do
       @journal = Keepr::Journal.create! :keepr_postings_attributes => [

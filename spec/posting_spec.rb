@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Keepr::Posting do
+  let!(:account_1000) { FactoryGirl.create(:account, :number => 1000, :kind => 'Asset') }
+
   describe 'side/amount' do
     it 'should handle empty object' do
       posting = Keepr::Posting.new
@@ -65,7 +67,7 @@ describe Keepr::Posting do
     end
 
     it 'should recognized saved debit posting' do
-      posting = Keepr::Posting.create!(:amount => 10, :side => 'debit', :keepr_account_id => 42, :keepr_journal_id => 43)
+      posting = Keepr::Posting.create!(:amount => 10, :side => 'debit', :keepr_account => account_1000, :keepr_journal_id => 42)
       posting.reload
 
       posting.should be_debit
@@ -73,7 +75,7 @@ describe Keepr::Posting do
     end
 
     it 'should recognized saved credit posting' do
-      posting = Keepr::Posting.create!(:amount => 10, :side => 'credit', :keepr_account_id => 42, :keepr_journal_id => 43)
+      posting = Keepr::Posting.create!(:amount => 10, :side => 'credit', :keepr_account => account_1000, :keepr_journal_id => 42)
       posting.reload
 
       posting.should be_credit

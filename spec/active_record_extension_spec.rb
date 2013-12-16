@@ -1,10 +1,13 @@
 require 'spec_helper'
 
 describe Keepr::ActiveRecordExtension do
+  let!(:account_1000) { FactoryGirl.create(:account, :number => 1000, :kind => 'Asset') }
+  let!(:account_1200) { FactoryGirl.create(:account, :number => 1200, :kind => 'Asset') }
+
   describe 'ledger with associated account' do
     subject do
       ledger = Ledger.create! :bank_name => 'Sparkasse'
-      skr03(1200).update_attributes! :accountable => ledger
+      account_1200.update_attributes! :accountable => ledger
       ledger
     end
 
@@ -16,8 +19,8 @@ describe Keepr::ActiveRecordExtension do
       document = Document.create! :number => 'RE-2013-10-12345'
       Keepr::Journal.create! :accountable => document,
                              :keepr_postings_attributes => [
-                               { :keepr_account => skr03(1000), :amount => 100.99, :side => 'debit'  },
-                               { :keepr_account => skr03(1200), :amount => 100.99, :side => 'credit' }
+                               { :keepr_account => account_1000, :amount => 100.99, :side => 'debit'  },
+                               { :keepr_account => account_1200, :amount => 100.99, :side => 'credit' }
                              ]
       document
     end
@@ -32,8 +35,8 @@ describe Keepr::ActiveRecordExtension do
       document = Document.create! :number => 'Booked'
       Keepr::Journal.create! :accountable => document,
                              :keepr_postings_attributes => [
-                               { :keepr_account => skr03(1000), :amount => 100.99, :side => 'debit'  },
-                               { :keepr_account => skr03(1200), :amount => 100.99, :side => 'credit' }
+                               { :keepr_account => account_1000, :amount => 100.99, :side => 'debit'  },
+                               { :keepr_account => account_1200, :amount => 100.99, :side => 'credit' }
                              ]
       document
     }

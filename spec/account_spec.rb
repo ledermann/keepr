@@ -1,46 +1,49 @@
 require 'spec_helper'
 
 describe Keepr::Account do
+  let!(:account_1000) { FactoryGirl.create(:account, :number => 1000) }
+  let!(:account_1200) { FactoryGirl.create(:account, :number => 1200) }
+
   before :each do
     Keepr::Journal.create! :date => Date.yesterday,
                            :keepr_postings_attributes => [
-                             { :keepr_account => skr03(1000), :amount => 20, :side => 'debit' },
-                             { :keepr_account => skr03(1200), :amount => 20, :side => 'credit' }
+                             { :keepr_account => account_1000, :amount => 20, :side => 'debit' },
+                             { :keepr_account => account_1200, :amount => 20, :side => 'credit' }
                             ]
 
     Keepr::Journal.create! :date => Date.yesterday,
                            :keepr_postings_attributes => [
-                             { :keepr_account => skr03(1000), :amount =>  10, :side => 'credit' },
-                             { :keepr_account => skr03(1200), :amount =>  10, :side => 'debit' },
+                             { :keepr_account => account_1000, :amount =>  10, :side => 'credit' },
+                             { :keepr_account => account_1200, :amount =>  10, :side => 'debit' },
                             ]
 
     Keepr::Journal.create! :date => Date.today,
                            :keepr_postings_attributes => [
-                             { :keepr_account => skr03(1000), :amount => 200, :side => 'debit' },
-                             { :keepr_account => skr03(1200), :amount => 200, :side => 'credit' }
+                             { :keepr_account => account_1000, :amount => 200, :side => 'debit' },
+                             { :keepr_account => account_1200, :amount => 200, :side => 'credit' }
                             ]
 
     Keepr::Journal.create! :date => Date.today,
                            :keepr_postings_attributes => [
-                             { :keepr_account => skr03(1000), :amount => 100, :side => 'credit' },
-                             { :keepr_account => skr03(1200), :amount => 100, :side => 'debit' },
+                             { :keepr_account => account_1000, :amount => 100, :side => 'credit' },
+                             { :keepr_account => account_1200, :amount => 100, :side => 'debit' },
                             ]
   end
 
   describe :balance do
     it 'should calc total' do
-      skr03(1000).balance.should ==  110
-      skr03(1200).balance.should == -110
+      account_1000.balance.should ==  110
+      account_1200.balance.should == -110
     end
 
     it 'should calc total for a given date (including)' do
-      skr03(1000).balance(Date.today).should ==  110
-      skr03(1200).balance(Date.today).should == -110
+      account_1000.balance(Date.today).should ==  110
+      account_1200.balance(Date.today).should == -110
     end
 
     it 'should calc total for a given date (excluding)' do
-      skr03(1000).balance(Date.yesterday).should == 10
-      skr03(1200).balance(Date.yesterday).should == -10
+      account_1000.balance(Date.yesterday).should == 10
+      account_1200.balance(Date.yesterday).should == -10
     end
   end
 
@@ -57,32 +60,34 @@ describe Keepr::Account do
 end
 
 describe Keepr::Account, 'with subaccounts' do
-  before :each do
-    Keepr::Account.create! :number => 10000, :kind => 'Asset', :name => 'Diverse Debitoren', :parent => skr03(1400)
+  let!(:account_1400) { FactoryGirl.create(:account, :number => 1400) }
+  let!(:account_10000) { FactoryGirl.create(:account, :number => 10000, :parent => account_1400) }
+  let!(:account_8400) { FactoryGirl.create(:account, :number => 8400) }
 
+  before :each do
     Keepr::Journal.create! :date => Date.yesterday,
                            :keepr_postings_attributes => [
-                             { :keepr_account => skr03(10000), :amount => 20, :side => 'debit' },
-                             { :keepr_account => skr03( 8400), :amount => 20, :side => 'credit' }
+                             { :keepr_account => account_10000, :amount => 20, :side => 'debit' },
+                             { :keepr_account => account_8400, :amount => 20, :side => 'credit' }
                             ]
   end
 
   describe :keepr_postings do
     it 'should include postings from descendant accounts' do
-      skr03(1400).should have(1).keepr_postings
-      skr03(10000).should have(1).keepr_postings
+      account_1400.should have(1).keepr_postings
+      account_10000.should have(1).keepr_postings
     end
   end
 
   describe :balance do
     it 'should include postings from descendant accounts' do
-      skr03(1400).balance.should == 20
-      skr03(10000).balance.should == 20
+      account_1400.reload.balance.should == 20
+      account_10000.reload.balance.should == 20
     end
 
     it 'should include postings from descendant accounts with date given' do
-      skr03(1400).balance(Date.today).should == 20
-      skr03(10000).balance(Date.today).should == 20
+      account_1400.balance(Date.today).should == 20
+      account_10000.balance(Date.today).should == 20
     end
   end
 
