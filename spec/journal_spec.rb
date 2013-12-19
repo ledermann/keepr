@@ -59,6 +59,14 @@ describe Keepr::Journal do
       journal.should_not be_valid
     end
 
+    it 'should fail for booking the same account twice' do
+      journal = Keepr::Journal.create :keepr_postings_attributes => [
+                                  { :keepr_account => account_1000, :amount => 10, :side => 'debit' },
+                                  { :keepr_account => account_1000, :amount => 10, :side => 'credit' }
+                                ]
+      journal.should_not be_valid
+    end
+
     it 'should fail for unbalanced journal' do
       journal = Keepr::Journal.create :keepr_postings_attributes => [
                                   { :keepr_account => account_1000, :amount => 10, :side => 'debit' },

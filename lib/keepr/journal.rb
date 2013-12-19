@@ -40,8 +40,8 @@ private
   end
 
   def validate_postings
-    if keepr_postings.length < 2
-      errors.add(:base, 'At least two postings required!')
+    if keepr_postings.map(&:keepr_account_id).uniq.length < 2
+      errors.add(:base, 'At least two accounts have to be booked!')
     elsif debit_amount != credit_amount
       errors.add(:base, 'Debit does not match credit!')
     end
