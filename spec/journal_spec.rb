@@ -24,19 +24,6 @@ describe Keepr::Journal do
                                ]
   end
 
-  let :journal_with_only_one_posting do
-    Keepr::Journal.create :keepr_postings_attributes => [
-                                { :keepr_account => account_4920, :amount => 8.40, :side => 'debit' }
-                              ]
-  end
-
-  let :unbalanced_journal do
-    Keepr::Journal.create :keepr_postings_attributes => [
-                                { :keepr_account => account_1000, :amount => 10, :side => 'debit' },
-                                { :keepr_account => account_1200, :amount => 10, :side => 'debit' }
-                              ]
-  end
-
   describe :initialization do
     context 'with date missing' do
       it 'should set date to today' do
@@ -65,9 +52,19 @@ describe Keepr::Journal do
       complex_journal.should be_valid
     end
 
-    it 'should fail for invalid journals' do
-      journal_with_only_one_posting.should_not be_valid
-      unbalanced_journal.should_not be_valid
+    it 'should fail for journal with only one posting' do
+      journal = Keepr::Journal.create :keepr_postings_attributes => [
+                                  { :keepr_account => account_4920, :amount => 8.40, :side => 'debit' }
+                                ]
+      journal.should_not be_valid
+    end
+
+    it 'should fail for unbalanced journal' do
+      journal = Keepr::Journal.create :keepr_postings_attributes => [
+                                  { :keepr_account => account_1000, :amount => 10, :side => 'debit' },
+                                  { :keepr_account => account_1200, :amount => 10, :side => 'debit' }
+                                ]
+      journal.should_not be_valid
     end
   end
 
