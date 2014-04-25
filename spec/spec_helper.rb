@@ -41,7 +41,7 @@ def setup_db
   configs = YAML.load_file(File.dirname(__FILE__) + '/database.yml')
   ActiveRecord::Base.configurations = configs
 
-  ActiveRecord::Base.establish_connection('sqlite')
+  ActiveRecord::Base.establish_connection(:sqlite)
   ActiveRecord::Migration.verbose = false
 
   ActiveRecord::Base.connection.tables.each do |table|
