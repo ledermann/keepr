@@ -32,18 +32,18 @@ describe Keepr::Account do
 
   describe :balance do
     it 'should calc total' do
-      account_1000.balance.should ==  110
-      account_1200.balance.should == -110
+      expect(account_1000.balance).to eq(110)
+      expect(account_1200.balance).to eq(-110)
     end
 
     it 'should calc total for a given date (including)' do
-      account_1000.balance(Date.today).should ==  110
-      account_1200.balance(Date.today).should == -110
+      expect(account_1000.balance(Date.today)).to eq(110)
+      expect(account_1200.balance(Date.today)).to eq(-110)
     end
 
     it 'should calc total for a given date (excluding)' do
-      account_1000.balance(Date.yesterday).should == 10
-      account_1200.balance(Date.yesterday).should == -10
+      expect(account_1000.balance(Date.yesterday)).to eq(10)
+      expect(account_1200.balance(Date.yesterday)).to eq(-10)
     end
   end
 
@@ -51,10 +51,10 @@ describe Keepr::Account do
     it 'should work without date' do
       account1, account2 = Keepr::Account.with_balance.having('preloaded_sum_amount <> 0')
 
-      account1.number.should == 1000
-      account1.balance.should == 110
-      account2.number.should == 1200
-      account2.balance.should == -110
+      expect(account1.number).to eq(1000)
+      expect(account1.balance).to eq(110)
+      expect(account2.number).to eq(1200)
+      expect(account2.balance).to eq(-110)
     end
   end
 end
@@ -74,38 +74,38 @@ describe Keepr::Account, 'with subaccounts' do
 
   describe :keepr_postings do
     it 'should include postings from descendant accounts' do
-      account_1400.should have(1).keepr_postings
-      account_10000.should have(1).keepr_postings
+      expect(account_1400.keepr_postings.size).to eq(1)
+      expect(account_10000.keepr_postings.size).to eq(1)
     end
   end
 
   describe :balance do
     it 'should include postings from descendant accounts' do
-      account_1400.reload.balance.should == 20
-      account_10000.reload.balance.should == 20
+      expect(account_1400.reload.balance).to eq(20)
+      expect(account_10000.reload.balance).to eq(20)
     end
 
     it 'should include postings from descendant accounts with date given' do
-      account_1400.balance(Date.today).should == 20
-      account_10000.balance(Date.today).should == 20
+      expect(account_1400.balance(Date.today)).to eq(20)
+      expect(account_10000.balance(Date.today)).to eq(20)
     end
   end
 
   describe :with_balance do
     it 'should calc balance' do
-      Keepr::Account.with_balance.
+      expect(Keepr::Account.with_balance.
                      select { |a| (a.preloaded_sum_amount || 0) != 0 }.
-                     map { |a| [a.number, a.preloaded_sum_amount] }.
-                     should == [[8400, -20], [10000, 20]]
+                     map { |a| [a.number, a.preloaded_sum_amount] }).
+                     to eq([[8400, -20], [10000, 20]])
     end
   end
 
   describe :merged_with_balance do
     it 'should calc merged balance' do
-      Keepr::Account.merged_with_balance.
+      expect(Keepr::Account.merged_with_balance.
                      select { |a| (a.preloaded_sum_amount || 0) != 0 }.
-                     map { |a| [a.number, a.preloaded_sum_amount] }.
-                     should == [[1400, 20], [8400, -20]]
+                     map { |a| [a.number, a.preloaded_sum_amount] }).
+                     to eq([[1400, 20], [8400, -20]])
     end
   end
 end

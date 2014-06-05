@@ -11,7 +11,7 @@ describe Keepr::ActiveRecordExtension do
       ledger
     end
 
-    it { subject.keepr_account.should be_present }
+    it { expect(subject.keepr_account).to be_present }
   end
 
   describe 'Document with associated journal' do
@@ -25,8 +25,10 @@ describe Keepr::ActiveRecordExtension do
       document
     end
 
-    it { should have(1).keepr_journal }
-    it { should be_keepr_booked }
+    it 'has 1 keepr_journal' do
+      expect(subject.keepr_journals.size).to eq(1)
+    end
+    it { is_expected.to be_keepr_booked }
   end
 
   describe 'scopes' do
@@ -44,15 +46,15 @@ describe Keepr::ActiveRecordExtension do
     describe :keepr_booked do
       subject { Document.keepr_booked }
 
-      it { should include(booked_document) }
-      it { should_not include(unbooked_document) }
+      it { is_expected.to include(booked_document) }
+      it { is_expected.not_to include(unbooked_document) }
     end
 
     describe :keepr_unbooked do
       subject { Document.keepr_unbooked }
 
-      it { should include(unbooked_document) }
-      it { should_not include(booked_document) }
+      it { is_expected.to include(unbooked_document) }
+      it { is_expected.not_to include(booked_document) }
     end
   end
 end
