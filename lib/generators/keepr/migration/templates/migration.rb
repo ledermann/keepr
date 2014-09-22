@@ -22,6 +22,7 @@ class KeeprMigration < ActiveRecord::Migration
     add_index :keepr_accounts, :number
     add_index :keepr_accounts, :ancestry
     add_index :keepr_accounts, [:accountable_type, :accountable_id]
+    add_index :keepr_accounts, :keepr_group_id
 
     create_table :keepr_journals, force: true do |t|
       t.date     :date, :null => false
