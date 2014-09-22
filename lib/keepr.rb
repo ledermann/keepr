@@ -1,6 +1,8 @@
 require 'ancestry'
 
 require 'keepr/version'
+require 'keepr/group'
+require 'keepr/groups_creator'
 require 'keepr/account'
 require 'keepr/posting'
 require 'keepr/journal'

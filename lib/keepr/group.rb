@@ -1,0 +1,25 @@
+class Keepr::Group < ActiveRecord::Base
+  self.table_name = 'keepr_groups'
+
+  has_ancestry :orphan_strategy => :restrict
+
+  TARGET = [ 'Asset', 'Liability', 'Lost & Profit' ]
+
+  validates_presence_of :name
+  validates_inclusion_of :target, :in => TARGET
+
+  has_many :keepr_accounts, :class_name => 'Keepr::Account', :foreign_key => 'keepr_group_id', :dependent => :restrict_with_error
+
+  before_validation :get_from_parent
+
+  scope :asset,           -> { where(:target => 'Asset') }
+  scope :liability,       -> { where(:target => 'Liability') }
+  scope :lost_and_profit, -> { where(:target => 'Lost & Profit') }
+
+private
+  def get_from_parent
+    if self.parent
+      self.target = self.parent.target
+    end
+  end
+end

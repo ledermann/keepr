@@ -14,6 +14,7 @@ class Keepr::Account < ActiveRecord::Base
   validates_inclusion_of :kind, :in => KIND
 
   has_many :keepr_postings, :class_name => 'Keepr::Posting', :foreign_key => 'keepr_account_id'
+  belongs_to :keepr_group, :class_name => 'Keepr::Group'
   belongs_to :accountable, :polymorphic => true
 
   default_scope { order('number ASC') }

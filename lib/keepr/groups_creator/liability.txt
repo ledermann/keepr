@@ -1,0 +1,28 @@
+A. Eigenkapital
+  I. Gezeichnetes Kapital
+  II. Kapitalrücklage
+  III. Gewinnrücklagen
+    1. gesetzliche Rücklage
+    2. Rücklage für Anteile an einem herrschenden oder mehrheitlich beteiligten Unternehmen
+    3. satzungsmäßige Rücklagen
+    4. andere Gewinnrücklagen
+  IV. Gewinnvortrag/Verlustvortrag
+  V. Jahresüberschuss/Jahresfehlbetrag
+B. Rückstellungen
+  1. Rückstellungen für Pensionen und ähnliche Verpflichtungen
+  2. Steuerrückstellungen
+  3. sonstige Rückstellungen
+C. Verbindlichkeiten
+  1. Anleihen
+    davon konvertibel
+  2. Verbindlichkeiten gegenüber Kreditinstituten
+  3. erhaltene Anzahlungen auf Bestellungen
+  4. Verbindlichkeiten aus Lieferungen und Leistungen
+  5. Verbindlichkeiten aus der Annahme gezogener Wechsel und der Ausstellung eigener Wechsel
+  6. Verbindlichkeiten gegenüber verbundenen Unternehmen
+  7. Verbindlichkeiten gegenüber Unternehmen, mit denen ein Beteiligungsverhältnis besteht
+  8. sonstige Verbindlichkeiten
+    davon aus Steuern
+    davon im Rahmen der sozialen Sicherheit
+D. Rechnungsabgrenzungsposten
+E. Passive latente Steuern

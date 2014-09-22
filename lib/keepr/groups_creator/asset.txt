@@ -1,0 +1,36 @@
+A. Anlagevermögen
+  I. Immaterielle Vermögensgegenstände
+    1. Selbst geschaffene gewerbliche Schutzrechte und ähnliche Rechte und Werte
+    2. entgeltlich erworbene Konzessionen, gewerbliche Schutzrechte und ähnliche Rechte und Werte sowie Lizenzen an solchen Rechten und Werten
+    3. Geschäfts- oder Firmenwert
+    4. geleistete Anzahlungen
+  II. Sachanlagen
+    1. Grundstücke, grundstücksgleiche Rechte und Bauten einschließlich der Bauten auf fremden Grundstücken
+    2. technische Anlagen und Maschinen
+    3. andere Anlagen, Betriebs- und Geschäftsausstattung
+    4. geleistete Anzahlungen und Anlagen im Bau
+  III. Finanzanlagen
+    1. Anteile an verbundenen Unternehmen
+    2. Ausleihungen an verbundene Unternehmen
+    3. Beteiligungen
+    4. Ausleihungen an Unternehmen, mit denen ein Beteiligungsverhältnis besteht
+    5. Wertpapiere des Anlagevermögens
+    6. sonstige Ausleihungen
+B. Umlaufvermögen
+  I. Vorräte
+    1. Roh-, Hilfs- und Betriebsstoffe
+    2. unfertige Erzeugnisse, unfertige Leistungen
+    3. fertige Erzeugnisse und Waren
+    4. geleistete Anzahlungen
+  II. Forderungen und sonstige Vermögensgegenstände
+    1. Forderungen aus Lieferungen und Leistungen
+    2. Forderungen gegen verbundene Unternehmen
+    3. Forderungen gegen Unternehmen, mit denen ein Beteiligungsverhältnis besteht
+    4. sonstige Vermögensgegenstände
+  III. Wertpapiere
+    1. Anteile an verbundenen Unternehmen
+    2. sonstige Wertpapiere
+  IV. Kassenbestand, Bundesbankguthaben, Guthaben bei Kreditinstituten und Schecks
+C. Rechnungsabgrenzungsposten
+D. Aktive latente Steuern
+E. Aktiver Unterschiedsbetrag aus der Vermögensverrechnung

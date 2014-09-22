@@ -1,0 +1,31 @@
+1. Umsatzerlöse
+2. Erhöhung oder Verminderung des Bestands an fertigen und unfertigen Erzeugnissen
+3. andere aktivierte Eigenleistungen
+4. sonstige betriebliche Erträge
+5. Materialaufwand
+  a) Aufwendungen für Roh-, Hilfs- und Betriebsstoffe und für bezogene Waren
+  b) Aufwendungen für bezogene Leistungen
+6. Personalaufwand
+  a) Löhne und Gehälter
+  b) soziale Abgaben und Aufwendungen für Altersversorgung und für Unterstützung
+    davon für Altersversorgung
+7. Abschreibungen
+  a) auf immaterielle Vermögensgegenstände des Anlagevermögens und Sachanlagen
+  b) auf Vermögensgegenstände des Umlaufvermögens, soweit diese die in der Kapitalgesellschaft üblichen Abschreibungen überschreiten
+8. sonstige betriebliche Aufwendungen
+9. Erträge aus Beteiligungen
+  davon aus verbundenen Unternehmen
+10. Erträge aus anderen Wertpapieren und Ausleihungen des Finanzanlagevermögens
+  davon aus verbundenen Unternehmen
+11. sonstige Zinsen und ähnliche Erträge
+  davon aus verbundenen Unternehmen
+12. Abschreibungen auf Finanzanlagen und auf Wertpapiere des Umlaufvermögens
+13. Zinsen und ähnliche Aufwendungen
+  davon an verbundene Unternehmen
+14. Ergebnis der gewöhnlichen Geschäftstätigkeit
+15. außerordentliche Erträge
+16. außerordentliche Aufwendungen
+17. außerordentliches Ergebnis
+18. Steuern vom Einkommen und vom Ertrag
+19. sonstige Steuern
+20. Jahresüberschuss/Jahresfehlbetrag
