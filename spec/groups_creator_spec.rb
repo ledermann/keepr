@@ -12,13 +12,13 @@ describe Keepr::GroupsCreator do
     compare_with_source(Keepr::Group.liability, 'liability.txt')
   end
 
-  it "should create lost & profit groups" do
-    Keepr::GroupsCreator.new('Lost & Profit').run
+  it "should create profit & loss groups" do
+    Keepr::GroupsCreator.new('Profit & Loss').run
 
     expect(Keepr::Group.count).to eq(31)
-    expect(Keepr::Group.lost_and_profit.count).to eq(31)
+    expect(Keepr::Group.profit_and_loss.count).to eq(31)
 
-    compare_with_source(Keepr::Group.lost_and_profit, 'lost_and_profit.txt')
+    compare_with_source(Keepr::Group.profit_and_loss, 'profit_and_loss.txt')
   end
 
 private

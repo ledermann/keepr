@@ -8,8 +8,8 @@ class Keepr::GroupsCreator
     when 'Balance' then
       load 'asset.txt', :target => 'Asset'
       load 'liability.txt', :target => 'Liability'
-    when 'Lost & Profit'
-      load 'lost_and_profit.txt', :target => 'Lost & Profit'
+    when 'Profit & Loss'
+      load 'profit_and_loss.txt', :target => 'Profit & Loss'
     else
       raise ArgumentError
     end

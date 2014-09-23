@@ -3,7 +3,7 @@ class Keepr::Group < ActiveRecord::Base
 
   has_ancestry :orphan_strategy => :restrict
 
-  TARGET = [ 'Asset', 'Liability', 'Lost & Profit' ]
+  TARGET = [ 'Asset', 'Liability', 'Profit & Loss' ]
 
   validates_presence_of :name
   validates_inclusion_of :target, :in => TARGET
@@ -14,7 +14,7 @@ class Keepr::Group < ActiveRecord::Base
 
   scope :asset,           -> { where(:target => 'Asset') }
   scope :liability,       -> { where(:target => 'Liability') }
-  scope :lost_and_profit, -> { where(:target => 'Lost & Profit') }
+  scope :profit_and_loss, -> { where(:target => 'Profit & Loss') }
 
 private
   def get_from_parent
