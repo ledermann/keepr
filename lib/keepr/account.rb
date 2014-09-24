@@ -13,6 +13,20 @@ class Keepr::Account < ActiveRecord::Base
   validates_uniqueness_of :number
   validates_inclusion_of :kind, :in => KIND
 
+  validate do |account|
+    if account.keepr_group.present?
+      if account.kind == 'Asset'
+        account.errors.add(:kind, 'does match group') unless account.keepr_group.target == 'Asset'
+      elsif account.kind == 'Liability'
+        account.errors.add(:kind, 'does match group') unless account.keepr_group.target == 'Liability'
+      elsif account.kind.in? ['Revenue', 'Expense']
+        account.errors.add(:kind, 'does match group') unless account.keepr_group.target == 'Profit & Loss'
+      else
+        account.errors.add(:kind, 'conflicts with group')
+      end
+    end
+  end
+
   has_many :keepr_postings, :class_name => 'Keepr::Posting', :foreign_key => 'keepr_account_id'
   belongs_to :keepr_group, :class_name => 'Keepr::Group'
   belongs_to :accountable, :polymorphic => true
