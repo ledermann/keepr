@@ -1,19 +1,19 @@
-1. Umsatzerlöse
-2. Erhöhung oder Verminderung des Bestands an fertigen und unfertigen Erzeugnissen
-3. andere aktivierte Eigenleistungen
-4. sonstige betriebliche Erträge
-5. Materialaufwand
+01. Umsatzerlöse
+02. Erhöhung oder Verminderung des Bestands an fertigen und unfertigen Erzeugnissen
+03. andere aktivierte Eigenleistungen
+04. sonstige betriebliche Erträge
+05. Materialaufwand
   a) Aufwendungen für Roh-, Hilfs- und Betriebsstoffe und für bezogene Waren
   b) Aufwendungen für bezogene Leistungen
-6. Personalaufwand
+06. Personalaufwand
   a) Löhne und Gehälter
   b) soziale Abgaben und Aufwendungen für Altersversorgung und für Unterstützung
     davon für Altersversorgung
-7. Abschreibungen
+07. Abschreibungen
   a) auf immaterielle Vermögensgegenstände des Anlagevermögens und Sachanlagen
   b) auf Vermögensgegenstände des Umlaufvermögens, soweit diese die in der Kapitalgesellschaft üblichen Abschreibungen überschreiten
-8. sonstige betriebliche Aufwendungen
-9. Erträge aus Beteiligungen
+08. sonstige betriebliche Aufwendungen
+09. Erträge aus Beteiligungen
   davon aus verbundenen Unternehmen
 10. Erträge aus anderen Wertpapieren und Ausleihungen des Finanzanlagevermögens
   davon aus verbundenen Unternehmen
