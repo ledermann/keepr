@@ -42,9 +42,15 @@ class Keepr::Account < ActiveRecord::Base
               joins('LEFT JOIN keepr_postings ON keepr_postings.keepr_account_id = keepr_accounts.id')
 
     if date
-      scope = scope.
-                joins('LEFT JOIN keepr_journals ON keepr_journals.id = keepr_postings.keepr_journal_id').
-                where("keepr_journals.id IS NULL OR keepr_journals.date <= '#{date.to_s(:db)}'")
+      scope = scope.joins('LEFT JOIN keepr_journals ON keepr_journals.id = keepr_postings.keepr_journal_id')
+
+      if date.is_a?(Date)
+        scope = scope.where("keepr_journals.id IS NULL OR keepr_journals.date <= '#{date.to_s(:db)}'")
+      elsif date.is_a?(Range)
+        scope = scope.where("keepr_journals.id IS NULL OR (keepr_journals.date BETWEEN '#{date.first.to_s(:db)}' AND '#{date.last.to_s(:db)}')")
+      else
+        raise ArgumentError
+      end
     end
 
     scope
@@ -83,7 +89,13 @@ class Keepr::Account < ActiveRecord::Base
       attributes['preloaded_sum_amount']
     else
       if date
-        keepr_postings.joins(:keepr_journal).where("keepr_journals.date <= '#{date.to_s(:db)}'").sum(:amount)
+        if date.is_a?(Date)
+          keepr_postings.joins(:keepr_journal).where("keepr_journals.date <= '#{date.to_s(:db)}'").sum(:amount)
+        elsif date.is_a?(Range)
+          keepr_postings.joins(:keepr_journal).where("keepr_journals.date BETWEEN '#{date.first.to_s(:db)}' AND '#{date.last.to_s(:db)}'").sum(:amount)
+        else
+          raise ArgumentError
+        end
       else
         keepr_postings_sum_amount
       end

@@ -45,16 +45,52 @@ describe Keepr::Account do
       expect(account_1000.balance(Date.yesterday)).to eq(10)
       expect(account_1200.balance(Date.yesterday)).to eq(-10)
     end
+
+    it 'should calc total for Range' do
+      expect(account_1000.balance(Date.yesterday...Date.today)).to eq(110)
+      expect(account_1200.balance(Date.yesterday...Date.today)).to eq(-110)
+
+      expect(account_1000.balance(Date.today...Date.tomorrow)).to eq(100)
+      expect(account_1200.balance(Date.today...Date.tomorrow)).to eq(-100)
+    end
+
+    it 'should fail for other param' do
+      expect { account_1000.balance(0) }.to raise_error(ArgumentError)
+    end
   end
 
   describe :with_balance do
-    it 'should work without date' do
+    it 'should work without param' do
       account1, account2 = Keepr::Account.with_balance.having('preloaded_sum_amount <> 0')
 
       expect(account1.number).to eq(1000)
       expect(account1.balance).to eq(110)
       expect(account2.number).to eq(1200)
       expect(account2.balance).to eq(-110)
+    end
+
+    it 'should work with Date' do
+      account1, account2 = Keepr::Account.with_balance(Date.yesterday).having('preloaded_sum_amount <> 0')
+
+      expect(account1.number).to eq(1000)
+      expect(account1.balance).to eq(10)
+      expect(account2.number).to eq(1200)
+      expect(account2.balance).to eq(-10)
+    end
+
+    it 'should work with Range' do
+      account1, account2 = Keepr::Account.with_balance(Date.today..Date.tomorrow).having('preloaded_sum_amount <> 0')
+
+      expect(account1.number).to eq(1000)
+      expect(account1.balance).to eq(100)
+      expect(account2.number).to eq(1200)
+      expect(account2.balance).to eq(-100)
+    end
+
+    it 'should raise for other param' do
+      expect { Keepr::Account.with_balance(Time.current) }.to raise_error(ArgumentError)
+      expect { Keepr::Account.with_balance(0)            }.to raise_error(ArgumentError)
+      expect { Keepr::Account.with_balance(:foo)         }.to raise_error(ArgumentError)
     end
   end
 end
