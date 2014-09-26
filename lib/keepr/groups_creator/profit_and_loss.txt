@@ -14,11 +14,11 @@
   b) auf Vermögensgegenstände des Umlaufvermögens, soweit diese die in der Kapitalgesellschaft üblichen Abschreibungen überschreiten
 08. sonstige betriebliche Aufwendungen
 09. Erträge aus Beteiligungen
-  davon aus verbundenen Unternehmen
+  a) davon aus verbundenen Unternehmen
 10. Erträge aus anderen Wertpapieren und Ausleihungen des Finanzanlagevermögens
-  davon aus verbundenen Unternehmen
+  a) davon aus verbundenen Unternehmen
 11. sonstige Zinsen und ähnliche Erträge
-  davon aus verbundenen Unternehmen
+  a) davon aus verbundenen Unternehmen
 12. Abschreibungen auf Finanzanlagen und auf Wertpapiere des Umlaufvermögens
 13. Zinsen und ähnliche Aufwendungen
   davon an verbundene Unternehmen

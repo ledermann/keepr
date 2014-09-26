@@ -22,7 +22,7 @@ C. Verbindlichkeiten
   6. Verbindlichkeiten gegenüber verbundenen Unternehmen
   7. Verbindlichkeiten gegenüber Unternehmen, mit denen ein Beteiligungsverhältnis besteht
   8. sonstige Verbindlichkeiten
-    davon aus Steuern
-    davon im Rahmen der sozialen Sicherheit
+    a) davon aus Steuern
+    b) davon im Rahmen der sozialen Sicherheit
 D. Rechnungsabgrenzungsposten
 E. Passive latente Steuern
