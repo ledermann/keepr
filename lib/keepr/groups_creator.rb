@@ -23,9 +23,13 @@ private
     parents = []
 
     lines.each do |line|
+      # Count leading spaces to calc hierarchy depth
       depth = line[/\A */].size / 2
-      attributes = options.merge(:name => line.strip)
 
+      # Remove leading spaces and separate number and name
+      number, name = line.lstrip.match(/^(.*?)\s(.+)$/).to_a[1..-1]
+
+      attributes = options.merge(:name => name, :number => number)
       if depth == 0
         parents = []
         group = Keepr::Group.create!(attributes)

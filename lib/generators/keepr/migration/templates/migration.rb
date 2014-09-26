@@ -2,6 +2,7 @@ class KeeprMigration < ActiveRecord::Migration
   def self.up
     create_table :keepr_groups, force: true do |t|
       t.string     :target, :null => false
+      t.string     :number
       t.string     :name, :null => false
       t.string     :ancestry
     end

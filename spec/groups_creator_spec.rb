@@ -26,7 +26,7 @@ private
     full_filename = File.join(__dir__, "../lib/keepr/groups_creator/#{filename}")
     source = File.read(full_filename)
 
-    lines = scope.find_each.map { |g| "#{' ' * g.depth * 2}#{g.name}\n" }.join
+    lines = scope.find_each.map { |g| "#{' ' * g.depth * 2}#{g.number} #{g.name}\n" }.join
 
     expect(lines).to eq(source)
   end
