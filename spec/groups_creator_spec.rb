@@ -1,24 +1,36 @@
 require 'spec_helper'
 
 describe Keepr::GroupsCreator do
-  it "should create balance groups" do
-    Keepr::GroupsCreator.new('Balance').run
+  context 'balance groups' do
+    before :each do
+      Keepr::GroupsCreator.new('Balance').run
+    end
 
-    expect(Keepr::Group.count).to eq(64)
-    expect(Keepr::Group.asset.count).to eq(36)
-    expect(Keepr::Group.liability.count).to eq(28)
+    it "should create groups" do
+      expect(Keepr::Group.count).to eq(64)
+      expect(Keepr::Group.asset.count).to eq(36)
+      expect(Keepr::Group.liability.count).to eq(28)
 
-    compare_with_source(Keepr::Group.asset, 'asset.txt')
-    compare_with_source(Keepr::Group.liability, 'liability.txt')
+      compare_with_source(Keepr::Group.asset, 'asset.txt')
+      compare_with_source(Keepr::Group.liability, 'liability.txt')
+    end
+
+    it "should create result group" do
+      expect(Keepr::Group.result).to be_a(Keepr::Group)
+    end
   end
 
-  it "should create profit & loss groups" do
-    Keepr::GroupsCreator.new('Profit & Loss').run
+  context 'profit & loss groups' do
+    before :each do
+      Keepr::GroupsCreator.new('Profit & Loss').run
+    end
 
-    expect(Keepr::Group.count).to eq(31)
-    expect(Keepr::Group.profit_and_loss.count).to eq(31)
+    it "should create profit & loss groups" do
+      expect(Keepr::Group.count).to eq(31)
+      expect(Keepr::Group.profit_and_loss.count).to eq(31)
 
-    compare_with_source(Keepr::Group.profit_and_loss, 'profit_and_loss.txt')
+      compare_with_source(Keepr::Group.profit_and_loss, 'profit_and_loss.txt')
+    end
   end
 
 private

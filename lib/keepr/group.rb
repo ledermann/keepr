@@ -16,6 +16,10 @@ class Keepr::Group < ActiveRecord::Base
   scope :liability,       -> { where(:target => 'Liability') }
   scope :profit_and_loss, -> { where(:target => 'Profit & Loss') }
 
+  def self.result
+    where(:is_result => true).first
+  end
+
 private
   def get_from_parent
     if self.parent

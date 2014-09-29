@@ -4,6 +4,7 @@ class KeeprMigration < ActiveRecord::Migration
       t.string     :target, :null => false
       t.string     :number
       t.string     :name, :null => false
+      t.boolean    :is_result, :null => false, :default => false
       t.string     :ancestry
     end
     add_index :keepr_groups, :ancestry
