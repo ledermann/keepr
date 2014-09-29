@@ -30,7 +30,7 @@ private
       number, name = line.lstrip.match(/^(.*?)\s(.+)$/).to_a[1..-1]
 
       attributes = options.merge(:name => name, :number => number)
-      if name == 'Jahresüberschuss/Jahresfehlbetrag'
+      if @target == 'Balance' && name == 'Jahresüberschuss/Jahresfehlbetrag'
         attributes[:is_result] = true
       end
 
