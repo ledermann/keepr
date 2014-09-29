@@ -49,5 +49,6 @@ class KeeprMigration < ActiveRecord::Migration
     drop_table :keepr_postings
     drop_table :keepr_journals
     drop_table :keepr_accounts
+    drop_table :keepr_groups
   end
 end
