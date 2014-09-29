@@ -24,6 +24,8 @@ class Keepr::Account < ActiveRecord::Base
       else
         account.errors.add(:kind, 'conflicts with group')
       end
+
+      account.errors.add(:keepr_group, 'is a result group') if keepr_group.is_result
     end
   end
 

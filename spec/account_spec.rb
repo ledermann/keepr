@@ -30,6 +30,23 @@ describe Keepr::Account do
                             ]
   end
 
+  describe "with group" do
+    let!(:result_group) { FactoryGirl.create(:group, :is_result => true) }
+    let!(:normal_group) { FactoryGirl.create(:group, :is_result => false) }
+
+    it "should not be assigned to result group" do
+      account = FactoryGirl.build(:account, :number => 123, :keepr_group => result_group)
+      expect(account).to_not be_valid
+      expect(account.errors[:keepr_group]).to be_present
+    end
+
+    it "should be assigned to normal group" do
+      account = FactoryGirl.build(:account, :number => 123, :keepr_group => normal_group)
+      expect(account).to be_valid
+      expect(account.errors[:keepr_group]).to be_blank
+    end
+  end
+
   describe :balance do
     it 'should calc total' do
       expect(account_1000.balance).to eq(110)
