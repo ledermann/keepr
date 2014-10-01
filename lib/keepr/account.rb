@@ -27,9 +27,16 @@ class Keepr::Account < ActiveRecord::Base
 
       account.errors.add(:keepr_group, 'is a result group') if keepr_group.is_result
     end
+
+    if account.keepr_tax && account.keepr_tax.keepr_account == account
+      account.errors.add(:keepr_tax, 'circular reference')
+    end
   end
 
   has_many :keepr_postings, :class_name => 'Keepr::Posting', :foreign_key => 'keepr_account_id'
+  has_many :keepr_taxes, :class_name => 'Keepr::Tax', :foreign_key => 'keepr_account_id'
+
+  belongs_to :keepr_tax, :class_name => 'Keepr::Tax'
   belongs_to :keepr_group, :class_name => 'Keepr::Group'
   belongs_to :accountable, :polymorphic => true
 

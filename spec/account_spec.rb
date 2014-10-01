@@ -162,3 +162,27 @@ describe Keepr::Account, 'with subaccounts' do
     end
   end
 end
+
+describe Keepr::Account, 'with tax' do
+  let!(:tax_account) { Keepr::Account.create! :number => 1776,
+                                              :name => 'Umsatzsteuer 19%',
+                                              :kind => 'Asset' }
+
+  let!(:tax) { Keepr::Tax.create! :name          => 'USt19',
+                                  :description   => 'Umsatzsteuer 19%',
+                                  :value         => 19.0,
+                                  :keepr_account => tax_account }
+
+  it "should link to tax" do
+    account = Keepr::Account.new :number    => 8400,
+                                 :name      => 'Erlöse 19% USt',
+                                 :kind      => 'Revenue',
+                                 :keepr_tax => tax
+    expect(tax_account).to be_valid
+  end
+
+  it "should avoid circular reference" do
+    tax_account.keepr_tax = tax
+    expect(tax_account).to be_invalid
+  end
+end

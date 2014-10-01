@@ -9,6 +9,13 @@ class KeeprMigration < ActiveRecord::Migration
     end
     add_index :keepr_groups, :ancestry
 
+    create_table :keepr_tax, force: true do |t|
+      t.string     :name, :null => false
+      t.string     :description
+      t.decimal    :value, :precision => 8, :scale => 2, :null => false
+      t.references :keepr_account, :null => false
+    end
+
     create_table :keepr_accounts, force: true do |t|
       t.integer    :number, :null => false
       t.string     :ancestry
@@ -16,6 +23,7 @@ class KeeprMigration < ActiveRecord::Migration
       t.string     :kind, :null => false
       t.references :keepr_group
       t.references :accountable, :polymorphic => true
+      t.references :keepr_tax
       t.integer    :keepr_postings_count, :default => 0
       t.decimal    :keepr_postings_sum_amount, :precision => 8, :scale => 2, :default => 0.0
       t.datetime   :created_at
