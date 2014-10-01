@@ -14,7 +14,7 @@ class KeeprMigration < ActiveRecord::Migration
       t.string     :ancestry
       t.string     :name, :null => false
       t.string     :kind, :null => false
-      t.integer    :keepr_group_id
+      t.references :keepr_group
       t.references :accountable, :polymorphic => true
       t.integer    :keepr_postings_count, :default => 0
       t.decimal    :keepr_postings_sum_amount, :precision => 8, :scale => 2, :default => 0.0
@@ -37,8 +37,8 @@ class KeeprMigration < ActiveRecord::Migration
     add_index :keepr_journals, [:accountable_type, :accountable_id], :name => 'index_keepr_journals_on_accountable'
 
     create_table :keepr_postings, force: true do |t|
-      t.integer    :keepr_account_id, :null => false
-      t.integer    :keepr_journal_id, :null => false
+      t.references :keepr_account, :null => false
+      t.references :keepr_journal, :null => false
       t.decimal    :amount, :precision => 8, :scale => 2, :null => false
     end
     add_index :keepr_postings, :keepr_account_id
