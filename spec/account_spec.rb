@@ -37,13 +37,13 @@ describe Keepr::Account do
     it "should not be assigned to result group" do
       account = FactoryGirl.build(:account, :number => 123, :keepr_group => result_group)
       expect(account).to_not be_valid
-      expect(account.errors[:keepr_group]).to be_present
+      expect(account.errors[:keepr_group_id]).to be_present
     end
 
     it "should be assigned to normal group" do
       account = FactoryGirl.build(:account, :number => 123, :keepr_group => normal_group)
       expect(account).to be_valid
-      expect(account.errors[:keepr_group]).to be_blank
+      expect(account.errors[:keepr_group_id]).to be_blank
     end
   end
 

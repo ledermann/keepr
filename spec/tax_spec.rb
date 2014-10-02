@@ -29,5 +29,6 @@ describe Keepr::Tax do
   it "should avoid circular reference" do
     tax.keepr_account = account
     expect(tax).to be_invalid
+    expect(tax.errors[:keepr_account_id]).to be_present
   end
 end

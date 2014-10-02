@@ -126,13 +126,11 @@ private
         errors.add(:kind, 'conflicts with group')
       end
 
-      errors.add(:keepr_group, 'is a result group') if keepr_group.is_result
+      errors.add(:keepr_group_id, 'is a result group') if keepr_group.is_result
     end
   end
 
   def tax_validation
-    if keepr_tax && keepr_tax.keepr_account_id == id
-      errors.add(:keepr_tax, 'circular reference')
-    end
+    errors.add(:keepr_tax_id, 'circular reference') if keepr_tax && keepr_tax.keepr_account == self
   end
 end
