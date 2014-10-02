@@ -16,6 +16,7 @@ describe Keepr::Tax do
                                           :keepr_tax => tax }
 
   it 'should be direct linked from account' do
+    expect(tax.keepr_accounts).to eq([account])
     expect(account.keepr_tax).to eq(tax)
     expect(tax_account.keepr_tax).to eq(nil)
   end
