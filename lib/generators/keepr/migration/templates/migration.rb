@@ -15,6 +15,7 @@ class KeeprMigration < ActiveRecord::Migration
       t.decimal    :value, :precision => 8, :scale => 2, :null => false
       t.references :keepr_account, :null => false
     end
+    add_index :keepr_taxes, :keepr_account_id
 
     create_table :keepr_accounts, force: true do |t|
       t.integer    :number, :null => false
