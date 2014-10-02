@@ -1,5 +1,5 @@
 class Keepr::Tax < ActiveRecord::Base
-  self.table_name = 'keepr_tax'
+  self.table_name = 'keepr_taxes'
 
   validates_presence_of :name, :value
 

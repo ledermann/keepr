@@ -9,7 +9,7 @@ class KeeprMigration < ActiveRecord::Migration
     end
     add_index :keepr_groups, :ancestry
 
-    create_table :keepr_tax, force: true do |t|
+    create_table :keepr_taxes, force: true do |t|
       t.string     :name, :null => false
       t.string     :description
       t.decimal    :value, :precision => 8, :scale => 2, :null => false
