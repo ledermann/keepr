@@ -12,26 +12,8 @@ class Keepr::Account < ActiveRecord::Base
   validates_presence_of :number, :name
   validates_uniqueness_of :number
   validates_inclusion_of :kind, :in => KIND
-
-  validate do |account|
-    if account.keepr_group.present?
-      if account.kind == 'Asset'
-        account.errors.add(:kind, 'does match group') unless account.keepr_group.target == 'Asset'
-      elsif account.kind == 'Liability'
-        account.errors.add(:kind, 'does match group') unless account.keepr_group.target == 'Liability'
-      elsif account.kind.in? ['Revenue', 'Expense']
-        account.errors.add(:kind, 'does match group') unless account.keepr_group.target == 'Profit & Loss'
-      else
-        account.errors.add(:kind, 'conflicts with group')
-      end
-
-      account.errors.add(:keepr_group, 'is a result group') if keepr_group.is_result
-    end
-
-    if account.keepr_tax && account.keepr_tax.keepr_account_id == account.id
-      account.errors.add(:keepr_tax, 'circular reference')
-    end
-  end
+  validate :group_validation
+  validate :tax_validation
 
   has_many :keepr_postings, :class_name => 'Keepr::Posting', :foreign_key => 'keepr_account_id'
   has_many :keepr_taxes, :class_name => 'Keepr::Tax', :foreign_key => 'keepr_account_id'
@@ -130,5 +112,27 @@ class Keepr::Account < ActiveRecord::Base
 private
   def sign_factor
     %w(Asset Expense).include?(kind) ? 1 : -1
+  end
+
+  def group_validation
+    if keepr_group.present?
+      if kind == 'Asset'
+        errors.add(:kind, 'does match group') unless keepr_group.target == 'Asset'
+      elsif kind == 'Liability'
+        errors.add(:kind, 'does match group') unless keepr_group.target == 'Liability'
+      elsif kind.in? ['Revenue', 'Expense']
+        errors.add(:kind, 'does match group') unless keepr_group.target == 'Profit & Loss'
+      else
+        errors.add(:kind, 'conflicts with group')
+      end
+
+      errors.add(:keepr_group, 'is a result group') if keepr_group.is_result
+    end
+  end
+
+  def tax_validation
+    if keepr_tax && keepr_tax.keepr_account_id == id
+      errors.add(:keepr_tax, 'circular reference')
+    end
   end
 end
