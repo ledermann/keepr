@@ -28,7 +28,7 @@ class Keepr::Account < ActiveRecord::Base
       account.errors.add(:keepr_group, 'is a result group') if keepr_group.is_result
     end
 
-    if account.keepr_tax && account.keepr_tax.keepr_account == account
+    if account.keepr_tax && account.keepr_tax.keepr_account_id == account.id
       account.errors.add(:keepr_tax, 'circular reference')
     end
   end

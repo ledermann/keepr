@@ -182,7 +182,7 @@ describe Keepr::Account, 'with tax' do
   end
 
   it "should avoid circular reference" do
-    tax_account.keepr_tax = tax
+    tax_account.keepr_tax_id = tax.id
     expect(tax_account).to be_invalid
   end
 end
