@@ -68,16 +68,14 @@ class Keepr::Account < ActiveRecord::Base
     array
   end
 
-  def asset?
-    kind == 'Asset'
-  end
-
-  def liability?
-    kind == 'Liability'
+  KIND.each do |k|
+    define_method "#{k.underscore}?" do     # def asset?
+      kind == k                             #   kind == 'Asset'
+    end                                     # end
   end
 
   def profit_and_loss?
-    (kind == 'Revenue') || (kind == 'Expense')
+    revenue? || expense?
   end
 
   def keepr_postings
