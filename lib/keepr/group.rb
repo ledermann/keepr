@@ -20,6 +20,18 @@ class Keepr::Group < ActiveRecord::Base
     where(:is_result => true).first
   end
 
+  def asset?
+    target == 'Asset'
+  end
+
+  def liability?
+    target == 'Liability'
+  end
+
+  def profit_and_loss?
+    target == 'Profit & Loss'
+  end
+
 private
   def get_from_parent
     if self.parent

@@ -68,6 +68,18 @@ class Keepr::Account < ActiveRecord::Base
     array
   end
 
+  def asset?
+    kind == 'Asset'
+  end
+
+  def liability?
+    kind == 'Liability'
+  end
+
+  def profit_and_loss?
+    (kind == 'Revenue') || (kind == 'Expense')
+  end
+
   def keepr_postings
     Keepr::Posting.
       joins(:keepr_account).
@@ -116,12 +128,12 @@ private
 
   def group_validation
     if keepr_group.present?
-      if kind == 'Asset'
-        errors.add(:kind, 'does match group') unless keepr_group.target == 'Asset'
-      elsif kind == 'Liability'
-        errors.add(:kind, 'does match group') unless keepr_group.target == 'Liability'
-      elsif kind.in? ['Revenue', 'Expense']
-        errors.add(:kind, 'does match group') unless keepr_group.target == 'Profit & Loss'
+      if asset?
+        errors.add(:kind, 'does match group') unless keepr_group.asset?
+      elsif liability?
+        errors.add(:kind, 'does match group') unless keepr_group.liabiliy?
+      elsif profit_and_loss?
+        errors.add(:kind, 'does match group') unless keepr_group.profit_and_loss?
       else
         errors.add(:kind, 'conflicts with group')
       end
