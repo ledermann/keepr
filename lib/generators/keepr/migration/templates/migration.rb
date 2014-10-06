@@ -17,6 +17,12 @@ class KeeprMigration < ActiveRecord::Migration
     end
     add_index :keepr_taxes, :keepr_account_id
 
+    create_table :keepr_cost_centers, force: true do |t|
+      t.string     :number, :null => false
+      t.string     :name, :null => false
+      t.text       :note
+    end
+
     create_table :keepr_accounts, force: true do |t|
       t.integer    :number, :null => false
       t.string     :ancestry
@@ -52,9 +58,11 @@ class KeeprMigration < ActiveRecord::Migration
       t.references :keepr_account, :null => false
       t.references :keepr_journal, :null => false
       t.decimal    :amount, :precision => 8, :scale => 2, :null => false
+      t.references :keepr_cost_center
     end
     add_index :keepr_postings, :keepr_account_id
     add_index :keepr_postings, :keepr_journal_id
+    add_index :keepr_postings, :keepr_cost_center_id
   end
 
   def self.down

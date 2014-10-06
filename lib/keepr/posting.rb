@@ -2,9 +2,11 @@ class Keepr::Posting < ActiveRecord::Base
   self.table_name = 'keepr_postings'
 
   validates_presence_of :keepr_account_id, :amount
+  validate :cost_center_validation
 
   belongs_to :keepr_account, :class_name => 'Keepr::Account'
   belongs_to :keepr_journal, :class_name => 'Keepr::Journal'
+  belongs_to :keepr_cost_center, :class_name => 'Keepr::CostCenter'
 
   SIDE_DEBIT  = 'debit'
   SIDE_CREDIT = 'credit'
@@ -59,5 +61,13 @@ private
     end
 
     keepr_account.update_cache_columns!
+  end
+
+  def cost_center_validation
+    if keepr_cost_center
+      unless keepr_account.profit_and_loss?
+        errors.add(:keepr_cost_center_id, 'allowed for expense or revenue accounts only')
+      end
+    end
   end
 end

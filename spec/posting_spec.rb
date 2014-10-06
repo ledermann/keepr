@@ -94,4 +94,19 @@ describe Keepr::Posting do
       }.to raise_error(ArgumentError)
     end
   end
+
+  describe 'cost_center handling' do
+    let!(:cost_center) { FactoryGirl.create(:cost_center) }
+    let!(:account_8400) { FactoryGirl.create(:account, :number => 8400, :kind => 'Revenue') }
+
+    it "should allow cost_center" do
+      posting = Keepr::Posting.new :keepr_account => account_8400, :amount => 100, :keepr_cost_center => cost_center
+      expect(posting).to be_valid
+    end
+
+    it "should not allow cost_center" do
+      posting = Keepr::Posting.new :keepr_account => account_1000, :amount => 100, :keepr_cost_center => cost_center
+      expect(posting).to_not be_valid
+    end
+  end
 end
