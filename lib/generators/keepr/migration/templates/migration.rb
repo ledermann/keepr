@@ -37,9 +37,11 @@ class KeeprMigration < ActiveRecord::Migration
     add_index :keepr_accounts, :keepr_tax_id
 
     create_table :keepr_journals, force: true do |t|
+      t.string   :number
       t.date     :date, :null => false
       t.string   :subject
       t.references :accountable, :polymorphic => true
+      t.text     :note
       t.datetime :created_at
       t.datetime :updated_at
     end
