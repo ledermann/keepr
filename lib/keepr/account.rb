@@ -131,7 +131,7 @@ private
       if asset?
         errors.add(:kind, 'does match group') unless keepr_group.asset?
       elsif liability?
-        errors.add(:kind, 'does match group') unless keepr_group.liabiliy?
+        errors.add(:kind, 'does match group') unless keepr_group.liability?
       elsif profit_and_loss?
         errors.add(:kind, 'does match group') unless keepr_group.profit_and_loss?
       else
