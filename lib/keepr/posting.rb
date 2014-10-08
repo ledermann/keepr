@@ -14,7 +14,7 @@ class Keepr::Posting < ActiveRecord::Base
   after_destroy :update_account_cache_columns
   after_save :update_account_cache_columns
 
-  scope :debits,  -> { where('amount > 0') }
+  scope :debits,  -> { where('amount >= 0') }
   scope :credits, -> { where('amount < 0') }
 
   def side=(value)
