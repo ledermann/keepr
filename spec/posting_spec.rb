@@ -97,6 +97,16 @@ describe Keepr::Posting do
     end
   end
 
+  describe 'scopes' do
+    let!(:debit_posting) { Keepr::Posting.create!(:amount => 10, :side => 'debit', :keepr_account => account_1000, :keepr_journal_id => 42) }
+    let!(:credit_posting) { Keepr::Posting.create!(:amount => 10, :side => 'credit', :keepr_account => account_1000, :keepr_journal_id => 42) }
+
+    it 'should filter' do
+      expect(account_1000.keepr_postings.debits).to eq([debit_posting])
+      expect(account_1000.keepr_postings.credits).to eq([credit_posting])
+    end
+  end
+
   describe 'cost_center handling' do
     let!(:cost_center) { FactoryGirl.create(:cost_center) }
     let!(:account_8400) { FactoryGirl.create(:account, :number => 8400, :kind => 'Revenue') }
