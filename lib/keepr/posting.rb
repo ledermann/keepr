@@ -28,7 +28,6 @@ class Keepr::Posting < ActiveRecord::Base
 
   def side
     @side || begin
-      raw_amount = read_attribute(:amount)
       (raw_amount < 0 ? SIDE_CREDIT : SIDE_DEBIT) if raw_amount
     end
   end
@@ -41,8 +40,12 @@ class Keepr::Posting < ActiveRecord::Base
     side == SIDE_CREDIT
   end
 
+  def raw_amount
+    read_attribute(:amount)
+  end
+
   def amount
-    read_attribute(:amount).try(:abs)
+    raw_amount.try(:abs)
   end
 
   def amount=(value)

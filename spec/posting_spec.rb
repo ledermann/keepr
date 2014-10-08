@@ -15,6 +15,7 @@ describe Keepr::Posting do
 
       expect(posting).to be_credit
       expect(posting.amount).to eq(10)
+      expect(posting.raw_amount).to eq(-10)
     end
 
     it 'should set debit amount' do
@@ -22,6 +23,7 @@ describe Keepr::Posting do
 
       expect(posting).to be_debit
       expect(posting.amount).to eq(10)
+      expect(posting.raw_amount).to eq(10)
     end
 
     it 'should set side and amount in different steps' do
