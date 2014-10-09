@@ -81,6 +81,11 @@ describe Keepr::Journal do
       expect(simple_journal.keepr_postings.size).to eq(2)
       expect(complex_journal.keepr_postings.size).to eq(3)
     end
+
+    it 'should order postings' do
+      expect(simple_journal.keepr_postings.map(&:side)).to eq(['debit','credit'])
+      expect(complex_journal.keepr_postings.map(&:side)).to eq(['debit','debit','credit'])
+    end
   end
 
   describe :credit_postings do

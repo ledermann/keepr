@@ -4,7 +4,9 @@ class Keepr::Journal < ActiveRecord::Base
   validates_presence_of :date
   validates_uniqueness_of :number, :allow_blank => true
 
-  has_many :keepr_postings, :class_name => 'Keepr::Posting', :foreign_key => 'keepr_journal_id', :dependent => :destroy
+  has_many :keepr_postings, -> { order(:amount => :desc) },
+           :class_name => 'Keepr::Posting', :foreign_key => 'keepr_journal_id', :dependent => :destroy
+
   belongs_to :accountable, :polymorphic => true
 
   accepts_nested_attributes_for :keepr_postings, :allow_destroy => true, :reject_if => :all_blank
