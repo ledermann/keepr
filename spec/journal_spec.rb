@@ -107,11 +107,6 @@ describe Keepr::Journal do
       expect(simple_journal.amount).to eq(100.99)
       expect(complex_journal.amount).to eq(10)
     end
-
-    it 'should ignore postings marked for destruction' do
-      complex_journal.keepr_postings.last.mark_for_destruction
-      expect(complex_journal.amount).to eq(0)
-    end
   end
 
   describe :create do

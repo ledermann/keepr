@@ -16,36 +16,32 @@ class Keepr::Journal < ActiveRecord::Base
   validate :validate_postings
 
   def credit_postings
-    keepr_postings.select(&:credit?)
+    existing_postings.select(&:credit?)
   end
 
   def debit_postings
-    keepr_postings.select(&:debit?)
+    existing_postings.select(&:debit?)
   end
 
   def amount
-    credit_amount || debit_amount
+    debit_postings.sum(&:amount)
   end
 
   after_initialize :set_defaults
 
 private
+  def existing_postings
+    keepr_postings.to_a.delete_if(&:marked_for_destruction?)
+  end
+
   def set_defaults
     self.date ||= Date.today
   end
 
-  def credit_amount
-    credit_postings.delete_if(&:marked_for_destruction?).sum(&:amount).abs
-  end
-
-  def debit_amount
-    debit_postings.delete_if(&:marked_for_destruction?).sum(&:amount).abs
-  end
-
   def validate_postings
-    if keepr_postings.map(&:keepr_account_id).uniq.length < 2
+    if existing_postings.map(&:keepr_account_id).uniq.length < 2
       errors.add(:base, 'At least two accounts have to be booked!')
-    elsif debit_amount != credit_amount
+    elsif existing_postings.sum(&:raw_amount) != 0
       errors.add(:base, 'Debit does not match credit!')
     end
   end
