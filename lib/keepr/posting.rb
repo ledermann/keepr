@@ -17,21 +17,21 @@ class Keepr::Posting < ActiveRecord::Base
   scope :debits,  -> { where('amount >= 0') }
   scope :credits, -> { where('amount < 0') }
 
+  def side
+    @side || begin
+      (raw_amount < 0 ? SIDE_CREDIT : SIDE_DEBIT) if raw_amount
+    end
+  end
+
   def side=(value)
     @side = value
 
     if credit?
-      write_attribute(:amount, -amount) if amount
+      self.raw_amount = -amount if amount
     elsif debit?
-      write_attribute(:amount,  amount) if amount
+      self.raw_amount =  amount if amount
     else
       raise ArgumentError
-    end
-  end
-
-  def side
-    @side || begin
-      (raw_amount < 0 ? SIDE_CREDIT : SIDE_DEBIT) if raw_amount
     end
   end
 
@@ -47,6 +47,10 @@ class Keepr::Posting < ActiveRecord::Base
     read_attribute(:amount)
   end
 
+  def raw_amount=(value)
+    write_attribute(:amount, value)
+  end
+
   def amount
     raw_amount.try(:abs)
   end
@@ -55,7 +59,11 @@ class Keepr::Posting < ActiveRecord::Base
     raise ArgumentError.new('Negative amount not allowed!') if value.to_f < 0
     @side ||= SIDE_DEBIT
 
-    write_attribute(:amount, value)
+    if credit?
+      self.raw_amount = -value
+    else
+      self.raw_amount = value
+    end
   end
 
 private
