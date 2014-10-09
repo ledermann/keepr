@@ -9,7 +9,7 @@ class Keepr::Journal < ActiveRecord::Base
 
   accepts_nested_attributes_for :keepr_postings, :allow_destroy => true, :reject_if => :all_blank
 
-  default_scope { order('date DESC, id DESC') }
+  default_scope { order({:date => :desc}, {:id => :desc}) }
 
   validate :validate_postings
 

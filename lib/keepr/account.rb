@@ -22,7 +22,7 @@ class Keepr::Account < ActiveRecord::Base
   belongs_to :keepr_group, :class_name => 'Keepr::Group'
   belongs_to :accountable, :polymorphic => true
 
-  default_scope { order('number ASC') }
+  default_scope { order(:number) }
   scope :with_postings, -> { where('keepr_postings_count > 0') }
   scope :without_postings, -> { where('keepr_postings_count = 0') }
   scope :not_zero_balance, -> { where('keepr_postings_sum_amount <> 0.0') }
