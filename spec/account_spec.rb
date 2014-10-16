@@ -1,6 +1,27 @@
 require 'spec_helper'
 
 describe Keepr::Account do
+  describe :number_as_string do
+    it "should return number with leading zeros for low values" do
+      account = Keepr::Account.new(:number => 999)
+      expect(account.number_as_string).to eq('0999')
+    end
+
+    it "should return number unchanged for high values" do
+      account = Keepr::Account.new(:number => 70000)
+      expect(account.number_as_string).to eq('70000')
+    end
+  end
+
+  describe :to_s do
+    it "should format" do
+      account = Keepr::Account.new(:number => 27, :name => 'Software')
+      expect(account.to_s).to eq('0027 (Software)')
+    end
+  end
+end
+
+describe Keepr::Account do
   let!(:account_1000) { FactoryGirl.create(:account, :number => 1000) }
   let!(:account_1200) { FactoryGirl.create(:account, :number => 1200) }
 

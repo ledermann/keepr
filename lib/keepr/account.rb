@@ -103,8 +103,16 @@ class Keepr::Account < ActiveRecord::Base
     end * sign_factor
   end
 
+  def number_as_string
+    if number < 1000
+      "%04d" % number
+    else
+      number.to_s
+    end
+  end
+
   def to_s
-    "#{number} (#{name})"
+    "#{number_as_string} (#{name})"
   end
 
   def update_cache_columns!
