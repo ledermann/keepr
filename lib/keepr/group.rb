@@ -32,6 +32,10 @@ class Keepr::Group < ActiveRecord::Base
     target == 'Profit & Loss'
   end
 
+  def keepr_postings
+    Keepr::Posting.joins(:keepr_account => :keepr_group).merge(self.subtree)
+  end
+
 private
   def get_from_parent
     if self.parent
