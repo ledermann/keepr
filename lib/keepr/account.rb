@@ -23,9 +23,6 @@ class Keepr::Account < ActiveRecord::Base
   belongs_to :accountable, :polymorphic => true
 
   default_scope { order(:number) }
-  scope :with_postings, -> { where('keepr_postings_count > 0') }
-  scope :without_postings, -> { where('keepr_postings_count = 0') }
-  scope :not_zero_balance, -> { where('keepr_postings_sum_amount <> 0.0') }
 
   def self.with_balance(date=nil)
     scope = select('keepr_accounts.*, SUM(amount) AS preloaded_sum_amount').
@@ -98,7 +95,7 @@ class Keepr::Account < ActiveRecord::Base
           raise ArgumentError
         end
       else
-        keepr_postings_sum_amount
+        keepr_postings.sum(:amount)
       end
     end * sign_factor
   end
@@ -113,18 +110,6 @@ class Keepr::Account < ActiveRecord::Base
 
   def to_s
     "#{number_as_string} (#{name})"
-  end
-
-  def update_cache_columns!
-    account = self
-    while account do
-      total = account.keepr_postings.select('COUNT(*) AS postings_count, SUM(amount) AS postings_sum').first
-
-      account.update_attributes! :keepr_postings_count      => total[:postings_count] || 0.0,
-                                 :keepr_postings_sum_amount => total[:postings_sum] || 0.0
-
-      account = account.parent
-    end
   end
 
 private

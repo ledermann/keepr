@@ -11,9 +11,6 @@ class Keepr::Posting < ActiveRecord::Base
   SIDE_DEBIT  = 'debit'
   SIDE_CREDIT = 'credit'
 
-  after_destroy :update_account_cache_columns
-  after_save :update_account_cache_columns
-
   scope :debits,  -> { where('amount >= 0') }
   scope :credits, -> { where('amount < 0') }
 
@@ -67,16 +64,6 @@ class Keepr::Posting < ActiveRecord::Base
   end
 
 private
-  def update_account_cache_columns
-    if keepr_account_id_changed? && keepr_account_id_was
-      if previous_account = Keepr::Account.find(keepr_account_id_was)
-        previous_account.update_cache_columns!
-      end
-    end
-
-    keepr_account.update_cache_columns!
-  end
-
   def cost_center_validation
     if keepr_cost_center
       unless keepr_account.profit_and_loss?

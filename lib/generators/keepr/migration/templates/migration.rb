@@ -31,8 +31,6 @@ class KeeprMigration < ActiveRecord::Migration
       t.references :keepr_group
       t.references :accountable, :polymorphic => true
       t.references :keepr_tax
-      t.integer    :keepr_postings_count, :default => 0
-      t.decimal    :keepr_postings_sum_amount, :precision => 8, :scale => 2, :default => 0.0
       t.datetime   :created_at
       t.datetime   :updated_at
     end
