@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Keepr::Posting do
-  let!(:account_1000) { FactoryGirl.create(:account, :number => 1000, :kind => 'Asset') }
+  let!(:account_1000) { FactoryGirl.create(:account, :number => 1000, :kind => :asset) }
 
   describe 'side/amount' do
     it 'should handle empty object' do
@@ -109,7 +109,7 @@ describe Keepr::Posting do
 
   describe 'cost_center handling' do
     let!(:cost_center) { FactoryGirl.create(:cost_center) }
-    let!(:account_8400) { FactoryGirl.create(:account, :number => 8400, :kind => 'Revenue') }
+    let!(:account_8400) { FactoryGirl.create(:account, :number => 8400, :kind => :revenue) }
 
     it "should allow cost_center" do
       posting = Keepr::Posting.new :keepr_account => account_8400, :amount => 100, :keepr_cost_center => cost_center

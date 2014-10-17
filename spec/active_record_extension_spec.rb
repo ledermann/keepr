@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Keepr::ActiveRecordExtension do
-  let!(:account_1000) { FactoryGirl.create(:account, :number => 1000, :kind => 'Asset') }
-  let!(:account_1200) { FactoryGirl.create(:account, :number => 1200, :kind => 'Asset') }
+  let!(:account_1000) { FactoryGirl.create(:account, :number => 1000, :kind => :asset) }
+  let!(:account_1200) { FactoryGirl.create(:account, :number => 1200, :kind => :asset) }
 
   describe 'ledger with associated account' do
     subject do

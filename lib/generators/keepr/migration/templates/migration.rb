@@ -27,7 +27,7 @@ class KeeprMigration < ActiveRecord::Migration
       t.integer    :number, :null => false
       t.string     :ancestry
       t.string     :name, :null => false
-      t.string     :kind, :null => false
+      t.integer    :kind, :null => false
       t.references :keepr_group
       t.references :accountable, :polymorphic => true
       t.references :keepr_tax

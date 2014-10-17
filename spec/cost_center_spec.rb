@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Keepr::CostCenter do
   let(:cost_center) { FactoryGirl.create(:cost_center) }
-  let(:account)     { FactoryGirl.create(:account, :number => 8400, :kind => 'Revenue') }
+  let(:account)     { FactoryGirl.create(:account, :number => 8400, :kind => :revenue) }
 
   it 'should have postings' do
     posting = Keepr::Posting.create! :amount            => 10,

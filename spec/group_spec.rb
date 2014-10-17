@@ -44,7 +44,7 @@ describe Keepr::Group do
     let(:account_1b)  { FactoryGirl.create :account, :number => '0011', :keepr_group => group_1_1_1 }
     let(:account_1c)  { FactoryGirl.create :account, :number => '0111', :keepr_group => group_1_1_1 }
 
-    let(:account_2)   { FactoryGirl.create :account, :number => '8400', :keepr_group => group_2, :kind => 'Revenue' }
+    let(:account_2)   { FactoryGirl.create :account, :number => '8400', :keepr_group => group_2, :kind => :revenue }
 
     # Journals
     let!(:journal1)   { Keepr::Journal.create! :keepr_postings_attributes => [

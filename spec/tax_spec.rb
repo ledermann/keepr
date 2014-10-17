@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Keepr::Tax do
   let!(:tax_account) { Keepr::Account.create! :number => 1776,
                                               :name => 'Umsatzsteuer 19%',
-                                              :kind => 'Asset' }
+                                              :kind => :asset }
 
   let!(:tax) { Keepr::Tax.create! :name          => 'USt19',
                                   :description   => 'Umsatzsteuer 19%',
@@ -12,7 +12,7 @@ describe Keepr::Tax do
 
   let!(:account) { Keepr::Account.create! :number    => 8400,
                                           :name      => 'Erlöse 19% USt',
-                                          :kind      => 'Revenue',
+                                          :kind      => :revenue,
                                           :keepr_tax => tax }
 
   it 'should be direct linked from account' do

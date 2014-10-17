@@ -3,15 +3,10 @@ class Keepr::Account < ActiveRecord::Base
 
   has_ancestry :orphan_strategy => :restrict
 
-  KIND = [ 'Asset',
-           'Liability',
-           'Revenue',
-           'Expense',
-           'Neutral' ]
+  enum :kind => [ :asset, :liability, :revenue, :expense, :neutral ]
 
   validates_presence_of :number, :name
   validates_uniqueness_of :number
-  validates_inclusion_of :kind, :in => KIND
   validate :group_validation
   validate :tax_validation
 
@@ -63,12 +58,6 @@ class Keepr::Account < ActiveRecord::Base
     end
 
     array
-  end
-
-  KIND.each do |k|
-    define_method "#{k.underscore}?" do     # def asset?
-      kind == k                             #   kind == 'Asset'
-    end                                     # end
   end
 
   def profit_and_loss?
