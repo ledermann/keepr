@@ -33,7 +33,11 @@ class Keepr::Group < ActiveRecord::Base
   end
 
   def keepr_postings
-    Keepr::Posting.joins(:keepr_account => :keepr_group).merge(self.subtree)
+    if is_result
+      Keepr::Posting.joins(:keepr_account).where(:keepr_accounts => { :kind => [ 'Revenue', 'Expense' ] })
+    else
+      Keepr::Posting.joins(:keepr_account => :keepr_group).merge(self.subtree)
+    end
   end
 
 private

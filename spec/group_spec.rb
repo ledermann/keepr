@@ -28,17 +28,25 @@ describe Keepr::Group do
   end
 
   describe :keepr_postings do
-    let(:group_1)     { FactoryGirl.create :group }
-    let(:group_1_1)   { FactoryGirl.create :group, :parent => group_1 }
-    let(:group_1_1_1) { FactoryGirl.create :group, :parent => group_1_1 }
-    let(:group_2)     { FactoryGirl.create :group }
+    # Simple asset group hierarchy
+    let(:group_1)     { FactoryGirl.create :group, :target => 'Asset' }
+    let(:group_1_1)   { FactoryGirl.create :group, :target => 'Asset', :parent => group_1 }
+    let(:group_1_1_1) { FactoryGirl.create :group, :target => 'Asset', :parent => group_1_1 }
 
+    # Group for P&L accounts
+    let(:group_2)     { FactoryGirl.create :group, :target => 'Profit & Loss' }
+
+    # Group for balance result
+    let(:group_result){ FactoryGirl.create :group, :target => 'Liability', :is_result => true }
+
+    # Accounts
     let(:account_1a)  { FactoryGirl.create :account, :number => '0001', :keepr_group => group_1_1_1 }
     let(:account_1b)  { FactoryGirl.create :account, :number => '0011', :keepr_group => group_1_1_1 }
     let(:account_1c)  { FactoryGirl.create :account, :number => '0111', :keepr_group => group_1_1_1 }
 
-    let(:account_2)   { FactoryGirl.create :account, :number => '8400', :keepr_group => group_2 }
+    let(:account_2)   { FactoryGirl.create :account, :number => '8400', :keepr_group => group_2, :kind => 'Revenue' }
 
+    # Journals
     let!(:journal1)   { Keepr::Journal.create! :keepr_postings_attributes => [
                           { :keepr_account => account_1a, :amount => 100.99, :side => 'debit' },
                           { :keepr_account => account_2,  :amount => 100.99, :side => 'credit' }
@@ -55,14 +63,27 @@ describe Keepr::Group do
                         ]
                       }
 
-    it "should return postings of all accounts within the group" do
-      postings_1 = [journal1.debit_postings.first, journal2.debit_postings.first, journal3.debit_postings.first]
-      expect(group_1.keepr_postings).to eq(postings_1)
-      expect(group_1_1.keepr_postings).to eq(postings_1)
-      expect(group_1_1_1.keepr_postings).to eq(postings_1)
+    context 'for normal groups' do
+      it "should return postings of all accounts within the group" do
+        postings_1 = [journal1.debit_postings.first, journal2.debit_postings.first, journal3.debit_postings.first]
+        expect(group_1.keepr_postings).to eq(postings_1)
+        expect(group_1_1.keepr_postings).to eq(postings_1)
+        expect(group_1_1_1.keepr_postings).to eq(postings_1)
 
-      postings_2 = [journal1.credit_postings.first, journal2.credit_postings.first, journal3.credit_postings.first]
-      expect(group_2.keepr_postings).to eq(postings_2)
+        postings_2 = [journal1.credit_postings.first, journal2.credit_postings.first, journal3.credit_postings.first]
+        expect(group_2.keepr_postings).to eq(postings_2)
+      end
+    end
+
+    context "for result group" do
+      it "should return postings for P&L accounts" do
+        result_postings = [ journal1.credit_postings.first,
+                            journal2.credit_postings.first,
+                            journal3.credit_postings.first
+                          ]
+
+        expect(group_result.keepr_postings).to eq(result_postings)
+      end
     end
   end
 end
