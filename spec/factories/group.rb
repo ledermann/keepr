@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :group, class: Keepr::Group do
-    target 'Asset'
+    target :asset
     name 'Foo'
   end
 end

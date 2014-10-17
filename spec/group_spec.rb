@@ -3,10 +3,10 @@ require 'spec_helper'
 describe Keepr::Group do
   describe :get_from_parent do
     it 'should preset parent' do
-      root = FactoryGirl.create :group, :target => 'Asset'
+      root = FactoryGirl.create :group, :target => :asset
       child = root.children.create! :name => 'Bar'
 
-      expect(child.target).to eq('Asset')
+      expect(child.target).to eq('asset')
     end
   end
 
@@ -29,15 +29,15 @@ describe Keepr::Group do
 
   describe :keepr_postings do
     # Simple asset group hierarchy
-    let(:group_1)     { FactoryGirl.create :group, :target => 'Asset' }
-    let(:group_1_1)   { FactoryGirl.create :group, :target => 'Asset', :parent => group_1 }
-    let(:group_1_1_1) { FactoryGirl.create :group, :target => 'Asset', :parent => group_1_1 }
+    let(:group_1)     { FactoryGirl.create :group, :target => :asset }
+    let(:group_1_1)   { FactoryGirl.create :group, :target => :asset, :parent => group_1 }
+    let(:group_1_1_1) { FactoryGirl.create :group, :target => :asset, :parent => group_1_1 }
 
     # Group for P&L accounts
-    let(:group_2)     { FactoryGirl.create :group, :target => 'Profit & Loss' }
+    let(:group_2)     { FactoryGirl.create :group, :target => :profit_and_loss }
 
     # Group for balance result
-    let(:group_result){ FactoryGirl.create :group, :target => 'Liability', :is_result => true }
+    let(:group_result){ FactoryGirl.create :group, :target => :liability, :is_result => true }
 
     # Accounts
     let(:account_1a)  { FactoryGirl.create :account, :number => '0001', :keepr_group => group_1_1_1 }

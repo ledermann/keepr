@@ -6,10 +6,10 @@ class Keepr::GroupsCreator
   def run
     case @target
     when 'Balance' then
-      load 'asset.txt', :target => 'Asset'
-      load 'liability.txt', :target => 'Liability'
+      load 'asset.txt', :target => :asset
+      load 'liability.txt', :target => :liability
     when 'Profit & Loss'
-      load 'profit_and_loss.txt', :target => 'Profit & Loss'
+      load 'profit_and_loss.txt', :target => :profit_and_loss
     else
       raise ArgumentError
     end
