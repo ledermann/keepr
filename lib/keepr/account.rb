@@ -114,7 +114,7 @@ class Keepr::Account < ActiveRecord::Base
 
 private
   def sign_factor
-    %w(Asset Expense).include?(kind) ? 1 : -1
+    asset? || expense? ? 1 : -1
   end
 
   def group_validation
