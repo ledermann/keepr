@@ -86,7 +86,7 @@ class Keepr::Account < ActiveRecord::Base
       else
         keepr_postings.sum(:amount)
       end
-    end * sign_factor
+    end
   end
 
   def number_as_string
@@ -102,10 +102,6 @@ class Keepr::Account < ActiveRecord::Base
   end
 
 private
-  def sign_factor
-    asset? || expense? ? 1 : -1
-  end
-
   def group_validation
     if keepr_group.present?
       if asset?
