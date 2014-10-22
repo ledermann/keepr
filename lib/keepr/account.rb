@@ -19,8 +19,8 @@ class Keepr::Account < ActiveRecord::Base
 
   default_scope { order(:number) }
 
-  def self.with_balance(date=nil)
-    scope = select('keepr_accounts.*, SUM(amount) AS preloaded_sum_amount').
+  def self.with_sums(date=nil)
+    scope = select('keepr_accounts.*, SUM(amount) AS sum_amount').
               group('keepr_accounts.id').
               joins('LEFT JOIN keepr_postings ON keepr_postings.keepr_account_id = keepr_accounts.id')
 
@@ -39,16 +39,17 @@ class Keepr::Account < ActiveRecord::Base
     scope
   end
 
-  def self.merged_with_balance(date=nil)
-    array = with_balance(date).to_a
+  def self.merged_with_sums(date=nil)
+    accounts = with_sums(date).to_a
 
+    # Sum up child accounts to parent
     position = 0
-    while account = array[position] do
+    while account = accounts[position] do
       if account.parent_id
-        if parent = array.find { |a| a.id == account.parent_id }
-          parent.preloaded_sum_amount ||= 0
-          parent.preloaded_sum_amount += account.preloaded_sum_amount
-          array.delete_at(position)
+        if parent_account = accounts.find { |a| a.id == account.parent_id }
+          parent_account.sum_amount ||= 0
+          parent_account.sum_amount += account.sum_amount
+          accounts.delete_at(position)
         else
           raise
         end
@@ -57,7 +58,7 @@ class Keepr::Account < ActiveRecord::Base
       end
     end
 
-    array
+    accounts
   end
 
   def profit_and_loss?
@@ -71,21 +72,16 @@ class Keepr::Account < ActiveRecord::Base
   end
 
   def balance(date=nil)
-    if attributes['preloaded_sum_amount'].present?
-      raise ArgumentError if date
-      attributes['preloaded_sum_amount']
-    else
-      if date
-        if date.is_a?(Date)
-          keepr_postings.joins(:keepr_journal).where("keepr_journals.date <= '#{date.to_s(:db)}'").sum(:amount)
-        elsif date.is_a?(Range)
-          keepr_postings.joins(:keepr_journal).where("keepr_journals.date BETWEEN '#{date.first.to_s(:db)}' AND '#{date.last.to_s(:db)}'").sum(:amount)
-        else
-          raise ArgumentError
-        end
+    if date
+      if date.is_a?(Date)
+        keepr_postings.joins(:keepr_journal).where("keepr_journals.date <= '#{date.to_s(:db)}'").sum(:amount)
+      elsif date.is_a?(Range)
+        keepr_postings.joins(:keepr_journal).where("keepr_journals.date BETWEEN '#{date.first.to_s(:db)}' AND '#{date.last.to_s(:db)}'").sum(:amount)
       else
-        keepr_postings.sum(:amount)
+        raise ArgumentError
       end
+    else
+      keepr_postings.sum(:amount)
     end
   end
 

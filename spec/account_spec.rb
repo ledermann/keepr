@@ -97,9 +97,9 @@ describe Keepr::Account do
     end
   end
 
-  describe :with_balance do
+  describe :with_sums do
     it 'should work without param' do
-      account1, account2 = Keepr::Account.with_balance.having('preloaded_sum_amount <> 0')
+      account1, account2 = Keepr::Account.with_sums.having('sum_amount <> 0')
 
       expect(account1.number).to eq(1000)
       expect(account1.balance).to eq(110)
@@ -108,27 +108,27 @@ describe Keepr::Account do
     end
 
     it 'should work with Date' do
-      account1, account2 = Keepr::Account.with_balance(Date.yesterday).having('preloaded_sum_amount <> 0')
+      account1, account2 = Keepr::Account.with_sums(Date.yesterday).having('sum_amount <> 0')
 
       expect(account1.number).to eq(1000)
-      expect(account1.balance).to eq(10)
+      expect(account1.sum_amount).to eq(10)
       expect(account2.number).to eq(1200)
-      expect(account2.balance).to eq(-10)
+      expect(account2.sum_amount).to eq(-10)
     end
 
     it 'should work with Range' do
-      account1, account2 = Keepr::Account.with_balance(Date.today..Date.tomorrow).having('preloaded_sum_amount <> 0')
+      account1, account2 = Keepr::Account.with_sums(Date.today..Date.tomorrow).having('sum_amount <> 0')
 
       expect(account1.number).to eq(1000)
-      expect(account1.balance).to eq(100)
+      expect(account1.sum_amount).to eq(100)
       expect(account2.number).to eq(1200)
-      expect(account2.balance).to eq(-100)
+      expect(account2.sum_amount).to eq(-100)
     end
 
     it 'should raise for other param' do
-      expect { Keepr::Account.with_balance(Time.current) }.to raise_error(ArgumentError)
-      expect { Keepr::Account.with_balance(0)            }.to raise_error(ArgumentError)
-      expect { Keepr::Account.with_balance(:foo)         }.to raise_error(ArgumentError)
+      expect { Keepr::Account.with_sums(Time.current) }.to raise_error(ArgumentError)
+      expect { Keepr::Account.with_sums(0)            }.to raise_error(ArgumentError)
+      expect { Keepr::Account.with_sums(:foo)         }.to raise_error(ArgumentError)
     end
   end
 end
@@ -165,20 +165,20 @@ describe Keepr::Account, 'with subaccounts' do
     end
   end
 
-  describe :with_balance do
+  describe :with_sums do
     it 'should calc balance' do
-      expect(Keepr::Account.with_balance.
-                     select { |a| (a.preloaded_sum_amount || 0) != 0 }.
-                     map { |a| [a.number, a.preloaded_sum_amount] }).
+      expect(Keepr::Account.with_sums.
+                     select { |a| (a.sum_amount || 0) != 0 }.
+                     map { |a| [a.number, a.sum_amount] }).
                      to eq([[8400, -20], [10000, 20]])
     end
   end
 
-  describe :merged_with_balance do
+  describe :merged_with_sums do
     it 'should calc merged balance' do
-      expect(Keepr::Account.merged_with_balance.
-                     select { |a| (a.preloaded_sum_amount || 0) != 0 }.
-                     map { |a| [a.number, a.preloaded_sum_amount] }).
+      expect(Keepr::Account.merged_with_sums.
+                     select { |a| (a.sum_amount || 0) != 0 }.
+                     map { |a| [a.number, a.sum_amount] }).
                      to eq([[1400, 20], [8400, -20]])
     end
   end
