@@ -35,7 +35,7 @@ describe Keepr::GroupsCreator do
 
 private
   def compare_with_source(scope, filename)
-    full_filename = File.join(__dir__, "../lib/keepr/groups_creator/#{filename}")
+    full_filename = File.join(File.dirname(__FILE__), "../lib/keepr/groups_creator/#{filename}")
     source = File.read(full_filename)
 
     lines = scope.find_each.map { |g| "#{' ' * g.depth * 2}#{g.number} #{g.name}\n" }.join

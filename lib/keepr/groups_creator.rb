@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Keepr::GroupsCreator
   def initialize(target)
     @target = target
@@ -17,7 +18,7 @@ class Keepr::GroupsCreator
 
 private
   def load(filename, options)
-    full_filename = File.join(__dir__, "groups_creator/#{filename}".downcase)
+    full_filename = File.join(File.dirname(__FILE__), "groups_creator/#{filename}".downcase)
     lines = File.readlines(full_filename)
     last_depth = 0
     parents = []

@@ -41,7 +41,7 @@ RSpec.configure do |config|
 end
 
 def setup_db
-  ActiveRecord::Base.configurations = YAML.load_file(File.expand_path('database.yml', __dir__))
+  ActiveRecord::Base.configurations = YAML.load_file(File.expand_path('database.yml', File.dirname(__FILE__)))
 
   ActiveRecord::Base.establish_connection(:sqlite)
   ActiveRecord::Migration.verbose = false
