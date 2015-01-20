@@ -1,6 +1,25 @@
 # Keepr
 
-Double entry bookkeeping with Ruby
+This Ruby gem provides a double entry accounting system for use in any Rails application. It stores all the data via ActiveRecord in the SQL database.
+
+[![Build Status](https://travis-ci.org/ledermann/keepr.svg?branch=master)](https://travis-ci.org/ledermann/keepr)
+
+
+## Features
+
+* Journal entries with two or more postings
+* Accounts (including subaccounts and groups)
+* Tax
+* Cost center
+* Balance sheet
+* Profit and loss statement
+
+
+## Dependencies
+
+* Ruby 1.9.3 or later
+* Rails 4.1 or 4.2
+
 
 ## Installation
 
@@ -16,9 +35,11 @@ Or install it yourself as:
 
     $ gem install keepr
 
+
 ## Usage
 
 TODO: Write usage instructions here
+
 
 ## Contributing
 
