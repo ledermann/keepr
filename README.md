@@ -31,11 +31,11 @@ TODO: Write usage instructions here
 
 ## Similar projects
 
-https://github.com/mbulat/plutus
-https://github.com/betterplace/acts_as_account
-https://github.com/steveluscher/bookkeeper
-https://github.com/mstrauss/double-entry-accounting
-https://github.com/logicleague/double_booked
-https://github.com/telent/pacioli
-https://github.com/astrails/deb
-https://github.com/bigfleet/accountable
+* https://github.com/mbulat/plutus
+* https://github.com/betterplace/acts_as_account
+* https://github.com/steveluscher/bookkeeper
+* https://github.com/mstrauss/double-entry-accounting
+* https://github.com/logicleague/double_booked
+* https://github.com/telent/pacioli
+* https://github.com/astrails/deb
+* https://github.com/bigfleet/accountable
