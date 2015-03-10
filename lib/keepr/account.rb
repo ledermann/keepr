@@ -45,7 +45,7 @@ class Keepr::Account < ActiveRecord::Base
     # Sum up child accounts to parent
     position = 0
     while account = accounts[position] do
-      if account.parent_id
+      if account.parent_id && account.sum_amount
         if parent_account = accounts.find { |a| a.id == account.parent_id }
           parent_account.sum_amount ||= 0
           parent_account.sum_amount += account.sum_amount

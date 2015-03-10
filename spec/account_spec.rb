@@ -137,6 +137,7 @@ end
 describe Keepr::Account, 'with subaccounts' do
   let!(:account_1400) { FactoryGirl.create(:account, :number => 1400) }
   let!(:account_10000) { FactoryGirl.create(:account, :number => 10000, :parent => account_1400) }
+  let!(:account_10001) { FactoryGirl.create(:account, :number => 10001, :parent => account_1400) }
   let!(:account_8400) { FactoryGirl.create(:account, :number => 8400) }
 
   before :each do
