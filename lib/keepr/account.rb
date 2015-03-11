@@ -44,7 +44,7 @@ class Keepr::Account < ActiveRecord::Base
     end
 
     if permanent_only
-      scope = scope.where(:keepr_journals => { :permanent => true })
+      scope = scope.where("keepr_journals.id IS NULL OR keepr_journals.permanent = #{connection.quoted_true}")
     end
 
     scope
