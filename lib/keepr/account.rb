@@ -19,14 +19,21 @@ class Keepr::Account < ActiveRecord::Base
 
   default_scope { order(:number) }
 
-  def self.with_sums(date=nil)
+  def self.with_sums(options={})
+    raise ArgumentError unless options.is_a?(Hash)
+
     scope = select('keepr_accounts.*, SUM(amount) AS sum_amount').
               group('keepr_accounts.id').
               joins('LEFT JOIN keepr_postings ON keepr_postings.keepr_account_id = keepr_accounts.id')
 
-    if date
-      scope = scope.joins('LEFT JOIN keepr_journals ON keepr_journals.id = keepr_postings.keepr_journal_id')
+    date           = options[:date]
+    permanent_only = options[:permanent_only]
 
+    if date || permanent_only
+      scope = scope.joins('LEFT JOIN keepr_journals ON keepr_journals.id = keepr_postings.keepr_journal_id')
+    end
+
+    if date
       if date.is_a?(Date)
         scope = scope.where("keepr_journals.id IS NULL OR keepr_journals.date <= '#{date.to_s(:db)}'")
       elsif date.is_a?(Range)
@@ -36,11 +43,15 @@ class Keepr::Account < ActiveRecord::Base
       end
     end
 
+    if permanent_only
+      scope = scope.where(:keepr_journals => { :permanent => true })
+    end
+
     scope
   end
 
-  def self.merged_with_sums(date=nil)
-    accounts = with_sums(date).to_a
+  def self.merged_with_sums(options={})
+    accounts = with_sums(options).to_a
 
     # Sum up child accounts to parent
     position = 0

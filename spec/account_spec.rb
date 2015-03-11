@@ -28,6 +28,7 @@ describe Keepr::Account do
 
   before :each do
     Keepr::Journal.create! :date => Date.yesterday,
+                           :permanent => true,
                            :keepr_postings_attributes => [
                              { :keepr_account => account_1000, :amount => 20, :side => 'debit' },
                              { :keepr_account => account_1200, :amount => 20, :side => 'credit' }
@@ -99,37 +100,58 @@ describe Keepr::Account do
   end
 
   describe :with_sums do
-    it 'should work without param' do
-      account1, account2 = Keepr::Account.with_sums.having('sum_amount <> 0')
+    context 'without param' do
+      it 'should work' do
+        account1, account2 = Keepr::Account.with_sums
 
-      expect(account1.number).to eq(1000)
-      expect(account1.balance).to eq(110)
-      expect(account2.number).to eq(1200)
-      expect(account2.balance).to eq(-110)
+        expect(account1.number).to eq(1000)
+        expect(account1.balance).to eq(110)
+        expect(account2.number).to eq(1200)
+        expect(account2.balance).to eq(-110)
+      end
     end
 
-    it 'should work with Date' do
-      account1, account2 = Keepr::Account.with_sums(Date.yesterday).having('sum_amount <> 0')
+    context 'with date option' do
+      it 'should work with Date' do
+        account1, account2 = Keepr::Account.with_sums(:date => Date.yesterday)
 
-      expect(account1.number).to eq(1000)
-      expect(account1.sum_amount).to eq(10)
-      expect(account2.number).to eq(1200)
-      expect(account2.sum_amount).to eq(-10)
+        expect(account1.number).to eq(1000)
+        expect(account1.sum_amount).to eq(10)
+        expect(account2.number).to eq(1200)
+        expect(account2.sum_amount).to eq(-10)
+      end
+
+      it 'should work with Range' do
+        account1, account2 = Keepr::Account.with_sums(:date => Date.today..Date.tomorrow)
+
+        expect(account1.number).to eq(1000)
+        expect(account1.sum_amount).to eq(100)
+        expect(account2.number).to eq(1200)
+        expect(account2.sum_amount).to eq(-100)
+      end
+
+      it 'should raise for other class' do
+        expect { Keepr::Account.with_sums(:date => Time.current) }.to raise_error(ArgumentError)
+        expect { Keepr::Account.with_sums(:date => :foo)         }.to raise_error(ArgumentError)
+      end
     end
 
-    it 'should work with Range' do
-      account1, account2 = Keepr::Account.with_sums(Date.today..Date.tomorrow).having('sum_amount <> 0')
+    context 'with permanent_only option' do
+      it 'should filter the permanent journals' do
+        account1, account2 = Keepr::Account.with_sums(:permanent_only => true)
 
-      expect(account1.number).to eq(1000)
-      expect(account1.sum_amount).to eq(100)
-      expect(account2.number).to eq(1200)
-      expect(account2.sum_amount).to eq(-100)
+        expect(account1.number).to eq(1000)
+        expect(account1.sum_amount).to eq(20)
+        expect(account2.number).to eq(1200)
+        expect(account2.sum_amount).to eq(-20)
+      end
     end
 
-    it 'should raise for other param' do
-      expect { Keepr::Account.with_sums(Time.current) }.to raise_error(ArgumentError)
-      expect { Keepr::Account.with_sums(0)            }.to raise_error(ArgumentError)
-      expect { Keepr::Account.with_sums(:foo)         }.to raise_error(ArgumentError)
+    context 'with non-hash param' do
+      it 'should raise' do
+        expect { Keepr::Account.with_sums(0)    }.to raise_error(ArgumentError)
+        expect { Keepr::Account.with_sums(:foo) }.to raise_error(ArgumentError)
+      end
     end
   end
 end
