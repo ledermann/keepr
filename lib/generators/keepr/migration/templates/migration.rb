@@ -46,6 +46,7 @@ class KeeprMigration < ActiveRecord::Migration
       t.string   :subject
       t.references :accountable, :polymorphic => true
       t.text     :note
+      t.boolean  :permanent
       t.datetime :created_at
       t.datetime :updated_at
     end

@@ -28,6 +28,8 @@ class Keepr::Journal < ActiveRecord::Base
   end
 
   after_initialize :set_defaults
+  before_update :check_permanent
+  before_destroy :check_permanent
 
 private
   def existing_postings
@@ -43,6 +45,13 @@ private
       errors.add(:base, 'At least two accounts have to be booked!')
     elsif existing_postings.sum(&:raw_amount) != 0
       errors.add(:base, 'Debit does not match credit!')
+    end
+  end
+
+  def check_permanent
+    if self.permanent_was
+      errors.add(:base, 'Is permanent and cannot be changed!')
+      false
     end
   end
 end

@@ -76,6 +76,22 @@ describe Keepr::Journal do
     end
   end
 
+  describe :permanent do
+    before :each do
+      simple_journal.update_attributes! :permanent => true
+    end
+
+    it "should not allow update" do
+      expect(simple_journal.update_attributes :subject => 'foo').to eq(false)
+      expect(simple_journal.errors[:base]).to include('Is permanent and cannot be changed!')
+    end
+
+    it "should not allow destroy" do
+      expect(simple_journal.destroy).to eq(false)
+      expect(simple_journal.errors[:base]).to include('Is permanent and cannot be changed!')
+    end
+  end
+
   describe :postings do
     it 'should return postings' do
       expect(simple_journal.keepr_postings.size).to eq(2)
