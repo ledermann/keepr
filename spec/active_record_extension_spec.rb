@@ -11,7 +11,19 @@ describe Keepr::ActiveRecordExtension do
       ledger
     end
 
-    it { expect(subject.keepr_account).to be_present }
+    it 'has keepr_account' do
+      expect(subject.keepr_account).to eq(account_1200)
+    end
+  end
+
+  describe 'contact with multiple associated accounts' do
+    let(:contact) { Contact.create! :name => 'John Doe' }
+    let(:account1) { contact.keepr_accounts.create! :number => '70001', :kind => :debtor, :name => "Doe's main account" }
+    let(:account2) { contact.keepr_accounts.create! :number => '70002', :kind => :debtor, :name => "Doe's second account" }
+
+    it 'has multiple keepr_accounts' do
+      expect(contact.keepr_accounts).to eq([account1, account2])
+    end
   end
 
   describe 'Document with associated journal' do

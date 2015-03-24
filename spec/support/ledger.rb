@@ -1,3 +1,3 @@
 class Ledger < ActiveRecord::Base
-  has_keepr_account
+  has_one_keepr_account
 end

@@ -1,5 +1,9 @@
 class SpecMigration < ActiveRecord::Migration
   def self.up
+    create_table :contacts, force: true do |t|
+      t.string :name
+    end
+
     create_table :ledgers, force: true do |t|
       t.string :bank_name
     end
