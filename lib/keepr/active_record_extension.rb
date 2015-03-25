@@ -6,10 +6,12 @@ module Keepr::ActiveRecordExtension
   module ClassMethods
     def has_one_keepr_account
       has_one :keepr_account, :class_name => 'Keepr::Account', :as => :accountable
+      has_many :keepr_postings, :class_name => 'Keepr::Posting', :through => :keepr_account
     end
 
     def has_many_keepr_accounts
       has_many :keepr_accounts, :class_name => 'Keepr::Account', :as => :accountable
+      has_many :keepr_postings, :class_name => 'Keepr::Posting', :through => :keepr_accounts
     end
 
     def is_keepr_accountable

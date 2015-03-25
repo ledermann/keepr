@@ -1,18 +1,29 @@
 require 'spec_helper'
 
 describe Keepr::ActiveRecordExtension do
-  let!(:account_1000) { FactoryGirl.create(:account, :number => 1000, :kind => :asset) }
-  let!(:account_1200) { FactoryGirl.create(:account, :number => 1200, :kind => :asset) }
+  let(:account_1000) { FactoryGirl.create(:account, :number => 1000, :kind => :asset) }
+  let(:account_1200) { FactoryGirl.create(:account, :number => 1200, :kind => :asset) }
 
   describe 'ledger with associated account' do
-    subject do
-      ledger = Ledger.create! :bank_name => 'Sparkasse'
-      account_1200.update_attributes! :accountable => ledger
-      ledger
-    end
+    let(:ledger) { Ledger.create! :bank_name => 'Sparkasse' }
+    let!(:account) { ledger.create_keepr_account! :number => '1250', :kind => :asset, :name => 'Girokonto' }
 
     it 'has keepr_account' do
-      expect(subject.keepr_account).to eq(account_1200)
+      expect(ledger.keepr_account).to eq(account)
+    end
+
+    it 'has keepr_postings' do
+      journal = Keepr::Journal.create! :keepr_postings_attributes => [
+                               { :keepr_account => account,      :amount => 30, :side => 'debit'  },
+                               { :keepr_account => account_1200, :amount => 30, :side => 'credit' }
+                             ]
+      other_journal = Keepr::Journal.create! :keepr_postings_attributes => [
+                               { :keepr_account => account_1000, :amount => 20, :side => 'debit'  },
+                               { :keepr_account => account_1200, :amount => 20, :side => 'credit' }
+                             ]
+
+      expect(ledger.keepr_postings.count).to eq(1)
+      expect(ledger.keepr_postings.first.amount).to eq(30)
     end
   end
 
@@ -23,6 +34,20 @@ describe Keepr::ActiveRecordExtension do
 
     it 'has multiple keepr_accounts' do
       expect(contact.keepr_accounts).to eq([account1, account2])
+    end
+
+    it 'has keepr_postings' do
+      journal = Keepr::Journal.create! :keepr_postings_attributes => [
+                               { :keepr_account => account1,     :amount => 30, :side => 'debit'  },
+                               { :keepr_account => account_1200, :amount => 30, :side => 'credit' }
+                             ]
+      other_journal = Keepr::Journal.create! :keepr_postings_attributes => [
+                               { :keepr_account => account_1000, :amount => 20, :side => 'debit'  },
+                               { :keepr_account => account_1200, :amount => 20, :side => 'credit' }
+                             ]
+
+      expect(contact.keepr_postings.count).to eq(1)
+      expect(contact.keepr_postings.first.amount).to eq(30)
     end
   end
 
