@@ -1,6 +1,8 @@
 # encoding: utf-8
 class Keepr::GroupsCreator
   def initialize(target)
+    raise ArgumentError unless [ :balance, :profit_and_loss ].include?(target)
+
     @target = target
   end
 
@@ -11,8 +13,6 @@ class Keepr::GroupsCreator
       load 'liability.txt', :target => :liability
     when :profit_and_loss
       load 'profit_and_loss.txt', :target => :profit_and_loss
-    else
-      raise ArgumentError
     end
   end
 
