@@ -61,8 +61,6 @@ class Keepr::Account < ActiveRecord::Base
           parent_account.sum_amount ||= 0
           parent_account.sum_amount += account.sum_amount
           accounts.delete_at(position)
-        else
-          raise
         end
       else
         position += 1
