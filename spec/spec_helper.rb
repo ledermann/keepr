@@ -42,6 +42,11 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
   end
 
+  config.after(:suite) do
+    KeeprMigration.down
+    SpecMigration.down
+  end
+
   config.before(:each) do
     DatabaseCleaner.start
   end
