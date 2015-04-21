@@ -112,11 +112,11 @@ private
   def group_validation
     if keepr_group.present?
       if asset?
-        errors.add(:kind, 'does match group') unless keepr_group.asset?
+        errors.add(:kind, 'does not match group') unless keepr_group.asset?
       elsif liability?
-        errors.add(:kind, 'does match group') unless keepr_group.liability?
+        errors.add(:kind, 'does not match group') unless keepr_group.liability?
       elsif profit_and_loss?
-        errors.add(:kind, 'does match group') unless keepr_group.profit_and_loss?
+        errors.add(:kind, 'does not match group') unless keepr_group.profit_and_loss?
       else
         errors.add(:kind, 'conflicts with group')
       end
