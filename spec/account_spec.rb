@@ -241,7 +241,7 @@ describe Keepr::Account, 'with tax' do
                                  :name      => 'Erlöse 19% USt',
                                  :kind      => :revenue,
                                  :keepr_tax => tax
-    expect(tax_account).to be_valid
+    expect(account).to be_valid
   end
 
   it "should avoid circular reference" do
