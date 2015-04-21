@@ -54,19 +54,37 @@ describe Keepr::Account do
   end
 
   describe 'validations' do
-    let!(:result_group) { FactoryGirl.create(:group, :target => :liability, :is_result => true) }
-    let!(:asset_group) { FactoryGirl.create(:group, :target => :asset, :is_result => false) }
+    let!(:result_group)    { FactoryGirl.create(:group, :target => :liability, :is_result => true) }
+    let!(:liability_group) { FactoryGirl.create(:group, :target => :liability) }
+    let!(:asset_group)     { FactoryGirl.create(:group, :target => :asset) }
 
-    it "should not be allow target mismatch" do
-      account = FactoryGirl.build(:account, :kind => :asset, :number => 123, :keepr_group => result_group)
+    it "should not allow assigning to result group" do
+      account = FactoryGirl.build(:account, :keepr_group => result_group)
       expect(account).to_not be_valid
-      expect(account.errors[:keepr_group_id]).to be_present
+      expect(account.errors[:keepr_group_id]).to include('is a result group')
+    end
+
+    it "should not allow assigning asset account to liability group" do
+      account = FactoryGirl.build(:account, :kind => :asset, :keepr_group => liability_group)
+      expect(account).to_not be_valid
+      expect(account.errors[:kind]).to include('does not match group')
+    end
+
+    it "should not allow assigning liability account to asset group" do
+      account = FactoryGirl.build(:account, :kind => :liability, :keepr_group => asset_group)
+      expect(account).to_not be_valid
+      expect(account.errors[:kind]).to include('does not match group')
+    end
+
+    it "should not allow assigning neutral account to asset group" do
+      account = FactoryGirl.build(:account, :kind => :neutral, :keepr_group => asset_group)
+      expect(account).to_not be_valid
+      expect(account.errors[:kind]).to include('conflicts with group')
     end
 
     it "should allow target match" do
-      account = FactoryGirl.build(:account, :number => 123, :keepr_group => asset_group)
+      account = FactoryGirl.build(:account, :kind => :asset, :keepr_group => asset_group)
       expect(account).to be_valid
-      expect(account.errors[:keepr_group_id]).to be_blank
     end
   end
 
