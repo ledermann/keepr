@@ -1,6 +1,21 @@
 require 'spec_helper'
 
 describe Keepr::Group do
+  describe 'validations' do
+    it "should allow is_result for liability" do
+      group = Keepr::Group.new(:is_result => true, :target => :liability, :name => 'foo')
+      expect(group.valid?).to eq(true)
+    end
+
+    [ :asset, :profit_and_loss ].each do |target|
+      it "should not allow is_result for #{target}" do
+        group = Keepr::Group.new(:is_result => true, :target => target, :name => 'foo')
+        expect(group.valid?).to eq(false)
+        expect(group.errors[:base]).to include('is_result allowed for liability target only')
+      end
+    end
+  end
+
   describe :get_from_parent do
     it 'should preset parent' do
       root = FactoryGirl.create :group, :target => :asset

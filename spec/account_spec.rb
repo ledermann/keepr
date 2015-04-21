@@ -53,18 +53,18 @@ describe Keepr::Account do
                             ]
   end
 
-  describe "with group" do
-    let!(:result_group) { FactoryGirl.create(:group, :is_result => true) }
-    let!(:normal_group) { FactoryGirl.create(:group, :is_result => false) }
+  describe 'validations' do
+    let!(:result_group) { FactoryGirl.create(:group, :target => :liability, :is_result => true) }
+    let!(:asset_group) { FactoryGirl.create(:group, :target => :asset, :is_result => false) }
 
-    it "should not be assigned to result group" do
-      account = FactoryGirl.build(:account, :number => 123, :keepr_group => result_group)
+    it "should not be allow target mismatch" do
+      account = FactoryGirl.build(:account, :kind => :asset, :number => 123, :keepr_group => result_group)
       expect(account).to_not be_valid
       expect(account.errors[:keepr_group_id]).to be_present
     end
 
-    it "should be assigned to normal group" do
-      account = FactoryGirl.build(:account, :number => 123, :keepr_group => normal_group)
+    it "should allow target match" do
+      account = FactoryGirl.build(:account, :number => 123, :keepr_group => asset_group)
       expect(account).to be_valid
       expect(account.errors[:keepr_group_id]).to be_blank
     end

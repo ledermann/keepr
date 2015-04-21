@@ -11,6 +11,8 @@ class Keepr::Group < ActiveRecord::Base
 
   before_validation :get_from_parent
 
+  validate :check_result_and_target
+
   def self.result
     where(:is_result => true).first
   end
@@ -28,6 +30,12 @@ private
   def get_from_parent
     if self.parent
       self.target = self.parent.target
+    end
+  end
+
+  def check_result_and_target
+    if is_result
+      errors.add(:base, 'is_result allowed for liability target only') unless liability?
     end
   end
 end
