@@ -60,3 +60,6 @@ TODO: Write usage instructions here
 * https://github.com/telent/pacioli
 * https://github.com/astrails/deb
 * https://github.com/bigfleet/accountable
+
+
+Copyright (c) 2013-2016 [Georg Ledermann](http://www.georg-ledermann.de), released under the MIT license
