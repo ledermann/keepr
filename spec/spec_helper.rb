@@ -38,6 +38,9 @@ RSpec.configure do |config|
   #  config.order = 'random'
 
   config.before(:suite) do
+    KeeprMigration.up
+    SpecMigration.up
+
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
@@ -56,19 +59,7 @@ RSpec.configure do |config|
   end
 end
 
-def setup_db
-  ActiveRecord::Base.configurations = YAML.load_file(File.expand_path('database.yml', File.dirname(__FILE__)))
-
-  ActiveRecord::Base.establish_connection(:sqlite)
-  ActiveRecord::Migration.verbose = false
-
-  ActiveRecord::Base.connection.tables.each do |table|
-    next if table == 'schema_migrations'
-    ActiveRecord::Base.connection.execute("DROP TABLE #{table}")
-  end
-
-  KeeprMigration.up
-  SpecMigration.up
-end
-
-setup_db
+puts "Testing with ActiveRecord #{ActiveRecord::VERSION::STRING}"
+ActiveRecord::Base.configurations = YAML.load_file(File.expand_path('database.yml', File.dirname(__FILE__)))
+ActiveRecord::Base.establish_connection(:sqlite)
+ActiveRecord::Migration.verbose = false
