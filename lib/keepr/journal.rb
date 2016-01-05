@@ -51,7 +51,12 @@ private
   def check_permanent
     if self.permanent_was
       errors.add(:base, 'Is permanent and cannot be changed!')
-      false
+
+      if ActiveRecord::VERSION::MAJOR < 5
+        false
+      else
+        throw :abort
+      end
     end
   end
 end

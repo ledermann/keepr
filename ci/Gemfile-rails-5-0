@@ -1,0 +1,12 @@
+source 'https://rubygems.org'
+
+gem 'activerecord', '5.0.0.beta1'
+gem 'ancestry'
+gem 'sqlite3'
+gem 'rake'
+gem 'rspec'
+gem 'simplecov'
+gem 'coveralls'
+gem 'database_cleaner'
+gem 'factory_girl'
+gem 'coveralls'
