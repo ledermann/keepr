@@ -22,32 +22,29 @@ class Keepr::Account < ActiveRecord::Base
   def self.with_sums(options={})
     raise ArgumentError unless options.is_a?(Hash)
 
-    scope = select('keepr_accounts.*, SUM(amount) AS sum_amount').
-              group('keepr_accounts.id').
-              joins('LEFT JOIN keepr_postings ON keepr_postings.keepr_account_id = keepr_accounts.id')
+    subquery = Keepr::Posting.
+                 select('SUM(keepr_postings.amount)').
+                 joins(:keepr_journal).
+                 where('keepr_postings.keepr_account_id = keepr_accounts.id')
 
     date           = options[:date]
     permanent_only = options[:permanent_only]
 
-    if date || permanent_only
-      scope = scope.joins('LEFT JOIN keepr_journals ON keepr_journals.id = keepr_postings.keepr_journal_id')
-    end
-
     if date
       if date.is_a?(Date)
-        scope = scope.where("keepr_journals.id IS NULL OR keepr_journals.date <= '#{date.to_s(:db)}'")
+        subquery = subquery.where "keepr_journals.date <= '#{date.to_s(:db)}'"
       elsif date.is_a?(Range)
-        scope = scope.where("keepr_journals.id IS NULL OR (keepr_journals.date BETWEEN '#{date.first.to_s(:db)}' AND '#{date.last.to_s(:db)}')")
+        subquery = subquery.where "keepr_journals.date BETWEEN '#{date.first.to_s(:db)}' AND '#{date.last.to_s(:db)}'"
       else
         raise ArgumentError
       end
     end
 
     if permanent_only
-      scope = scope.where("keepr_journals.id IS NULL OR keepr_journals.permanent = #{connection.quoted_true}")
+      subquery = subquery.where "keepr_journals.permanent = #{connection.quoted_true}"
     end
 
-    scope
+    select "keepr_accounts.*, (#{subquery.to_sql}) AS sum_amount"
   end
 
   def self.merged_with_sums(options={})
