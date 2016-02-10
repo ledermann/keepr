@@ -210,7 +210,7 @@ describe Keepr::Account, 'with subaccounts' do
   describe :with_sums do
     it 'should calc balance' do
       expect(Keepr::Account.with_sums.
-                     select { |a| (a.sum_amount || 0) != 0 }.
+                     select(&:sum_amount).
                      map { |a| [a.number, a.sum_amount] }).
                      to eq([[8400, -20], [10000, 20]])
     end
@@ -219,7 +219,7 @@ describe Keepr::Account, 'with subaccounts' do
   describe :merged_with_sums do
     it 'should calc merged balance' do
       expect(Keepr::Account.merged_with_sums.
-                     select { |a| (a.sum_amount || 0) != 0 }.
+                     select(&:sum_amount).
                      map { |a| [a.number, a.sum_amount] }).
                      to eq([[1400, 20], [8400, -20]])
     end
