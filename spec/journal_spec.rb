@@ -74,6 +74,14 @@ describe Keepr::Journal do
                                 ]
       expect(journal).not_to be_valid
     end
+
+    it 'should fail for nil amount' do
+      journal = Keepr::Journal.create :keepr_postings_attributes => [
+                                  { :keepr_account => account_1000, :amount => 10,  :side => 'debit' },
+                                  { :keepr_account => account_1200, :amount => nil, :side => 'credit' }
+                                ]
+      expect(journal).not_to be_valid
+    end
   end
 
   describe :permanent do
