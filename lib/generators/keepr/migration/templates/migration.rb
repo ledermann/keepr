@@ -58,10 +58,12 @@ class KeeprMigration < ActiveRecord::Migration
       t.references :keepr_journal, :null => false
       t.decimal    :amount, :precision => 8, :scale => 2, :null => false
       t.references :keepr_cost_center
+      t.references :accountable, :polymorphic => true
     end
     add_index :keepr_postings, :keepr_account_id
     add_index :keepr_postings, :keepr_journal_id
     add_index :keepr_postings, :keepr_cost_center_id
+    add_index :keepr_postings, [:accountable_type, :accountable_id]
   end
 
   def self.down

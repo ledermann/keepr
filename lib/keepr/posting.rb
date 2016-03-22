@@ -7,6 +7,7 @@ class Keepr::Posting < ActiveRecord::Base
   belongs_to :keepr_account, :class_name => 'Keepr::Account'
   belongs_to :keepr_journal, :class_name => 'Keepr::Journal'
   belongs_to :keepr_cost_center, :class_name => 'Keepr::CostCenter'
+  belongs_to :accountable, :polymorphic => true
 
   SIDE_DEBIT  = 'debit'
   SIDE_CREDIT = 'credit'

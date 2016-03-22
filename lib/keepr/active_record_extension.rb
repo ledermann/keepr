@@ -14,7 +14,7 @@ module Keepr::ActiveRecordExtension
       has_many :keepr_postings, :class_name => 'Keepr::Posting', :through => :keepr_accounts, :dependent => :restrict_with_error
     end
 
-    def is_keepr_accountable
+    def has_keepr_journals
       has_many :keepr_journals, :class_name => 'Keepr::Journal', :as => :accountable, :dependent => :restrict_with_error
 
       class_eval <<-EOT
@@ -28,6 +28,10 @@ module Keepr::ActiveRecordExtension
                                   }
         scope :keepr_booked,   -> { joins(:keepr_journals) }
       EOT
+    end
+
+    def has_keepr_postings
+      has_many :keepr_postings, :class_name => 'Keepr::Posting', :as => :accountable, :dependent => :restrict_with_error
     end
   end
 end

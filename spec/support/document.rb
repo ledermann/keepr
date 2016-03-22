@@ -1,3 +1,4 @@
 class Document < ActiveRecord::Base
-  is_keepr_accountable
+  has_keepr_journals
+  has_keepr_postings
 end
