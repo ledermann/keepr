@@ -9,7 +9,7 @@ module Keepr
     source_root File.expand_path('../templates', __FILE__)
 
     def create_migration_file
-      migration_template 'migration.rb', 'db/migrate/keepr_migration'
+      migration_template 'migration.rb', 'db/migrate/keepr_migration.rb'
     end
 
     def self.next_migration_number(dirname)
