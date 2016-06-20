@@ -109,20 +109,20 @@ private
   def group_validation
     if keepr_group.present?
       if asset?
-        errors.add(:kind, 'does not match group') unless keepr_group.asset?
+        errors.add(:kind, :group_mismatch) unless keepr_group.asset?
       elsif liability?
-        errors.add(:kind, 'does not match group') unless keepr_group.liability?
+        errors.add(:kind, :group_mismatch) unless keepr_group.liability?
       elsif profit_and_loss?
-        errors.add(:kind, 'does not match group') unless keepr_group.profit_and_loss?
+        errors.add(:kind, :group_mismatch) unless keepr_group.profit_and_loss?
       else
-        errors.add(:kind, 'conflicts with group')
+        errors.add(:kind, :group_conflict)
       end
 
-      errors.add(:keepr_group_id, 'is a result group') if keepr_group.is_result
+      errors.add(:keepr_group_id, :no_group_allowed_for_result) if keepr_group.is_result
     end
   end
 
   def tax_validation
-    errors.add(:keepr_tax_id, 'circular reference') if keepr_tax && keepr_tax.keepr_account == self
+    errors.add(:keepr_tax_id, :circular_reference) if keepr_tax && keepr_tax.keepr_account == self
   end
 end

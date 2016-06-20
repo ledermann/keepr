@@ -42,17 +42,21 @@ private
 
   def validate_postings
     if existing_postings.map(&:keepr_account_id).uniq.length < 2
-      errors.add(:base, 'At least two accounts have to be booked!')
+      # At least two accounts have to be booked
+      errors.add :base, :account_missing
     elsif existing_postings.select(&:debit?).count > 1 && existing_postings.select(&:credit?).count > 1
-      errors.add(:base, 'Splitting on both sides is not allowed!')
+      # A split is allowed either on debit or credit, not both
+      errors.add :base, :split_on_both_sides
     elsif existing_postings.map(&:raw_amount).compact.sum != 0
-      errors.add(:base, 'Debit does not match credit!')
+      # Debit does not match credit
+      errors.add :base, :amount_mismatch
     end
   end
 
   def check_permanent
     if self.permanent_was
-      errors.add(:base, 'Is permanent and cannot be changed!')
+      # If marked as permanent, no changes are allowed
+      errors.add :base, :changes_not_allowed
 
       if ActiveRecord::VERSION::MAJOR < 5
         false

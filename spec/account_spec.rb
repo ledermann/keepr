@@ -61,25 +61,25 @@ describe Keepr::Account do
     it "should not allow assigning to result group" do
       account = FactoryGirl.build(:account, :keepr_group => result_group)
       expect(account).to_not be_valid
-      expect(account.errors[:keepr_group_id]).to include('is a result group')
+      expect(account.errors.added? :keepr_group_id, :no_group_allowed_for_result).to eq(true)
     end
 
     it "should not allow assigning asset account to liability group" do
       account = FactoryGirl.build(:account, :kind => :asset, :keepr_group => liability_group)
       expect(account).to_not be_valid
-      expect(account.errors[:kind]).to include('does not match group')
+      expect(account.errors.added? :kind, :group_mismatch).to eq(true)
     end
 
     it "should not allow assigning liability account to asset group" do
       account = FactoryGirl.build(:account, :kind => :liability, :keepr_group => asset_group)
       expect(account).to_not be_valid
-      expect(account.errors[:kind]).to include('does not match group')
+      expect(account.errors.added? :kind, :group_mismatch).to eq(true)
     end
 
     it "should not allow assigning neutral account to asset group" do
       account = FactoryGirl.build(:account, :kind => :neutral, :keepr_group => asset_group)
       expect(account).to_not be_valid
-      expect(account.errors[:kind]).to include('conflicts with group')
+      expect(account.errors.added? :kind, :group_conflict).to eq(true)
     end
 
     it "should allow target match" do

@@ -35,7 +35,8 @@ private
 
   def check_result_and_target
     if is_result
-      errors.add(:base, 'is_result allowed for liability target only') unless liability?
+      # Attribute `is_result` allowed for liability target only
+      errors.add :base, :liability_needed_for_result unless liability?
     end
   end
 end

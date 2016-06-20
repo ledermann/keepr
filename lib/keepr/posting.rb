@@ -68,7 +68,8 @@ private
   def cost_center_validation
     if keepr_cost_center
       unless keepr_account.profit_and_loss?
-        errors.add(:keepr_cost_center_id, 'allowed for expense or revenue accounts only')
+        # allowed for expense or revenue accounts only
+        errors.add :keepr_cost_center_id, :allowed_for_expense_or_revenue_only
       end
     end
   end

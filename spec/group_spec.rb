@@ -4,14 +4,14 @@ describe Keepr::Group do
   describe 'validations' do
     it "should allow is_result for liability" do
       group = Keepr::Group.new(:is_result => true, :target => :liability, :name => 'foo')
-      expect(group.valid?).to eq(true)
+      expect(group).to be_valid
     end
 
     [ :asset, :profit_and_loss ].each do |target|
       it "should not allow is_result for #{target}" do
         group = Keepr::Group.new(:is_result => true, :target => target, :name => 'foo')
-        expect(group.valid?).to eq(false)
-        expect(group.errors[:base]).to include('is_result allowed for liability target only')
+        expect(group).not_to be_valid
+        expect(group.errors.added? :base, :liability_needed_for_result).to eq(true)
       end
     end
   end

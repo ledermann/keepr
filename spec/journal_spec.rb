@@ -57,6 +57,7 @@ describe Keepr::Journal do
                                   { :keepr_account => account_4920, :amount => 8.40, :side => 'debit' }
                                 ]
       expect(journal).not_to be_valid
+      expect(journal.errors.added? :base, :account_missing).to eq(true)
     end
 
     it 'should fail for journal with multiple postings on both sides' do
@@ -67,6 +68,7 @@ describe Keepr::Journal do
                                   { :keepr_account => account_4920, :amount => 3.00, :side => 'credit' }
                                 ]
       expect(journal).not_to be_valid
+      expect(journal.errors.added? :base, :split_on_both_sides).to eq(true)
     end
 
     it 'should fail for booking the same account twice' do
@@ -75,6 +77,7 @@ describe Keepr::Journal do
                                   { :keepr_account => account_1000, :amount => 10, :side => 'credit' }
                                 ]
       expect(journal).not_to be_valid
+      expect(journal.errors.added? :base, :account_missing).to eq(true)
     end
 
     it 'should fail for unbalanced journal' do
@@ -83,6 +86,7 @@ describe Keepr::Journal do
                                   { :keepr_account => account_1200, :amount => 10, :side => 'debit' }
                                 ]
       expect(journal).not_to be_valid
+      expect(journal.errors.added? :base, :amount_mismatch).to eq(true)
     end
 
     it 'should fail for nil amount' do
@@ -91,6 +95,7 @@ describe Keepr::Journal do
                                   { :keepr_account => account_1200, :amount => nil, :side => 'credit' }
                                 ]
       expect(journal).not_to be_valid
+      expect(journal.errors.added? :base, :amount_mismatch).to eq(true)
     end
   end
 
@@ -101,12 +106,12 @@ describe Keepr::Journal do
 
     it "should not allow update" do
       expect(simple_journal.update_attributes :subject => 'foo').to eq(false)
-      expect(simple_journal.errors[:base]).to include('Is permanent and cannot be changed!')
+      expect(simple_journal.errors.added? :base, :changes_not_allowed).to eq(true)
     end
 
     it "should not allow destroy" do
       expect(simple_journal.destroy).to eq(false)
-      expect(simple_journal.errors[:base]).to include('Is permanent and cannot be changed!')
+      expect(simple_journal.errors.added? :base, :changes_not_allowed).to eq(true)
     end
   end
 

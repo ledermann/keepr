@@ -8,6 +8,6 @@ class Keepr::Tax < ActiveRecord::Base
   has_many :keepr_accounts, :class_name => 'Keepr::Account', :foreign_key => 'keepr_tax_id', :dependent => :restrict_with_error
 
   validate do |tax|
-    tax.errors.add(:keepr_account_id, 'circular reference') if tax.keepr_account.try(:keepr_tax) == tax
+    tax.errors.add(:keepr_account_id, :circular_reference) if tax.keepr_account.try(:keepr_tax) == tax
   end
 end
