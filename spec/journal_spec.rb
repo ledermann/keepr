@@ -59,6 +59,16 @@ describe Keepr::Journal do
       expect(journal).not_to be_valid
     end
 
+    it 'should fail for journal with multiple postings on both sides' do
+      journal = Keepr::Journal.create :keepr_postings_attributes => [
+                                  { :keepr_account => account_1000, :amount => 5.00, :side => 'debit' },
+                                  { :keepr_account => account_1200, :amount => 5.00, :side => 'debit' },
+                                  { :keepr_account => account_4910, :amount => 7.00, :side => 'credit' },
+                                  { :keepr_account => account_4920, :amount => 3.00, :side => 'credit' }
+                                ]
+      expect(journal).not_to be_valid
+    end
+
     it 'should fail for booking the same account twice' do
       journal = Keepr::Journal.create :keepr_postings_attributes => [
                                   { :keepr_account => account_1000, :amount => 10, :side => 'debit' },

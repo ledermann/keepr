@@ -43,6 +43,8 @@ private
   def validate_postings
     if existing_postings.map(&:keepr_account_id).uniq.length < 2
       errors.add(:base, 'At least two accounts have to be booked!')
+    elsif existing_postings.select(&:debit?).count > 1 && existing_postings.select(&:credit?).count > 1
+      errors.add(:base, 'Splitting on both sides is not allowed!')
     elsif existing_postings.map(&:raw_amount).compact.sum != 0
       errors.add(:base, 'Debit does not match credit!')
     end
