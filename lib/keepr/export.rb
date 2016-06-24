@@ -34,9 +34,9 @@ private
       next if posting == main_posting
 
       { 'Umsatz (ohne Soll/Haben-Kz)'    => posting.amount,
-        'Soll/Haben-Kennzeichen'         => posting.debit? ? 'S' : 'H',
-        'Konto'                          => posting.keepr_account.number,
-        'Gegenkonto (ohne BU-Schlüssel)' => main_posting.keepr_account.number,
+        'Soll/Haben-Kennzeichen'         => 'S',
+        'Konto'                          => posting.debit?  ? posting.keepr_account.number : main_posting.keepr_account.number,
+        'Gegenkonto (ohne BU-Schlüssel)' => posting.credit? ? posting.keepr_account.number : main_posting.keepr_account.number,
         'BU-Schlüssel'                   => '40', # Steuerautomatik deaktivieren
         'Belegdatum'                     => journal.date,
         'Belegfeld 1'                    => journal.number,
