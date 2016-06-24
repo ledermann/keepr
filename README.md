@@ -13,6 +13,7 @@ This Ruby gem provides a double entry accounting system for use in any Rails app
 * Cost center
 * Balance sheet
 * Profit and loss statement
+* DATEV export
 
 
 ## Dependencies

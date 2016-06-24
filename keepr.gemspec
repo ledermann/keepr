@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activerecord', '>= 4.1'
   spec.add_dependency 'ancestry'
+  spec.add_dependency 'datev'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'
