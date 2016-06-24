@@ -44,9 +44,6 @@ private
     if existing_postings.map(&:keepr_account_id).uniq.length < 2
       # At least two accounts have to be booked
       errors.add :base, :account_missing
-    elsif existing_postings.select(&:debit?).count > 1 && existing_postings.select(&:credit?).count > 1
-      # A split is allowed either on debit or credit, not both
-      errors.add :base, :split_on_both_sides
     elsif existing_postings.map(&:raw_amount).compact.sum != 0
       # Debit does not match credit
       errors.add :base, :amount_mismatch

@@ -18,24 +18,31 @@ private
     export = Datev::Export.new(@header_options)
 
     @journals.includes(:keepr_postings).each do |journal|
-      main_posting = journal.keepr_postings.sort_by(&:amount).last
-
-      journal.keepr_postings.each do |posting|
-        next if posting == main_posting
-
-        export << {
-          'Umsatz (ohne Soll/Haben-Kz)'    => posting.amount,
-          'Soll/Haben-Kennzeichen'         => posting.debit? ? 'S' : 'H',
-          'Konto'                          => posting.keepr_account.number,
-          'Gegenkonto (ohne BU-Schlüssel)' => main_posting.keepr_account.number,
-          'Belegdatum'                     => journal.date,
-          'Belegfeld 1'                    => journal.number,
-          'Buchungstext'                   => journal.subject,
-          'Festschreibung'                 => journal.permanent
-        }
+      to_datev(journal).each do |hash|
+        export << hash
       end
     end
 
     export
+  end
+
+  def to_datev(journal)
+    main_posting = journal.keepr_postings.find { |p| p.keepr_account.debtor? || p.keepr_account.creditor? }
+    main_posting ||= journal.keepr_postings.sort_by(&:amount).last
+
+    journal.keepr_postings.sort { |p| p.side == main_posting.side ? 1 : 0 }.map do |posting|
+      next if posting == main_posting
+
+      { 'Umsatz (ohne Soll/Haben-Kz)'    => posting.amount,
+        'Soll/Haben-Kennzeichen'         => posting.debit? ? 'S' : 'H',
+        'Konto'                          => posting.keepr_account.number,
+        'Gegenkonto (ohne BU-Schlüssel)' => main_posting.keepr_account.number,
+        'BU-Schlüssel'                   => '40', # Steuerautomatik deaktivieren
+        'Belegdatum'                     => journal.date,
+        'Belegfeld 1'                    => journal.number,
+        'Buchungstext'                   => journal.subject,
+        'Festschreibung'                 => journal.permanent
+      }
+    end.compact
   end
 end
