@@ -30,7 +30,7 @@ private
     main_posting = journal.keepr_postings.find { |p| p.keepr_account.debtor? || p.keepr_account.creditor? }
     main_posting ||= journal.keepr_postings.sort_by(&:amount).last
 
-    journal.keepr_postings.sort { |p| p.side == main_posting.side ? 1 : 0 }.map do |posting|
+    journal.keepr_postings.sort_by { |p| [ p.side == main_posting.side ? 1 : 0, -p.amount ] }.map do |posting|
       next if posting == main_posting
 
       { 'Umsatz (ohne Soll/Haben-Kz)'    => posting.amount,
