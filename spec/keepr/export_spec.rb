@@ -30,16 +30,19 @@ describe Keepr::Export do
 
   let(:scope) { Keepr::Journal.reorder(:number) }
 
+  let(:export) {
+    Keepr::Export.new(scope,
+      'Berater'     => 1234567,
+      'Mandant'     => 78901,
+      'Datum vom'   => Date.new(2016,6,1),
+      'Datum bis'   => Date.new(2016,6,30),
+      'WJ-Beginn'   => Date.new(2016,1,1),
+      'Bezeichnung' => 'Keepr-Buchungen'
+    )
+  }
+
   describe :to_s do
-    subject {
-      Keepr::Export.new(scope,
-        'Berater'     => 1234567,
-        'Mandant'     => 78901,
-        'Datum vom'   => Date.new(2016,6,1),
-        'Datum bis'   => Date.new(2016,6,30),
-        'Bezeichnung' => 'Keepr-Buchungen'
-      ).to_s
-    }
+    subject { export.to_s }
 
     it "should return CSV lines" do
       expect(subject.lines.count).to eq(5)
@@ -89,7 +92,7 @@ describe Keepr::Export do
     it "should create CSV file" do
       Dir.mktmpdir do |dir|
         filename = "#{dir}/EXTF_Buchungsstapel.csv"
-        Keepr::Export.new(scope).to_file(filename)
+        export.to_file(filename)
 
         expect(File).to exist(filename)
       end
