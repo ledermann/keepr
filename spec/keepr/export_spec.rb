@@ -62,8 +62,7 @@ describe Keepr::Export do
         expect(booking_lines.count).to eq(1)
 
         expect(booking_lines[0]).to include('Geldautomat;')
-        expect(booking_lines[0]).to include('1000;')
-        expect(booking_lines[0]).to include('1200;')
+        expect(booking_lines[0]).to include('1000;1200;')
         expect(booking_lines[0]).to include('105,00;')
         expect(booking_lines[0]).to include(';S;')
         expect(booking_lines[0]).to include('2306;')
@@ -88,8 +87,7 @@ describe Keepr::Export do
         expect(booking_lines.count).to eq(2)
 
         expect(booking_lines[0]).to include('Telefonrechnung;')
-        expect(booking_lines[0]).to include('4920;')
-        expect(booking_lines[0]).to include('1600;')
+        expect(booking_lines[0]).to include('4920;1600;')
         expect(booking_lines[0]).to include('8,40;')
         expect(booking_lines[0]).to include(';S;')
         expect(booking_lines[0]).to include('2406;')
@@ -97,8 +95,7 @@ describe Keepr::Export do
         expect(booking_lines[0]).to include(';0;')
 
         expect(booking_lines[1]).to include('Telefonrechnung;')
-        expect(booking_lines[1]).to include('1576;')
-        expect(booking_lines[1]).to include('1600;')
+        expect(booking_lines[1]).to include('1576;1600;')
         expect(booking_lines[1]).to include('1,60;')
         expect(booking_lines[1]).to include(';S;')
         expect(booking_lines[1]).to include('2406;')
@@ -126,8 +123,7 @@ describe Keepr::Export do
         expect(booking_lines.count).to eq(4)
 
         expect(booking_lines[0]).to include('Warenverkauf mit Anzahlung;')
-        expect(booking_lines[0]).to include('10000;')
-        expect(booking_lines[0]).to include('1776;')
+        expect(booking_lines[0]).to include('1776;10000;')
         expect(booking_lines[0]).to include('950,00;')
         expect(booking_lines[0]).to include(';H;')
         expect(booking_lines[0]).to include('2506;')
@@ -135,8 +131,7 @@ describe Keepr::Export do
         expect(booking_lines[0]).to include(';0;')
 
         expect(booking_lines[1]).to include('Warenverkauf mit Anzahlung;')
-        expect(booking_lines[1]).to include('8400;')
-        expect(booking_lines[1]).to include('10000;')
+        expect(booking_lines[1]).to include('8400;10000;')
         expect(booking_lines[1]).to include('5000,00;')
         expect(booking_lines[1]).to include(';H;')
         expect(booking_lines[1]).to include('2506;')
@@ -144,8 +139,7 @@ describe Keepr::Export do
         expect(booking_lines[1]).to include(';0;')
 
         expect(booking_lines[2]).to include('Warenverkauf mit Anzahlung;')
-        expect(booking_lines[2]).to include('1776;')
-        expect(booking_lines[2]).to include('10000;')
+        expect(booking_lines[2]).to include('1776;10000;')
         expect(booking_lines[2]).to include('190,00;')
         expect(booking_lines[2]).to include(';S;')
         expect(booking_lines[2]).to include('2506;')
@@ -153,8 +147,7 @@ describe Keepr::Export do
         expect(booking_lines[2]).to include(';0;')
 
         expect(booking_lines[3]).to include('Warenverkauf mit Anzahlung;')
-        expect(booking_lines[3]).to include('1718;')
-        expect(booking_lines[3]).to include('10000;')
+        expect(booking_lines[3]).to include('1718;10000;')
         expect(booking_lines[3]).to include('1000,00;')
         expect(booking_lines[3]).to include(';S;')
         expect(booking_lines[3]).to include('2506;')
