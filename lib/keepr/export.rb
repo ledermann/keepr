@@ -17,7 +17,7 @@ private
   def export
     export = Datev::BookingExport.new(@header_options)
 
-    @journals.includes(:keepr_postings).each do |journal|
+    @journals.includes(:keepr_postings => :keepr_account).reorder(:date, :id).each do |journal|
       to_datev(journal).each do |hash|
         export << hash
       end
