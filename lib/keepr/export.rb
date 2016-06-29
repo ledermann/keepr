@@ -15,7 +15,7 @@ class Keepr::Export
 private
 
   def export
-    export = Datev::Export.new(@header_options)
+    export = Datev::BookingExport.new(@header_options)
 
     @journals.includes(:keepr_postings).each do |journal|
       to_datev(journal).each do |hash|
