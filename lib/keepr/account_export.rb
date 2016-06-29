@@ -18,7 +18,9 @@ private
     export = Datev::AccountExport.new(@header_options)
 
     @accounts.reorder(:number).each do |account|
-      export << to_datev(account)
+      unless account.debtor? || account.creditor?
+        export << to_datev(account)
+      end
     end
 
     export

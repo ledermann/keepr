@@ -1,10 +1,13 @@
 require 'spec_helper'
 
 describe Keepr::AccountExport do
-  let!(:account_1000)  { FactoryGirl.create :account, :number => 1000, :name => 'Kasse' }
-  let!(:account_1200)  { FactoryGirl.create :account, :number => 1200, :name => 'Girokonto' }
-  let!(:account_1576)  { FactoryGirl.create :account, :number => 1576, :name => 'Abziehbare Vorsteuer 19 %' }
-  let!(:account_1776)  { FactoryGirl.create :account, :number => 1776, :name => 'Umsatzsteuer 19 %' }
+  let!(:account_1000)  { FactoryGirl.create :account, :kind => :asset,     :number => 1000,  :name => 'Kasse'                     }
+  let!(:account_1776)  { FactoryGirl.create :account, :kind => :liability, :number => 1776,  :name => 'Umsatzsteuer 19 %'         }
+  let!(:account_4920)  { FactoryGirl.create :account, :kind => :expense,   :number => 4920,  :name => 'Telefon'                   }
+  let!(:account_8400)  { FactoryGirl.create :account, :kind => :revenue,   :number => 8400,  :name => 'Erlöse 19 %'               }
+  let!(:account_9000)  { FactoryGirl.create :account, :kind => :neutral,   :number => 9000,  :name => 'Saldenvorträge Sachkonten' }
+  let!(:account_10000) { FactoryGirl.create :account, :kind => :creditor,  :number => 10000, :name => 'Diverse Kreditoren'        }
+  let!(:account_70000) { FactoryGirl.create :account, :kind => :debtor,    :number => 70000, :name => 'Diverse Debitoren'         }
 
   let(:scope) { Keepr::Account.all }
 
@@ -21,7 +24,7 @@ describe Keepr::AccountExport do
     subject { export.to_s }
 
     def account_lines
-      subject.lines[2..-1]
+      subject.lines[2..-1].map { |line| line.encode(Encoding::UTF_8) }
     end
 
     it "should return CSV lines" do
@@ -34,20 +37,23 @@ describe Keepr::AccountExport do
       expect(subject.lines[0]).to include('Keepr-Konten;')
     end
 
-    it "should include row data" do
-      expect(account_lines.count).to eq(4)
+    it "should include all accounts except debtor/creditor" do
+      expect(account_lines.count).to eq(5)
 
       expect(account_lines[0]).to include('1000;')
       expect(account_lines[0]).to include('Kasse;')
 
-      expect(account_lines[1]).to include('1200;')
-      expect(account_lines[1]).to include('Girokonto;')
+      expect(account_lines[1]).to include('1776;')
+      expect(account_lines[1]).to include('Umsatzsteuer 19 %;')
 
-      expect(account_lines[2]).to include('1576;')
-      expect(account_lines[2]).to include('Abziehbare Vorsteuer 19 %;')
+      expect(account_lines[2]).to include('4920;')
+      expect(account_lines[2]).to include('Telefon;')
 
-      expect(account_lines[3]).to include('1776;')
-      expect(account_lines[3]).to include('Umsatzsteuer 19 %;')
+      expect(account_lines[3]).to include('8400;')
+      expect(account_lines[3]).to include('Erlöse 19 %;')
+
+      expect(account_lines[4]).to include('9000;')
+      expect(account_lines[4]).to include('Saldenvorträge Sachkonten;')
     end
   end
 
