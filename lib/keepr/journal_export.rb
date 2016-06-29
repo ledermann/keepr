@@ -1,4 +1,4 @@
-class Keepr::Export
+class Keepr::JournalExport
   def initialize(journals, header_options={})
     @journals = journals
     @header_options = header_options
@@ -40,7 +40,7 @@ private
         'BU-Schlüssel'                   => '40', # Steuerautomatik deaktivieren
         'Belegdatum'                     => journal.date,
         'Belegfeld 1'                    => journal.number,
-        'Buchungstext'                   => journal.subject,
+        'Buchungstext'                   => journal.subject.slice(0,60),
         'Festschreibung'                 => journal.permanent
       }
     end.compact

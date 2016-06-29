@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Keepr::Export do
+describe Keepr::JournalExport do
   let(:ust) { Keepr::Tax.create! :name => 'USt19', :value => 19.0, :keepr_account => account_1776 }
   let(:vst) { Keepr::Tax.create! :name => 'VSt19', :value => 19.0, :keepr_account => account_1576 }
 
@@ -18,7 +18,7 @@ describe Keepr::Export do
   let(:scope) { Keepr::Journal.reorder(:number) }
 
   let(:export) {
-    Keepr::Export.new(scope,
+    Keepr::JournalExport.new(scope,
       'Berater'     => 1234567,
       'Mandant'     => 78901,
       'Datum vom'   => Date.new(2016,6,1),
@@ -122,7 +122,7 @@ describe Keepr::Export do
       it "should include data" do
         expect(booking_lines.count).to eq(4)
 
-        expect(booking_lines[1]).to include('Warenverkauf mit Anzahlung;')
+        expect(booking_lines[0]).to include('Warenverkauf mit Anzahlung;')
         expect(booking_lines[0]).to include('10000;8400;')
         expect(booking_lines[0]).to include('5000,00;')
         expect(booking_lines[0]).to include(';S;')
