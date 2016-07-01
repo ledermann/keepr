@@ -5,18 +5,14 @@ class KeeprMigration < ActiveRecord::Migration
       t.string     :number
       t.string     :name, :null => false
       t.boolean    :is_result, :null => false, :default => false
-      t.string     :ancestry
-
-      t.index :ancestry
+      t.string     :ancestry, :index => true
     end
 
     create_table Keepr::Tax, force: true do |t|
       t.string     :name, :null => false
       t.string     :description
       t.decimal    :value, :precision => 8, :scale => 2, :null => false
-      t.references :keepr_account, :null => false
-
-      t.index :keepr_account_id
+      t.references :keepr_account, :null => false, :index => true
     end
 
     create_table Keepr::CostCenter, force: true do |t|
@@ -26,48 +22,34 @@ class KeeprMigration < ActiveRecord::Migration
     end
 
     create_table Keepr::Account, force: true do |t|
-      t.integer    :number, :null => false
-      t.string     :ancestry
+      t.integer    :number, :null => false, :index => true
+      t.string     :ancestry, :index => true
       t.string     :name, :null => false
       t.integer    :kind, :null => false
-      t.references :keepr_group
-      t.references :accountable, :polymorphic => true
-      t.references :keepr_tax
+      t.references :keepr_group, :index => true
+      t.references :accountable, :polymorphic => true, :index => true
+      t.references :keepr_tax, :index => true
       t.datetime   :created_at
       t.datetime   :updated_at
-
-      t.index :number
-      t.index :ancestry
-      t.index [:accountable_type, :accountable_id]
-      t.index :keepr_group_id
-      t.index :keepr_tax_id
     end
 
     create_table Keepr::Journal, force: true do |t|
       t.string   :number
-      t.date     :date, :null => false
+      t.date     :date, :null => false, :index => true
       t.string   :subject
-      t.references :accountable, :polymorphic => true
+      t.references :accountable, :polymorphic => true, :index => true
       t.text     :note
       t.boolean  :permanent, :null => false, :default => false
       t.datetime :created_at
       t.datetime :updated_at
-
-      t.index :date
-      t.index [:accountable_type, :accountable_id], :name => 'index_keepr_journals_on_accountable'
     end
 
     create_table Keepr::Posting, force: true do |t|
-      t.references :keepr_account, :null => false
-      t.references :keepr_journal, :null => false
+      t.references :keepr_account, :null => false, :index => true
+      t.references :keepr_journal, :null => false, :index => true
       t.decimal    :amount, :precision => 8, :scale => 2, :null => false
-      t.references :keepr_cost_center
-      t.references :accountable, :polymorphic => true
-
-      t.index :keepr_account_id
-      t.index :keepr_journal_id
-      t.index :keepr_cost_center_id
-      t.index [:accountable_type, :accountable_id]
+      t.references :keepr_cost_center, :index => true
+      t.references :accountable, :polymorphic => true, :index => true
     end
   end
 
