@@ -3,6 +3,7 @@
 This Ruby gem provides a double entry accounting system for use in any Rails application. It stores all the data via ActiveRecord in the SQL database.
 
 [![Build Status](https://travis-ci.org/ledermann/keepr.svg?branch=master)](https://travis-ci.org/ledermann/keepr)
+[![Code Climate](https://codeclimate.com/github/ledermann/keepr/badges/gpa.svg)](https://codeclimate.com/github/ledermann/keepr)
 [![Coverage Status](https://coveralls.io/repos/ledermann/keepr/badge.svg?branch=master)](https://coveralls.io/r/ledermann/keepr?branch=master)
 
 ## Features
