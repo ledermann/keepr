@@ -1,7 +1,8 @@
 class Keepr::AccountExport
-  def initialize(accounts, header_options={})
+  def initialize(accounts, header_options={}, &block)
     @accounts = accounts
     @header_options = header_options
+    @block = block
   end
 
   def to_s
@@ -29,6 +30,6 @@ private
   def to_datev(account)
     { 'Konto'               => account.number,
       'Kontenbeschriftung'  => account.name.slice(0,40)
-    }
+    }.merge(@block ? @block.call(account) : {})
   end
 end

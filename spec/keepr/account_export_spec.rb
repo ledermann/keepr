@@ -17,7 +17,9 @@ describe Keepr::AccountExport do
       'Mandant'     => 78901,
       'WJ-Beginn'   => Date.new(2016,1,1),
       'Bezeichnung' => 'Keepr-Konten'
-    )
+    ) do |account|
+      { 'Sprach-ID' => 'de-DE' }
+    end
   }
 
   describe :to_s do
@@ -54,6 +56,11 @@ describe Keepr::AccountExport do
 
       expect(account_lines[4]).to include('9000;')
       expect(account_lines[4]).to include('Saldenvorträge Sachkonten;')
+    end
+
+    it "should include data from block" do
+      expect(account_lines[0]).to include(';de-DE')
+      expect(account_lines[1]).to include(';de-DE')
     end
   end
 

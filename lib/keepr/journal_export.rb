@@ -1,7 +1,8 @@
 class Keepr::JournalExport
-  def initialize(journals, header_options={})
+  def initialize(journals, header_options={}, &block)
     @journals = journals
     @header_options = header_options
+    @block = block
   end
 
   def to_s
@@ -42,7 +43,7 @@ private
         'Belegfeld 1'                    => journal.number,
         'Buchungstext'                   => journal.subject.slice(0,60),
         'Festschreibung'                 => journal.permanent
-      }
+      }.merge(@block ? @block.call(posting) : {})
     end.compact
   end
 end

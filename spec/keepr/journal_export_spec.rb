@@ -25,7 +25,9 @@ describe Keepr::JournalExport do
       'Datum bis'   => Date.new(2016,6,30),
       'WJ-Beginn'   => Date.new(2016,1,1),
       'Bezeichnung' => 'Keepr-Buchungen'
-    )
+    ) do |posting|
+      { 'Identifikationsnummer' => "ID:#{posting.id}" }
+    end
   }
 
   describe :to_s do
@@ -153,6 +155,11 @@ describe Keepr::JournalExport do
         expect(booking_lines[3]).to include('2506;')
         expect(booking_lines[3]).to include('BELEG-3;')
         expect(booking_lines[3]).to include(';0;')
+      end
+
+      it "should include data from block" do
+        expect(booking_lines[0]).to include('ID:')
+        expect(booking_lines[1]).to include('ID:')
       end
     end
   end
