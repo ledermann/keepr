@@ -1,4 +1,5 @@
 require 'ancestry'
+require 'datev'
 
 require 'keepr/version'
 require 'keepr/group'
@@ -8,6 +9,9 @@ require 'keepr/tax'
 require 'keepr/account'
 require 'keepr/posting'
 require 'keepr/journal'
+require 'keepr/journal_export'
+require 'keepr/account_export'
+require 'keepr/contact_export'
 require 'keepr/active_record_extension'
 
 class ActiveRecord::Base

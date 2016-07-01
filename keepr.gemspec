@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Some basic ActiveRecord models to build a double entry bookkeeping application}
   spec.homepage      = 'https://github.com/ledermann/keepr'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '>= 1.9.3'
+  spec.required_ruby_version = '>= 2.0.0'
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activerecord', '>= 4.1'
   spec.add_dependency 'ancestry'
+  spec.add_dependency 'datev', '>= 0.4.0'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'

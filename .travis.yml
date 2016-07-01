@@ -1,6 +1,5 @@
 language: ruby
 rvm:
-  - 1.9.3
   - 2.0.0
   - 2.1.10
   - 2.2.5
@@ -11,8 +10,6 @@ gemfile:
   - ci/Gemfile-rails-5-0
 matrix:
   exclude:
-    - rvm: 1.9.3
-      gemfile: ci/Gemfile-rails-5-0
     - rvm: 2.0.0
       gemfile: ci/Gemfile-rails-5-0
     - rvm: 2.1.10
