@@ -32,7 +32,7 @@ describe Keepr::ContactExport do
     it "should include header data" do
       expect(subject.lines[0]).to include('1234567;')
       expect(subject.lines[0]).to include('78901;')
-      expect(subject.lines[0]).to include('Keepr-Kontakte;')
+      expect(subject.lines[0]).to include('"Keepr-Kontakte";')
     end
 
     it "should include debtor/creditor accounts only" do
@@ -43,8 +43,8 @@ describe Keepr::ContactExport do
     end
 
     it "should include data from block" do
-      expect(account_lines[0]).to include('Meyer GmbH;')
-      expect(account_lines[1]).to include('Schulze AG;')
+      expect(account_lines[0]).to include('"Meyer GmbH";')
+      expect(account_lines[1]).to include('"Schulze AG";')
     end
   end
 

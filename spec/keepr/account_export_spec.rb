@@ -36,31 +36,31 @@ describe Keepr::AccountExport do
     it "should include header data" do
       expect(subject.lines[0]).to include('1234567;')
       expect(subject.lines[0]).to include('78901;')
-      expect(subject.lines[0]).to include('Keepr-Konten;')
+      expect(subject.lines[0]).to include('"Keepr-Konten";')
     end
 
     it "should include all accounts except debtor/creditor" do
       expect(account_lines.count).to eq(5)
 
       expect(account_lines[0]).to include('1000;')
-      expect(account_lines[0]).to include('Kasse;')
+      expect(account_lines[0]).to include('"Kasse";')
 
       expect(account_lines[1]).to include('1776;')
-      expect(account_lines[1]).to include('Umsatzsteuer 19 %;')
+      expect(account_lines[1]).to include('"Umsatzsteuer 19 %";')
 
       expect(account_lines[2]).to include('4920;')
-      expect(account_lines[2]).to include('Telefon;')
+      expect(account_lines[2]).to include('"Telefon";')
 
       expect(account_lines[3]).to include('8400;')
-      expect(account_lines[3]).to include('Erlöse 19 %;')
+      expect(account_lines[3]).to include('"Erlöse 19 %";')
 
       expect(account_lines[4]).to include('9000;')
-      expect(account_lines[4]).to include('Saldenvorträge Sachkonten;')
+      expect(account_lines[4]).to include('"Saldenvorträge Sachkonten";')
     end
 
     it "should include data from block" do
-      expect(account_lines[0]).to include(';de-DE')
-      expect(account_lines[1]).to include(';de-DE')
+      expect(account_lines[0]).to include(';"de-DE"')
+      expect(account_lines[1]).to include(';"de-DE"')
     end
   end
 

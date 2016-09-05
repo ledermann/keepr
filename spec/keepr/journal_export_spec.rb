@@ -46,7 +46,7 @@ describe Keepr::JournalExport do
       expect(subject.lines[0]).to include('1234567;')
       expect(subject.lines[0]).to include('78901;')
       expect(subject.lines[0]).to include('20160601;20160630;')
-      expect(subject.lines[0]).to include('Keepr-Buchungen;')
+      expect(subject.lines[0]).to include('"Keepr-Buchungen";')
     end
 
     context "Journal without tax" do
@@ -63,12 +63,12 @@ describe Keepr::JournalExport do
       it "should include data" do
         expect(booking_lines.count).to eq(1)
 
-        expect(booking_lines[0]).to include('Geldautomat;')
+        expect(booking_lines[0]).to include('"Geldautomat";')
         expect(booking_lines[0]).to include('1000;1200;')
         expect(booking_lines[0]).to include('105,00;')
-        expect(booking_lines[0]).to include(';S;')
+        expect(booking_lines[0]).to include(';"S";')
         expect(booking_lines[0]).to include('2306;')
-        expect(booking_lines[0]).to include('BELEG-1;')
+        expect(booking_lines[0]).to include('"BELEG-1";')
         expect(booking_lines[0]).to include(';0;')
       end
     end
@@ -88,20 +88,20 @@ describe Keepr::JournalExport do
       it "should include data" do
         expect(booking_lines.count).to eq(2)
 
-        expect(booking_lines[0]).to include('Telefonrechnung;')
+        expect(booking_lines[0]).to include('"Telefonrechnung";')
         expect(booking_lines[0]).to include('4920;1600;')
         expect(booking_lines[0]).to include('8,40;')
-        expect(booking_lines[0]).to include(';S;')
+        expect(booking_lines[0]).to include(';"S";')
         expect(booking_lines[0]).to include('2406;')
-        expect(booking_lines[0]).to include('BELEG-2;')
+        expect(booking_lines[0]).to include('"BELEG-2";')
         expect(booking_lines[0]).to include(';0;')
 
-        expect(booking_lines[1]).to include('Telefonrechnung;')
+        expect(booking_lines[1]).to include('"Telefonrechnung";')
         expect(booking_lines[1]).to include('1576;1600;')
         expect(booking_lines[1]).to include('1,60;')
-        expect(booking_lines[1]).to include(';S;')
+        expect(booking_lines[1]).to include(';"S";')
         expect(booking_lines[1]).to include('2406;')
-        expect(booking_lines[1]).to include('BELEG-2;')
+        expect(booking_lines[1]).to include('"BELEG-2";')
         expect(booking_lines[1]).to include(';0;')
       end
     end
@@ -124,36 +124,36 @@ describe Keepr::JournalExport do
       it "should include data" do
         expect(booking_lines.count).to eq(4)
 
-        expect(booking_lines[0]).to include('Warenverkauf mit Anzahlung;')
+        expect(booking_lines[0]).to include('"Warenverkauf mit Anzahlung";')
         expect(booking_lines[0]).to include('10000;8400;')
         expect(booking_lines[0]).to include('5000,00;')
-        expect(booking_lines[0]).to include(';S;')
+        expect(booking_lines[0]).to include(';"S";')
         expect(booking_lines[0]).to include('2506;')
-        expect(booking_lines[0]).to include('BELEG-3;')
+        expect(booking_lines[0]).to include('"BELEG-3";')
         expect(booking_lines[0]).to include(';0;')
 
-        expect(booking_lines[1]).to include('Warenverkauf mit Anzahlung;')
+        expect(booking_lines[1]).to include('"Warenverkauf mit Anzahlung";')
         expect(booking_lines[1]).to include('10000;1776;')
         expect(booking_lines[1]).to include('950,00;')
-        expect(booking_lines[1]).to include(';S;')
+        expect(booking_lines[1]).to include(';"S";')
         expect(booking_lines[1]).to include('2506;')
-        expect(booking_lines[1]).to include('BELEG-3;')
+        expect(booking_lines[1]).to include('"BELEG-3";')
         expect(booking_lines[1]).to include(';0;')
 
-        expect(booking_lines[2]).to include('Warenverkauf mit Anzahlung;')
+        expect(booking_lines[2]).to include('"Warenverkauf mit Anzahlung";')
         expect(booking_lines[2]).to include('1718;10000;')
         expect(booking_lines[2]).to include('1000,00;')
-        expect(booking_lines[2]).to include(';S;')
+        expect(booking_lines[2]).to include(';"S";')
         expect(booking_lines[2]).to include('2506;')
-        expect(booking_lines[2]).to include('BELEG-3;')
+        expect(booking_lines[2]).to include('"BELEG-3";')
         expect(booking_lines[2]).to include(';0;')
 
-        expect(booking_lines[3]).to include('Warenverkauf mit Anzahlung;')
+        expect(booking_lines[3]).to include('"Warenverkauf mit Anzahlung";')
         expect(booking_lines[3]).to include('1776;10000;')
         expect(booking_lines[3]).to include('190,00;')
-        expect(booking_lines[3]).to include(';S;')
+        expect(booking_lines[3]).to include(';"S";')
         expect(booking_lines[3]).to include('2506;')
-        expect(booking_lines[3]).to include('BELEG-3;')
+        expect(booking_lines[3]).to include('"BELEG-3";')
         expect(booking_lines[3]).to include(';0;')
       end
 
