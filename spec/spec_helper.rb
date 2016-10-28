@@ -10,6 +10,11 @@ SimpleCov.start do
 end
 
 require 'active_record'
+puts "Testing with ActiveRecord #{ActiveRecord::VERSION::STRING}"
+ActiveRecord::Base.configurations = YAML.load_file(File.expand_path('database.yml', File.dirname(__FILE__)))
+ActiveRecord::Base.establish_connection(:sqlite)
+ActiveRecord::Migration.verbose = false
+
 require 'database_cleaner'
 require 'keepr'
 require 'generators/keepr/migration/templates/migration.rb'
@@ -59,7 +64,3 @@ RSpec.configure do |config|
   end
 end
 
-puts "Testing with ActiveRecord #{ActiveRecord::VERSION::STRING}"
-ActiveRecord::Base.configurations = YAML.load_file(File.expand_path('database.yml', File.dirname(__FILE__)))
-ActiveRecord::Base.establish_connection(:sqlite)
-ActiveRecord::Migration.verbose = false
