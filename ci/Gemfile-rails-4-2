@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activerecord', '~> 4.2.6'
+gem 'activerecord', '~> 4.2.8'
 gem 'ancestry'
 gem 'sqlite3'
 gem 'rake'
