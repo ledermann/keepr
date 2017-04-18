@@ -1,4 +1,4 @@
-class KeeprMigration < ActiveRecord::Migration
+class KeeprMigration < Keepr::MIGRATION_BASE_CLASS
   def self.up
     create_table Keepr::Group, force: true do |t|
       t.integer    :target, :null => false

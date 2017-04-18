@@ -17,3 +17,9 @@ require 'keepr/active_record_extension'
 class ActiveRecord::Base
   include Keepr::ActiveRecordExtension
 end
+
+Keepr::MIGRATION_BASE_CLASS = if ActiveRecord::VERSION::MAJOR >= 5
+  ActiveRecord::Migration[5.0]
+else
+  ActiveRecord::Migration
+end
