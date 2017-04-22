@@ -9,8 +9,13 @@ gemfile:
   - ci/Gemfile-rails-4-1
   - ci/Gemfile-rails-4-2
   - ci/Gemfile-rails-5-0
+  - ci/Gemfile-rails-5-1
 matrix:
   exclude:
+    - rvm: 2.0.0
+      gemfile: ci/Gemfile-rails-5-1
+    - rvm: 2.1.10
+      gemfile: ci/Gemfile-rails-5-1
     - rvm: 2.0.0
       gemfile: ci/Gemfile-rails-5-0
     - rvm: 2.1.10
