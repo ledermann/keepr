@@ -3,13 +3,13 @@ require 'spec_helper'
 describe Keepr::Group do
   describe 'validations' do
     it "should allow is_result for liability" do
-      group = Keepr::Group.new(:is_result => true, :target => :liability, :name => 'foo')
+      group = Keepr::Group.new(is_result: true, target: :liability, name: 'foo')
       expect(group).to be_valid
     end
 
     [ :asset, :profit_and_loss ].each do |target|
       it "should not allow is_result for #{target}" do
-        group = Keepr::Group.new(:is_result => true, :target => target, :name => 'foo')
+        group = Keepr::Group.new(is_result: true, target: target, name: 'foo')
         expect(group).not_to be_valid
         expect(group.errors.added? :base, :liability_needed_for_result).to eq(true)
       end
@@ -18,8 +18,8 @@ describe Keepr::Group do
 
   describe :get_from_parent do
     it 'should preset parent' do
-      root = FactoryBot.create :group, :target => :asset
-      child = root.children.create! :name => 'Bar'
+      root = FactoryBot.create :group, target: :asset
+      child = root.children.create! name: 'Bar'
 
       expect(child.target).to eq('asset')
     end
@@ -28,7 +28,7 @@ describe Keepr::Group do
   describe :keepr_accounts do
     it 'should not destroy if there are accounts' do
       group = FactoryBot.create :group
-      account = FactoryBot.create :account, :number => 1000, :keepr_group => group
+      account = FactoryBot.create :account, number: 1000, keepr_group: group
 
       expect { group.destroy }.to_not change { Keepr::Group.count }
       expect(group.destroy).to eq(false)
@@ -44,37 +44,37 @@ describe Keepr::Group do
 
   describe :keepr_postings do
     # Simple asset group hierarchy
-    let(:group_1)     { FactoryBot.create :group, :target => :asset }
-    let(:group_1_1)   { FactoryBot.create :group, :target => :asset, :parent => group_1 }
-    let(:group_1_1_1) { FactoryBot.create :group, :target => :asset, :parent => group_1_1 }
+    let(:group_1)     { FactoryBot.create :group, target: :asset }
+    let(:group_1_1)   { FactoryBot.create :group, target: :asset, parent: group_1 }
+    let(:group_1_1_1) { FactoryBot.create :group, target: :asset, parent: group_1_1 }
 
     # Group for P&L accounts
-    let(:group_2)     { FactoryBot.create :group, :target => :profit_and_loss }
+    let(:group_2)     { FactoryBot.create :group, target: :profit_and_loss }
 
     # Group for balance result
-    let(:group_result){ FactoryBot.create :group, :target => :liability, :is_result => true }
+    let(:group_result){ FactoryBot.create :group, target: :liability, is_result: true }
 
     # Accounts
-    let(:account_1a)  { FactoryBot.create :account, :number => '0001', :keepr_group => group_1_1_1 }
-    let(:account_1b)  { FactoryBot.create :account, :number => '0011', :keepr_group => group_1_1_1 }
-    let(:account_1c)  { FactoryBot.create :account, :number => '0111', :keepr_group => group_1_1_1 }
+    let(:account_1a)  { FactoryBot.create :account, number: '0001', keepr_group: group_1_1_1 }
+    let(:account_1b)  { FactoryBot.create :account, number: '0011', keepr_group: group_1_1_1 }
+    let(:account_1c)  { FactoryBot.create :account, number: '0111', keepr_group: group_1_1_1 }
 
-    let(:account_2)   { FactoryBot.create :account, :number => '8400', :keepr_group => group_2, :kind => :revenue }
+    let(:account_2)   { FactoryBot.create :account, number: '8400', keepr_group: group_2, kind: :revenue }
 
     # Journals
-    let!(:journal1)   { Keepr::Journal.create! :keepr_postings_attributes => [
-                          { :keepr_account => account_1a, :amount => 100.99, :side => 'debit' },
-                          { :keepr_account => account_2,  :amount => 100.99, :side => 'credit' }
+    let!(:journal1)   { Keepr::Journal.create! keepr_postings_attributes: [
+                          { keepr_account: account_1a, amount: 100.99, side: 'debit' },
+                          { keepr_account: account_2,  amount: 100.99, side: 'credit' }
                         ]
                       }
-    let!(:journal2)   { Keepr::Journal.create! :keepr_postings_attributes => [
-                          { :keepr_account => account_1b, :amount => 100.99, :side => 'debit' },
-                          { :keepr_account => account_2, :amount => 100.99, :side => 'credit' }
+    let!(:journal2)   { Keepr::Journal.create! keepr_postings_attributes: [
+                          { keepr_account: account_1b, amount: 100.99, side: 'debit' },
+                          { keepr_account: account_2, amount: 100.99, side: 'credit' }
                         ]
                       }
-    let!(:journal3)   { Keepr::Journal.create! :keepr_postings_attributes => [
-                          { :keepr_account => account_1c, :amount => 100.99, :side => 'debit' },
-                          { :keepr_account => account_2,  :amount => 100.99, :side => 'credit' }
+    let!(:journal3)   { Keepr::Journal.create! keepr_postings_attributes: [
+                          { keepr_account: account_1c, amount: 100.99, side: 'debit' },
+                          { keepr_account: account_2,  amount: 100.99, side: 'credit' }
                         ]
                       }
 

@@ -1,21 +1,21 @@
 class Keepr::Account < ActiveRecord::Base
   self.table_name = 'keepr_accounts'
 
-  has_ancestry :orphan_strategy => :restrict
+  has_ancestry orphan_strategy: :restrict
 
-  enum :kind => [ :asset, :liability, :revenue, :expense, :neutral, :debtor, :creditor ]
+  enum kind: [ :asset, :liability, :revenue, :expense, :neutral, :debtor, :creditor ]
 
   validates_presence_of :number, :name
   validates_uniqueness_of :number
   validate :group_validation
   validate :tax_validation
 
-  has_many :keepr_postings, :class_name => 'Keepr::Posting', :foreign_key => 'keepr_account_id', :dependent => :restrict_with_error
-  has_many :keepr_taxes, :class_name => 'Keepr::Tax', :foreign_key => 'keepr_account_id', :dependent => :restrict_with_error
+  has_many :keepr_postings, class_name: 'Keepr::Posting', foreign_key: 'keepr_account_id', dependent: :restrict_with_error
+  has_many :keepr_taxes, class_name: 'Keepr::Tax', foreign_key: 'keepr_account_id', dependent: :restrict_with_error
 
-  belongs_to :keepr_tax, :class_name => 'Keepr::Tax'
-  belongs_to :keepr_group, :class_name => 'Keepr::Group'
-  belongs_to :accountable, :polymorphic => true
+  belongs_to :keepr_tax, class_name: 'Keepr::Tax'
+  belongs_to :keepr_group, class_name: 'Keepr::Group'
+  belongs_to :accountable, polymorphic: true
 
   default_scope { order(:number) }
 

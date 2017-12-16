@@ -4,10 +4,10 @@ class Keepr::Posting < ActiveRecord::Base
   validates_presence_of :keepr_account_id, :amount
   validate :cost_center_validation
 
-  belongs_to :keepr_account, :class_name => 'Keepr::Account'
-  belongs_to :keepr_journal, :class_name => 'Keepr::Journal'
-  belongs_to :keepr_cost_center, :class_name => 'Keepr::CostCenter'
-  belongs_to :accountable, :polymorphic => true
+  belongs_to :keepr_account, class_name: 'Keepr::Account'
+  belongs_to :keepr_journal, class_name: 'Keepr::Journal'
+  belongs_to :keepr_cost_center, class_name: 'Keepr::CostCenter'
+  belongs_to :accountable, polymorphic: true
 
   SIDE_DEBIT  = 'debit'
   SIDE_CREDIT = 'credit'

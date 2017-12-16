@@ -2,19 +2,19 @@
 require 'spec_helper'
 
 describe Keepr::Tax do
-  let!(:tax_account) { Keepr::Account.create! :number => 1776,
-                                              :name => 'Umsatzsteuer 19%',
-                                              :kind => :asset }
+  let!(:tax_account) { Keepr::Account.create! number: 1776,
+                                              name: 'Umsatzsteuer 19%',
+                                              kind: :asset }
 
-  let!(:tax) { Keepr::Tax.create! :name          => 'USt19',
-                                  :description   => 'Umsatzsteuer 19%',
-                                  :value         => 19.0,
-                                  :keepr_account => tax_account }
+  let!(:tax) { Keepr::Tax.create! name: 'USt19',
+                                  description: 'Umsatzsteuer 19%',
+                                  value: 19.0,
+                                  keepr_account: tax_account }
 
-  let!(:account) { Keepr::Account.create! :number    => 8400,
-                                          :name      => 'Erlöse 19% USt',
-                                          :kind      => :revenue,
-                                          :keepr_tax => tax }
+  let!(:account) { Keepr::Account.create! number: 8400,
+                                          name: 'Erlöse 19% USt',
+                                          kind: :revenue,
+                                          keepr_tax: tax }
 
   it 'should be direct linked from account' do
     expect(tax.keepr_accounts).to eq([account])

@@ -9,10 +9,10 @@ class Keepr::GroupsCreator
   def run
     case @target
     when :balance then
-      load 'asset.txt', :target => :asset
-      load 'liability.txt', :target => :liability
+      load 'asset.txt', target: :asset
+      load 'liability.txt', target: :liability
     when :profit_and_loss
-      load 'profit_and_loss.txt', :target => :profit_and_loss
+      load 'profit_and_loss.txt', target: :profit_and_loss
     end
   end
 
@@ -30,7 +30,7 @@ private
       # Remove leading spaces and separate number and name
       number, name = line.lstrip.match(/^(.*?)\s(.+)$/).to_a[1..-1]
 
-      attributes = options.merge(:name => name, :number => number)
+      attributes = options.merge(name: name, number: number)
       if @target == :balance && name == 'Jahresüberschuss/Jahresfehlbetrag'
         attributes[:is_result] = true
       end

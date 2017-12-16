@@ -1,19 +1,19 @@
 require 'spec_helper'
 
 describe Keepr::JournalExport do
-  let(:ust) { Keepr::Tax.create! :name => 'USt19', :value => 19.0, :keepr_account => account_1776 }
-  let(:vst) { Keepr::Tax.create! :name => 'VSt19', :value => 19.0, :keepr_account => account_1576 }
+  let(:ust) { Keepr::Tax.create! name: 'USt19', value: 19.0, keepr_account: account_1776 }
+  let(:vst) { Keepr::Tax.create! name: 'VSt19', value: 19.0, keepr_account: account_1576 }
 
-  let(:account_1000)  { FactoryBot.create :account, :number => 1000, :kind => :asset     }
-  let(:account_1200)  { FactoryBot.create :account, :number => 1200, :kind => :asset     }
-  let(:account_1576)  { FactoryBot.create :account, :number => 1576, :kind => :asset     }
-  let(:account_1776)  { FactoryBot.create :account, :number => 1776, :kind => :liability }
-  let(:account_1600)  { FactoryBot.create :account, :number => 1600, :kind => :liability }
-  let(:account_1718)  { FactoryBot.create :account, :number => 1718, :kind => :liability, :keepr_tax => ust }
-  let(:account_4920)  { FactoryBot.create :account, :number => 4920, :kind => :expense,   :keepr_tax => vst }
-  let(:account_8400)  { FactoryBot.create :account, :number => 8400, :kind => :revenue,   :keepr_tax => ust }
+  let(:account_1000)  { FactoryBot.create :account, number: 1000, kind: :asset     }
+  let(:account_1200)  { FactoryBot.create :account, number: 1200, kind: :asset     }
+  let(:account_1576)  { FactoryBot.create :account, number: 1576, kind: :asset     }
+  let(:account_1776)  { FactoryBot.create :account, number: 1776, kind: :liability }
+  let(:account_1600)  { FactoryBot.create :account, number: 1600, kind: :liability }
+  let(:account_1718)  { FactoryBot.create :account, number: 1718, kind: :liability, keepr_tax: ust }
+  let(:account_4920)  { FactoryBot.create :account, number: 4920, kind: :expense,   keepr_tax: vst }
+  let(:account_8400)  { FactoryBot.create :account, number: 8400, kind: :revenue,   keepr_tax: ust }
 
-  let(:account_10000) { FactoryBot.create :account, :number => 10000, :kind => :debtor   }
+  let(:account_10000) { FactoryBot.create :account, number: 10000, kind: :debtor   }
 
   let(:scope) { Keepr::Journal.reorder(:number) }
 
@@ -51,12 +51,12 @@ describe Keepr::JournalExport do
 
     context "Journal without tax" do
       let!(:journal_without_tax) do
-        Keepr::Journal.create! :number                    => 'BELEG-1',
-                               :subject                   => 'Geldautomat',
-                               :date                      => Date.new(2016,06,23),
-                               :keepr_postings_attributes => [
-                                 { :keepr_account => account_1000, :amount => 105, :side => 'debit' },
-                                 { :keepr_account => account_1200, :amount => 105, :side => 'credit' }
+        Keepr::Journal.create! number: 'BELEG-1',
+                               subject: 'Geldautomat',
+                               date: Date.new(2016,06,23),
+                               keepr_postings_attributes: [
+                                 { keepr_account: account_1000, amount: 105, side: 'debit' },
+                                 { keepr_account: account_1200, amount: 105, side: 'credit' }
                                ]
       end
 
@@ -75,13 +75,13 @@ describe Keepr::JournalExport do
 
     context "Journal with tax" do
       let!(:journal_with_tax) do
-        Keepr::Journal.create! :number                    => 'BELEG-2',
-                               :subject                   => 'Telefonrechnung',
-                               :date                      => Date.new(2016,06,24),
-                               :keepr_postings_attributes => [
-                                 { :keepr_account => account_4920, :amount =>  8.40, :side => 'debit' },
-                                 { :keepr_account => account_1576, :amount =>  1.60, :side => 'debit' },
-                                 { :keepr_account => account_1600, :amount => 10.00, :side => 'credit' }
+        Keepr::Journal.create! number: 'BELEG-2',
+                               subject: 'Telefonrechnung',
+                               date: Date.new(2016,06,24),
+                               keepr_postings_attributes: [
+                                 { keepr_account: account_4920, amount:  8.40, side: 'debit' },
+                                 { keepr_account: account_1576, amount:  1.60, side: 'debit' },
+                                 { keepr_account: account_1600, amount: 10.00, side: 'credit' }
                                ]
       end
 
@@ -108,16 +108,16 @@ describe Keepr::JournalExport do
 
     context "Journal with debtor" do
       let!(:journal_with_debtor) do
-        Keepr::Journal.create! :number                    => 'BELEG-3',
-                               :subject                   => 'Warenverkauf mit Anzahlung',
-                               :date                      => Date.new(2016,06,25),
-                               :keepr_postings_attributes => [
-                                 { :keepr_account => account_10000, :amount => 4760.00, :side => 'debit'  },
-                                 { :keepr_account => account_1718,  :amount => 1000.00, :side => 'debit'  },
-                                 { :keepr_account => account_1776,  :amount =>  190.00, :side => 'debit'  },
+        Keepr::Journal.create! number: 'BELEG-3',
+                               subject: 'Warenverkauf mit Anzahlung',
+                               date: Date.new(2016,06,25),
+                               keepr_postings_attributes: [
+                                 { keepr_account: account_10000, amount: 4760.00, side: 'debit'  },
+                                 { keepr_account: account_1718,  amount: 1000.00, side: 'debit'  },
+                                 { keepr_account: account_1776,  amount:  190.00, side: 'debit'  },
 
-                                 { :keepr_account => account_8400,  :amount => 5000.00, :side => 'credit' },
-                                 { :keepr_account => account_1776,  :amount =>  950.00, :side => 'credit' }
+                                 { keepr_account: account_8400,  amount: 5000.00, side: 'credit' },
+                                 { keepr_account: account_1776,  amount:  950.00, side: 'credit' }
                                ]
       end
 

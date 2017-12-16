@@ -2,16 +2,16 @@ class Keepr::Journal < ActiveRecord::Base
   self.table_name = 'keepr_journals'
 
   validates_presence_of :date
-  validates_uniqueness_of :number, :allow_blank => true
+  validates_uniqueness_of :number, allow_blank: true
 
-  has_many :keepr_postings, -> { order(:amount => :desc) },
-           :class_name => 'Keepr::Posting', :foreign_key => 'keepr_journal_id', :dependent => :destroy
+  has_many :keepr_postings, -> { order(amount: :desc) },
+           class_name: 'Keepr::Posting', foreign_key: 'keepr_journal_id', dependent: :destroy
 
-  belongs_to :accountable, :polymorphic => true
+  belongs_to :accountable, polymorphic: true
 
-  accepts_nested_attributes_for :keepr_postings, :allow_destroy => true, :reject_if => :all_blank
+  accepts_nested_attributes_for :keepr_postings, allow_destroy: true, reject_if: :all_blank
 
-  default_scope { order({:date => :desc}, {:id => :desc}) }
+  default_scope { order({date: :desc}, {id: :desc}) }
 
   validate :validate_postings
 

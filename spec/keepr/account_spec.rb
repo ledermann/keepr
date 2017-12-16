@@ -4,86 +4,86 @@ require 'spec_helper'
 describe Keepr::Account do
   describe :number_as_string do
     it "should return number with leading zeros for low values" do
-      account = Keepr::Account.new(:number => 999)
+      account = Keepr::Account.new(number: 999)
       expect(account.number_as_string).to eq('0999')
     end
 
     it "should return number unchanged for high values" do
-      account = Keepr::Account.new(:number => 70000)
+      account = Keepr::Account.new(number: 70000)
       expect(account.number_as_string).to eq('70000')
     end
   end
 
   describe :to_s do
     it "should format" do
-      account = Keepr::Account.new(:number => 27, :name => 'Software')
+      account = Keepr::Account.new(number: 27, name: 'Software')
       expect(account.to_s).to eq('0027 (Software)')
     end
   end
 end
 
 describe Keepr::Account do
-  let!(:account_1000) { FactoryBot.create(:account, :number => 1000) }
-  let!(:account_1200) { FactoryBot.create(:account, :number => 1200) }
+  let!(:account_1000) { FactoryBot.create(:account, number: 1000) }
+  let!(:account_1200) { FactoryBot.create(:account, number: 1200) }
 
   before :each do
-    Keepr::Journal.create! :date => Date.yesterday,
-                           :permanent => true,
-                           :keepr_postings_attributes => [
-                             { :keepr_account => account_1000, :amount => 20, :side => 'debit' },
-                             { :keepr_account => account_1200, :amount => 20, :side => 'credit' }
+    Keepr::Journal.create! date: Date.yesterday,
+                           permanent: true,
+                           keepr_postings_attributes: [
+                             { keepr_account: account_1000, amount: 20, side: 'debit' },
+                             { keepr_account: account_1200, amount: 20, side: 'credit' }
                             ]
 
-    Keepr::Journal.create! :date => Date.yesterday,
-                           :keepr_postings_attributes => [
-                             { :keepr_account => account_1000, :amount =>  10, :side => 'credit' },
-                             { :keepr_account => account_1200, :amount =>  10, :side => 'debit' },
+    Keepr::Journal.create! date: Date.yesterday,
+                           keepr_postings_attributes: [
+                             { keepr_account: account_1000, amount:  10, side: 'credit' },
+                             { keepr_account: account_1200, amount:  10, side: 'debit' },
                             ]
 
-    Keepr::Journal.create! :date => Date.today,
-                           :keepr_postings_attributes => [
-                             { :keepr_account => account_1000, :amount => 200, :side => 'debit' },
-                             { :keepr_account => account_1200, :amount => 200, :side => 'credit' }
+    Keepr::Journal.create! date: Date.today,
+                           keepr_postings_attributes: [
+                             { keepr_account: account_1000, amount: 200, side: 'debit' },
+                             { keepr_account: account_1200, amount: 200, side: 'credit' }
                             ]
 
-    Keepr::Journal.create! :date => Date.today,
-                           :keepr_postings_attributes => [
-                             { :keepr_account => account_1000, :amount => 100, :side => 'credit' },
-                             { :keepr_account => account_1200, :amount => 100, :side => 'debit' },
+    Keepr::Journal.create! date: Date.today,
+                           keepr_postings_attributes: [
+                             { keepr_account: account_1000, amount: 100, side: 'credit' },
+                             { keepr_account: account_1200, amount: 100, side: 'debit' },
                             ]
   end
 
   describe 'validations' do
-    let!(:result_group)    { FactoryBot.create(:group, :target => :liability, :is_result => true) }
-    let!(:liability_group) { FactoryBot.create(:group, :target => :liability) }
-    let!(:asset_group)     { FactoryBot.create(:group, :target => :asset) }
+    let!(:result_group)    { FactoryBot.create(:group, target: :liability, is_result: true) }
+    let!(:liability_group) { FactoryBot.create(:group, target: :liability) }
+    let!(:asset_group)     { FactoryBot.create(:group, target: :asset) }
 
     it "should not allow assigning to result group" do
-      account = FactoryBot.build(:account, :keepr_group => result_group)
+      account = FactoryBot.build(:account, keepr_group: result_group)
       expect(account).to_not be_valid
       expect(account.errors.added? :keepr_group_id, :no_group_allowed_for_result).to eq(true)
     end
 
     it "should not allow assigning asset account to liability group" do
-      account = FactoryBot.build(:account, :kind => :asset, :keepr_group => liability_group)
+      account = FactoryBot.build(:account, kind: :asset, keepr_group: liability_group)
       expect(account).to_not be_valid
       expect(account.errors.added? :kind, :group_mismatch).to eq(true)
     end
 
     it "should not allow assigning liability account to asset group" do
-      account = FactoryBot.build(:account, :kind => :liability, :keepr_group => asset_group)
+      account = FactoryBot.build(:account, kind: :liability, keepr_group: asset_group)
       expect(account).to_not be_valid
       expect(account.errors.added? :kind, :group_mismatch).to eq(true)
     end
 
     it "should not allow assigning neutral account to asset group" do
-      account = FactoryBot.build(:account, :kind => :neutral, :keepr_group => asset_group)
+      account = FactoryBot.build(:account, kind: :neutral, keepr_group: asset_group)
       expect(account).to_not be_valid
       expect(account.errors.added? :kind, :group_conflict).to eq(true)
     end
 
     it "should allow target match" do
-      account = FactoryBot.build(:account, :kind => :asset, :keepr_group => asset_group)
+      account = FactoryBot.build(:account, kind: :asset, keepr_group: asset_group)
       expect(account).to be_valid
     end
   end
@@ -131,7 +131,7 @@ describe Keepr::Account do
 
     context 'with date option' do
       it 'should work with Date' do
-        account1, account2 = Keepr::Account.with_sums(:date => Date.yesterday)
+        account1, account2 = Keepr::Account.with_sums(date: Date.yesterday)
 
         expect(account1.number).to eq(1000)
         expect(account1.sum_amount).to eq(10)
@@ -140,7 +140,7 @@ describe Keepr::Account do
       end
 
       it 'should work with Range' do
-        account1, account2 = Keepr::Account.with_sums(:date => Date.today..Date.tomorrow)
+        account1, account2 = Keepr::Account.with_sums(date: Date.today..Date.tomorrow)
 
         expect(account1.number).to eq(1000)
         expect(account1.sum_amount).to eq(100)
@@ -149,14 +149,14 @@ describe Keepr::Account do
       end
 
       it 'should raise for other class' do
-        expect { Keepr::Account.with_sums(:date => Time.current) }.to raise_error(ArgumentError)
-        expect { Keepr::Account.with_sums(:date => :foo)         }.to raise_error(ArgumentError)
+        expect { Keepr::Account.with_sums(date: Time.current) }.to raise_error(ArgumentError)
+        expect { Keepr::Account.with_sums(date: :foo)         }.to raise_error(ArgumentError)
       end
     end
 
     context 'with permanent_only option' do
       it 'should filter the permanent journals' do
-        account1, account2 = Keepr::Account.with_sums(:permanent_only => true)
+        account1, account2 = Keepr::Account.with_sums(permanent_only: true)
 
         expect(account1.number).to eq(1000)
         expect(account1.sum_amount).to eq(20)
@@ -175,16 +175,16 @@ describe Keepr::Account do
 end
 
 describe Keepr::Account, 'with subaccounts' do
-  let!(:account_1400) { FactoryBot.create(:account, :number => 1400) }
-  let!(:account_10000) { FactoryBot.create(:account, :number => 10000, :parent => account_1400) }
-  let!(:account_10001) { FactoryBot.create(:account, :number => 10001, :parent => account_1400) }
-  let!(:account_8400) { FactoryBot.create(:account, :number => 8400) }
+  let!(:account_1400) { FactoryBot.create(:account, number: 1400) }
+  let!(:account_10000) { FactoryBot.create(:account, number: 10000, parent: account_1400) }
+  let!(:account_10001) { FactoryBot.create(:account, number: 10001, parent: account_1400) }
+  let!(:account_8400) { FactoryBot.create(:account, number: 8400) }
 
   before :each do
-    Keepr::Journal.create! :date => Date.yesterday,
-                           :keepr_postings_attributes => [
-                             { :keepr_account => account_10000, :amount => 20, :side => 'debit' },
-                             { :keepr_account => account_8400, :amount => 20, :side => 'credit' }
+    Keepr::Journal.create! date: Date.yesterday,
+                           keepr_postings_attributes: [
+                             { keepr_account: account_10000, amount: 20, side: 'debit' },
+                             { keepr_account: account_8400, amount: 20, side: 'credit' }
                             ]
   end
 
@@ -227,20 +227,20 @@ describe Keepr::Account, 'with subaccounts' do
 end
 
 describe Keepr::Account, 'with tax' do
-  let!(:tax_account) { Keepr::Account.create! :number => 1776,
-                                              :name => 'Umsatzsteuer 19%',
-                                              :kind => :asset }
+  let!(:tax_account) { Keepr::Account.create! number: 1776,
+                                              name: 'Umsatzsteuer 19%',
+                                              kind: :asset }
 
-  let!(:tax) { Keepr::Tax.create! :name          => 'USt19',
-                                  :description   => 'Umsatzsteuer 19%',
-                                  :value         => 19.0,
-                                  :keepr_account => tax_account }
+  let!(:tax) { Keepr::Tax.create! name: 'USt19',
+                                  description: 'Umsatzsteuer 19%',
+                                  value: 19.0,
+                                  keepr_account: tax_account }
 
   it "should link to tax" do
-    account = Keepr::Account.new :number    => 8400,
-                                 :name      => 'Erlöse 19% USt',
-                                 :kind      => :revenue,
-                                 :keepr_tax => tax
+    account = Keepr::Account.new number: 8400,
+                                 name: 'Erlöse 19% USt',
+                                 kind: :revenue,
+                                 keepr_tax: tax
     expect(account).to be_valid
   end
 
