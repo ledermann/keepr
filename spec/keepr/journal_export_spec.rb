@@ -4,16 +4,16 @@ describe Keepr::JournalExport do
   let(:ust) { Keepr::Tax.create! :name => 'USt19', :value => 19.0, :keepr_account => account_1776 }
   let(:vst) { Keepr::Tax.create! :name => 'VSt19', :value => 19.0, :keepr_account => account_1576 }
 
-  let(:account_1000)  { FactoryGirl.create :account, :number => 1000, :kind => :asset     }
-  let(:account_1200)  { FactoryGirl.create :account, :number => 1200, :kind => :asset     }
-  let(:account_1576)  { FactoryGirl.create :account, :number => 1576, :kind => :asset     }
-  let(:account_1776)  { FactoryGirl.create :account, :number => 1776, :kind => :liability }
-  let(:account_1600)  { FactoryGirl.create :account, :number => 1600, :kind => :liability }
-  let(:account_1718)  { FactoryGirl.create :account, :number => 1718, :kind => :liability, :keepr_tax => ust }
-  let(:account_4920)  { FactoryGirl.create :account, :number => 4920, :kind => :expense,   :keepr_tax => vst }
-  let(:account_8400)  { FactoryGirl.create :account, :number => 8400, :kind => :revenue,   :keepr_tax => ust }
+  let(:account_1000)  { FactoryBot.create :account, :number => 1000, :kind => :asset     }
+  let(:account_1200)  { FactoryBot.create :account, :number => 1200, :kind => :asset     }
+  let(:account_1576)  { FactoryBot.create :account, :number => 1576, :kind => :asset     }
+  let(:account_1776)  { FactoryBot.create :account, :number => 1776, :kind => :liability }
+  let(:account_1600)  { FactoryBot.create :account, :number => 1600, :kind => :liability }
+  let(:account_1718)  { FactoryBot.create :account, :number => 1718, :kind => :liability, :keepr_tax => ust }
+  let(:account_4920)  { FactoryBot.create :account, :number => 4920, :kind => :expense,   :keepr_tax => vst }
+  let(:account_8400)  { FactoryBot.create :account, :number => 8400, :kind => :revenue,   :keepr_tax => ust }
 
-  let(:account_10000) { FactoryGirl.create :account, :number => 10000, :kind => :debtor   }
+  let(:account_10000) { FactoryBot.create :account, :number => 10000, :kind => :debtor   }
 
   let(:scope) { Keepr::Journal.reorder(:number) }
 

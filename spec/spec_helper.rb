@@ -19,8 +19,8 @@ require 'database_cleaner'
 require 'keepr'
 require 'generators/keepr/migration/templates/migration.rb'
 
-require 'factory_girl'
-FactoryGirl.find_definitions
+require 'factory_bot'
+FactoryBot.find_definitions
 
 # Avoid warning message
 I18n.enforce_available_locales = false

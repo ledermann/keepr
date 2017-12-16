@@ -23,8 +23,8 @@ describe Keepr::Account do
 end
 
 describe Keepr::Account do
-  let!(:account_1000) { FactoryGirl.create(:account, :number => 1000) }
-  let!(:account_1200) { FactoryGirl.create(:account, :number => 1200) }
+  let!(:account_1000) { FactoryBot.create(:account, :number => 1000) }
+  let!(:account_1200) { FactoryBot.create(:account, :number => 1200) }
 
   before :each do
     Keepr::Journal.create! :date => Date.yesterday,
@@ -54,36 +54,36 @@ describe Keepr::Account do
   end
 
   describe 'validations' do
-    let!(:result_group)    { FactoryGirl.create(:group, :target => :liability, :is_result => true) }
-    let!(:liability_group) { FactoryGirl.create(:group, :target => :liability) }
-    let!(:asset_group)     { FactoryGirl.create(:group, :target => :asset) }
+    let!(:result_group)    { FactoryBot.create(:group, :target => :liability, :is_result => true) }
+    let!(:liability_group) { FactoryBot.create(:group, :target => :liability) }
+    let!(:asset_group)     { FactoryBot.create(:group, :target => :asset) }
 
     it "should not allow assigning to result group" do
-      account = FactoryGirl.build(:account, :keepr_group => result_group)
+      account = FactoryBot.build(:account, :keepr_group => result_group)
       expect(account).to_not be_valid
       expect(account.errors.added? :keepr_group_id, :no_group_allowed_for_result).to eq(true)
     end
 
     it "should not allow assigning asset account to liability group" do
-      account = FactoryGirl.build(:account, :kind => :asset, :keepr_group => liability_group)
+      account = FactoryBot.build(:account, :kind => :asset, :keepr_group => liability_group)
       expect(account).to_not be_valid
       expect(account.errors.added? :kind, :group_mismatch).to eq(true)
     end
 
     it "should not allow assigning liability account to asset group" do
-      account = FactoryGirl.build(:account, :kind => :liability, :keepr_group => asset_group)
+      account = FactoryBot.build(:account, :kind => :liability, :keepr_group => asset_group)
       expect(account).to_not be_valid
       expect(account.errors.added? :kind, :group_mismatch).to eq(true)
     end
 
     it "should not allow assigning neutral account to asset group" do
-      account = FactoryGirl.build(:account, :kind => :neutral, :keepr_group => asset_group)
+      account = FactoryBot.build(:account, :kind => :neutral, :keepr_group => asset_group)
       expect(account).to_not be_valid
       expect(account.errors.added? :kind, :group_conflict).to eq(true)
     end
 
     it "should allow target match" do
-      account = FactoryGirl.build(:account, :kind => :asset, :keepr_group => asset_group)
+      account = FactoryBot.build(:account, :kind => :asset, :keepr_group => asset_group)
       expect(account).to be_valid
     end
   end
@@ -175,10 +175,10 @@ describe Keepr::Account do
 end
 
 describe Keepr::Account, 'with subaccounts' do
-  let!(:account_1400) { FactoryGirl.create(:account, :number => 1400) }
-  let!(:account_10000) { FactoryGirl.create(:account, :number => 10000, :parent => account_1400) }
-  let!(:account_10001) { FactoryGirl.create(:account, :number => 10001, :parent => account_1400) }
-  let!(:account_8400) { FactoryGirl.create(:account, :number => 8400) }
+  let!(:account_1400) { FactoryBot.create(:account, :number => 1400) }
+  let!(:account_10000) { FactoryBot.create(:account, :number => 10000, :parent => account_1400) }
+  let!(:account_10001) { FactoryBot.create(:account, :number => 10001, :parent => account_1400) }
+  let!(:account_8400) { FactoryBot.create(:account, :number => 8400) }
 
   before :each do
     Keepr::Journal.create! :date => Date.yesterday,

@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe Keepr::Journal do
-  let!(:account_1000) { FactoryGirl.create(:account, :number => 1000, :kind => :asset) }
-  let!(:account_1200) { FactoryGirl.create(:account, :number => 1200, :kind => :asset) }
-  let!(:account_1210) { FactoryGirl.create(:account, :number => 1210, :kind => :asset) }
-  let!(:account_4910) { FactoryGirl.create(:account, :number => 4910, :kind => :expense) }
-  let!(:account_4920) { FactoryGirl.create(:account, :number => 4920, :kind => :expense) }
-  let!(:account_1576) { FactoryGirl.create(:account, :number => 1576, :kind => :asset) }
-  let!(:account_1600) { FactoryGirl.create(:account, :number => 1600, :kind => :liability) }
+  let!(:account_1000) { FactoryBot.create(:account, :number => 1000, :kind => :asset) }
+  let!(:account_1200) { FactoryBot.create(:account, :number => 1200, :kind => :asset) }
+  let!(:account_1210) { FactoryBot.create(:account, :number => 1210, :kind => :asset) }
+  let!(:account_4910) { FactoryBot.create(:account, :number => 4910, :kind => :expense) }
+  let!(:account_4920) { FactoryBot.create(:account, :number => 4920, :kind => :expense) }
+  let!(:account_1576) { FactoryBot.create(:account, :number => 1576, :kind => :asset) }
+  let!(:account_1600) { FactoryBot.create(:account, :number => 1600, :kind => :liability) }
 
   let :simple_journal do
     Keepr::Journal.create :keepr_postings_attributes => [

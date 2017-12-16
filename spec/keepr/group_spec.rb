@@ -18,7 +18,7 @@ describe Keepr::Group do
 
   describe :get_from_parent do
     it 'should preset parent' do
-      root = FactoryGirl.create :group, :target => :asset
+      root = FactoryBot.create :group, :target => :asset
       child = root.children.create! :name => 'Bar'
 
       expect(child.target).to eq('asset')
@@ -27,8 +27,8 @@ describe Keepr::Group do
 
   describe :keepr_accounts do
     it 'should not destroy if there are accounts' do
-      group = FactoryGirl.create :group
-      account = FactoryGirl.create :account, :number => 1000, :keepr_group => group
+      group = FactoryBot.create :group
+      account = FactoryBot.create :account, :number => 1000, :keepr_group => group
 
       expect { group.destroy }.to_not change { Keepr::Group.count }
       expect(group.destroy).to eq(false)
@@ -36,7 +36,7 @@ describe Keepr::Group do
     end
 
     it 'should destroy if there are no accounts' do
-      group = FactoryGirl.create :group
+      group = FactoryBot.create :group
 
       expect { group.destroy }.to change { Keepr::Group.count }.by(-1)
     end
@@ -44,22 +44,22 @@ describe Keepr::Group do
 
   describe :keepr_postings do
     # Simple asset group hierarchy
-    let(:group_1)     { FactoryGirl.create :group, :target => :asset }
-    let(:group_1_1)   { FactoryGirl.create :group, :target => :asset, :parent => group_1 }
-    let(:group_1_1_1) { FactoryGirl.create :group, :target => :asset, :parent => group_1_1 }
+    let(:group_1)     { FactoryBot.create :group, :target => :asset }
+    let(:group_1_1)   { FactoryBot.create :group, :target => :asset, :parent => group_1 }
+    let(:group_1_1_1) { FactoryBot.create :group, :target => :asset, :parent => group_1_1 }
 
     # Group for P&L accounts
-    let(:group_2)     { FactoryGirl.create :group, :target => :profit_and_loss }
+    let(:group_2)     { FactoryBot.create :group, :target => :profit_and_loss }
 
     # Group for balance result
-    let(:group_result){ FactoryGirl.create :group, :target => :liability, :is_result => true }
+    let(:group_result){ FactoryBot.create :group, :target => :liability, :is_result => true }
 
     # Accounts
-    let(:account_1a)  { FactoryGirl.create :account, :number => '0001', :keepr_group => group_1_1_1 }
-    let(:account_1b)  { FactoryGirl.create :account, :number => '0011', :keepr_group => group_1_1_1 }
-    let(:account_1c)  { FactoryGirl.create :account, :number => '0111', :keepr_group => group_1_1_1 }
+    let(:account_1a)  { FactoryBot.create :account, :number => '0001', :keepr_group => group_1_1_1 }
+    let(:account_1b)  { FactoryBot.create :account, :number => '0011', :keepr_group => group_1_1_1 }
+    let(:account_1c)  { FactoryBot.create :account, :number => '0111', :keepr_group => group_1_1_1 }
 
-    let(:account_2)   { FactoryGirl.create :account, :number => '8400', :keepr_group => group_2, :kind => :revenue }
+    let(:account_2)   { FactoryBot.create :account, :number => '8400', :keepr_group => group_2, :kind => :revenue }
 
     # Journals
     let!(:journal1)   { Keepr::Journal.create! :keepr_postings_attributes => [
