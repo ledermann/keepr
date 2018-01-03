@@ -3,7 +3,7 @@ class Keepr::Account < ActiveRecord::Base
 
   has_ancestry orphan_strategy: :restrict
 
-  enum kind: [ :asset, :liability, :revenue, :expense, :neutral, :debtor, :creditor ]
+  enum kind: [ :asset, :liability, :revenue, :expense, :forward, :debtor, :creditor ]
 
   validates_presence_of :number, :name
   validates_uniqueness_of :number
