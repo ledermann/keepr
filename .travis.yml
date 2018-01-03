@@ -1,10 +1,9 @@
 language: ruby
 rvm:
-  - 2.0.0
-  - 2.1.10
   - 2.2.9
   - 2.3.6
   - 2.4.3
+  - 2.5.0
 gemfile:
   - ci/Gemfile-rails-4-1
   - ci/Gemfile-rails-4-2
@@ -12,15 +11,11 @@ gemfile:
   - ci/Gemfile-rails-5-1
 matrix:
   exclude:
-    - rvm: 2.0.0
-      gemfile: ci/Gemfile-rails-5-1
-    - rvm: 2.1.10
-      gemfile: ci/Gemfile-rails-5-1
-    - rvm: 2.0.0
-      gemfile: ci/Gemfile-rails-5-0
-    - rvm: 2.1.10
-      gemfile: ci/Gemfile-rails-5-0
     - rvm: 2.4.3
       gemfile: ci/Gemfile-rails-4-1
-before_install: gem update bundler
+    - rvm: 2.5.0
+      gemfile: ci/Gemfile-rails-4-1
+before_install:
+  - gem update --system
+  - gem update bundler
 sudo: false
