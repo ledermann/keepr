@@ -19,10 +19,16 @@ class Keepr::Group < ActiveRecord::Base
 
   def keepr_postings
     if is_result
-      Keepr::Posting.joins(:keepr_account).where(keepr_accounts: { kind: [ Keepr::Account.kinds[:revenue],
-                                                                                 Keepr::Account.kinds[:expense] ] })
+      Keepr::Posting.
+        joins(:keepr_account).
+        where(keepr_accounts: { kind: [
+          Keepr::Account.kinds[:revenue],
+          Keepr::Account.kinds[:expense]
+        ]})
     else
-      Keepr::Posting.joins(keepr_account: :keepr_group).merge(self.subtree)
+      Keepr::Posting.
+        joins(keepr_account: :keepr_group).
+        merge(self.subtree)
     end
   end
 

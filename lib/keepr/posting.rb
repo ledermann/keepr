@@ -22,14 +22,14 @@ class Keepr::Posting < ActiveRecord::Base
   end
 
   def side=(value)
+    raise ArgumentError unless [ SIDE_DEBIT, SIDE_CREDIT ].include?(value)
     @side = value
+    return unless amount
 
     if credit?
-      self.raw_amount = -amount if amount
+      self.raw_amount = -amount
     elsif debit?
-      self.raw_amount =  amount if amount
-    else
-      raise ArgumentError
+      self.raw_amount =  amount
     end
   end
 

@@ -30,18 +30,18 @@ class Keepr::Account < ActiveRecord::Base
     date           = options[:date]
     permanent_only = options[:permanent_only]
 
-    if date
-      if date.is_a?(Date)
-        subquery = subquery.where "keepr_journals.date <= '#{date.to_s(:db)}'"
-      elsif date.is_a?(Range)
-        subquery = subquery.where "keepr_journals.date BETWEEN '#{date.first.to_s(:db)}' AND '#{date.last.to_s(:db)}'"
-      else
-        raise ArgumentError
-      end
+    case date
+    when nil
+    when Date
+      subquery = subquery.where('keepr_journals.date <= ?', date)
+    when Range
+      subquery = subquery.where(keepr_journals: { date: date.first..date.last })
+    else
+      raise ArgumentError
     end
 
     if permanent_only
-      subquery = subquery.where "keepr_journals.permanent = #{connection.quoted_true}"
+      subquery = subquery.where(keepr_journals: { permanent: true })
     end
 
     select "keepr_accounts.*, (#{subquery.to_sql}) AS sum_amount"
@@ -80,17 +80,22 @@ class Keepr::Account < ActiveRecord::Base
   end
 
   def balance(date=nil)
-    if date
-      if date.is_a?(Date)
-        keepr_postings.joins(:keepr_journal).where("keepr_journals.date <= '#{date.to_s(:db)}'").sum(:amount)
-      elsif date.is_a?(Range)
-        keepr_postings.joins(:keepr_journal).where("keepr_journals.date BETWEEN '#{date.first.to_s(:db)}' AND '#{date.last.to_s(:db)}'").sum(:amount)
-      else
-        raise ArgumentError
-      end
+    scope = case date
+    when nil
+      keepr_postings
+    when Date
+      keepr_postings.
+        joins(:keepr_journal).
+        where('keepr_journals.date <= ?', date)
+    when Range
+      keepr_postings.
+        joins(:keepr_journal).
+        where(keepr_journals: { date: date.first..date.last })
     else
-      keepr_postings.sum(:amount)
+      raise ArgumentError
     end
+
+    scope.sum(:amount)
   end
 
   def number_as_string
@@ -107,19 +112,19 @@ class Keepr::Account < ActiveRecord::Base
 
 private
   def group_validation
-    if keepr_group.present?
-      if asset?
-        errors.add(:kind, :group_mismatch) unless keepr_group.asset?
-      elsif liability?
-        errors.add(:kind, :group_mismatch) unless keepr_group.liability?
-      elsif profit_and_loss?
-        errors.add(:kind, :group_mismatch) unless keepr_group.profit_and_loss?
-      else
-        errors.add(:kind, :group_conflict)
-      end
+    return unless keepr_group.present?
 
-      errors.add(:keepr_group_id, :no_group_allowed_for_result) if keepr_group.is_result
+    if asset?
+      errors.add(:kind, :group_mismatch) unless keepr_group.asset?
+    elsif liability?
+      errors.add(:kind, :group_mismatch) unless keepr_group.liability?
+    elsif profit_and_loss?
+      errors.add(:kind, :group_mismatch) unless keepr_group.profit_and_loss?
+    else
+      errors.add(:kind, :group_conflict)
     end
+
+    errors.add(:keepr_group_id, :no_group_allowed_for_result) if keepr_group.is_result
   end
 
   def tax_validation
