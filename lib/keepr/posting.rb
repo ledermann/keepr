@@ -27,9 +27,9 @@ class Keepr::Posting < ActiveRecord::Base
     return unless amount
 
     if credit?
-      self.raw_amount = -amount
+      self.raw_amount = -amount.to_f
     elsif debit?
-      self.raw_amount =  amount
+      self.raw_amount =  amount.to_f
     end
   end
 
@@ -58,9 +58,9 @@ class Keepr::Posting < ActiveRecord::Base
     @side ||= SIDE_DEBIT
 
     if credit?
-      self.raw_amount = -value
+      self.raw_amount = -value.to_f
     else
-      self.raw_amount = value
+      self.raw_amount = value.to_f
     end
   end
 
