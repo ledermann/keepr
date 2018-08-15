@@ -1,7 +1,8 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 class Keepr::GroupsCreator
   def initialize(target)
-    raise ArgumentError unless [ :balance, :profit_and_loss ].include?(target)
+    raise ArgumentError unless %i[balance profit_and_loss].include?(target)
 
     @target = target
   end
@@ -16,7 +17,8 @@ class Keepr::GroupsCreator
     end
   end
 
-private
+  private
+
   def load(filename, options)
     full_filename = File.join(File.dirname(__FILE__), "groups_creator/#{filename}".downcase)
     lines = File.readlines(full_filename)
@@ -31,11 +33,9 @@ private
       number, name = line.lstrip.match(/^(.*?)\s(.+)$/).to_a[1..-1]
 
       attributes = options.merge(name: name, number: number)
-      if @target == :balance && name == 'Jahresüberschuss/Jahresfehlbetrag'
-        attributes[:is_result] = true
-      end
+      attributes[:is_result] = true if @target == :balance && name == 'Jahresüberschuss/Jahresfehlbetrag'
 
-      if depth == 0
+      if depth.zero?
         parents = []
         group = Keepr::Group.create!(attributes)
       else

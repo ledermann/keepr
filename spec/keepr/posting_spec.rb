@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Keepr::Posting do
@@ -85,15 +87,15 @@ describe Keepr::Posting do
     end
 
     it 'should fail for negative amount' do
-      expect {
+      expect do
         Keepr::Posting.new(amount: -10)
-      }.to raise_error(ArgumentError)
+      end.to raise_error(ArgumentError)
     end
 
     it 'should fail for unknown side' do
-      expect {
+      expect do
         Keepr::Posting.new(side: 'foo')
-      }.to raise_error(ArgumentError)
+      end.to raise_error(ArgumentError)
     end
   end
 
@@ -111,12 +113,12 @@ describe Keepr::Posting do
     let!(:cost_center) { FactoryBot.create(:cost_center) }
     let!(:account_8400) { FactoryBot.create(:account, number: 8400, kind: :revenue) }
 
-    it "should allow cost_center" do
+    it 'should allow cost_center' do
       posting = Keepr::Posting.new keepr_account: account_8400, amount: 100, keepr_cost_center: cost_center
       expect(posting).to be_valid
     end
 
-    it "should not allow cost_center" do
+    it 'should not allow cost_center' do
       posting = Keepr::Posting.new keepr_account: account_1000, amount: 100, keepr_cost_center: cost_center
       expect(posting).to_not be_valid
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Keepr::JournalExport do
@@ -13,22 +15,21 @@ describe Keepr::JournalExport do
   let(:account_4920)  { FactoryBot.create :account, number: 4920, kind: :expense,   keepr_tax: vst }
   let(:account_8400)  { FactoryBot.create :account, number: 8400, kind: :revenue,   keepr_tax: ust }
 
-  let(:account_10000) { FactoryBot.create :account, number: 10000, kind: :debtor   }
+  let(:account_10000) { FactoryBot.create :account, number: 10_000, kind: :debtor }
 
   let(:scope) { Keepr::Journal.reorder(:number) }
 
-  let(:export) {
+  let(:export) do
     Keepr::JournalExport.new(scope,
-      'Berater'     => 1234567,
-      'Mandant'     => 78901,
-      'Datum vom'   => Date.new(2016,6,1),
-      'Datum bis'   => Date.new(2016,6,30),
-      'WJ-Beginn'   => Date.new(2016,1,1),
-      'Bezeichnung' => 'Keepr-Buchungen'
-    ) do |posting|
+                             'Berater'     => 1_234_567,
+                             'Mandant'     => 78_901,
+                             'Datum vom'   => Date.new(2016, 6, 1),
+                             'Datum bis'   => Date.new(2016, 6, 30),
+                             'WJ-Beginn'   => Date.new(2016, 1, 1),
+                             'Bezeichnung' => 'Keepr-Buchungen') do |posting|
       { 'Identifikationsnummer' => "ID:#{posting.id}" }
     end
-  }
+  end
 
   describe :to_s do
     subject { export.to_s }
@@ -37,30 +38,30 @@ describe Keepr::JournalExport do
       subject.lines[2..-1]
     end
 
-    it "should return CSV lines" do
+    it 'should return CSV lines' do
       expect(subject.lines.count).to eq(2)
       subject.lines.each { |line| expect(line).to include(';') }
     end
 
-    it "should include header data" do
+    it 'should include header data' do
       expect(subject.lines[0]).to include('1234567;')
       expect(subject.lines[0]).to include('78901;')
       expect(subject.lines[0]).to include('20160601;20160630;')
       expect(subject.lines[0]).to include('"Keepr-Buchungen";')
     end
 
-    context "Journal without tax" do
+    context 'Journal without tax' do
       let!(:journal_without_tax) do
         Keepr::Journal.create! number: 'BELEG-1',
                                subject: 'Geldautomat',
-                               date: Date.new(2016,06,23),
+                               date: Date.new(2016, 0o6, 23),
                                keepr_postings_attributes: [
                                  { keepr_account: account_1000, amount: 105, side: 'debit' },
                                  { keepr_account: account_1200, amount: 105, side: 'credit' }
                                ]
       end
 
-      it "should include data" do
+      it 'should include data' do
         expect(booking_lines.count).to eq(1)
 
         expect(booking_lines[0]).to include('"Geldautomat";')
@@ -73,11 +74,11 @@ describe Keepr::JournalExport do
       end
     end
 
-    context "Journal with tax" do
+    context 'Journal with tax' do
       let!(:journal_with_tax) do
         Keepr::Journal.create! number: 'BELEG-2',
                                subject: 'Telefonrechnung',
-                               date: Date.new(2016,06,24),
+                               date: Date.new(2016, 0o6, 24),
                                keepr_postings_attributes: [
                                  { keepr_account: account_4920, amount:  8.40, side: 'debit' },
                                  { keepr_account: account_1576, amount:  1.60, side: 'debit' },
@@ -85,7 +86,7 @@ describe Keepr::JournalExport do
                                ]
       end
 
-      it "should include data" do
+      it 'should include data' do
         expect(booking_lines.count).to eq(2)
 
         expect(booking_lines[0]).to include('"Telefonrechnung";')
@@ -106,22 +107,22 @@ describe Keepr::JournalExport do
       end
     end
 
-    context "Journal with debtor" do
+    context 'Journal with debtor' do
       let!(:journal_with_debtor) do
         Keepr::Journal.create! number: 'BELEG-3',
                                subject: 'Warenverkauf mit Anzahlung',
-                               date: Date.new(2016,06,25),
+                               date: Date.new(2016, 0o6, 25),
                                keepr_postings_attributes: [
                                  { keepr_account: account_10000, amount: 4760.00, side: 'debit'  },
                                  { keepr_account: account_1718,  amount: 1000.00, side: 'debit'  },
-                                 { keepr_account: account_1776,  amount:  190.00, side: 'debit'  },
+                                 { keepr_account: account_1776,  amount: 190.00, side: 'debit' },
 
                                  { keepr_account: account_8400,  amount: 5000.00, side: 'credit' },
-                                 { keepr_account: account_1776,  amount:  950.00, side: 'credit' }
+                                 { keepr_account: account_1776,  amount: 950.00, side: 'credit' }
                                ]
       end
 
-      it "should include data" do
+      it 'should include data' do
         expect(booking_lines.count).to eq(4)
 
         expect(booking_lines[0]).to include('"Warenverkauf mit Anzahlung";')
@@ -157,7 +158,7 @@ describe Keepr::JournalExport do
         expect(booking_lines[3]).to include(';0;')
       end
 
-      it "should include data from block" do
+      it 'should include data from block' do
         expect(booking_lines[0]).to include('ID:')
         expect(booking_lines[1]).to include('ID:')
       end
@@ -165,7 +166,7 @@ describe Keepr::JournalExport do
   end
 
   describe :to_file do
-    it "should create CSV file" do
+    it 'should create CSV file' do
       Dir.mktmpdir do |dir|
         filename = "#{dir}/EXTF_Buchungsstapel.csv"
         export.to_file(filename)

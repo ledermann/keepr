@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Keepr::Journal < ActiveRecord::Base
   self.table_name = 'keepr_journals'
 
@@ -11,7 +13,7 @@ class Keepr::Journal < ActiveRecord::Base
 
   accepts_nested_attributes_for :keepr_postings, allow_destroy: true, reject_if: :all_blank
 
-  default_scope { order({date: :desc}, {id: :desc}) }
+  default_scope { order({ date: :desc }, id: :desc) }
 
   validate :validate_postings
 
@@ -31,7 +33,8 @@ class Keepr::Journal < ActiveRecord::Base
   before_update :check_permanent
   before_destroy :check_permanent
 
-private
+  private
+
   def existing_postings
     keepr_postings.to_a.delete_if(&:marked_for_destruction?)
   end
@@ -51,15 +54,15 @@ private
   end
 
   def check_permanent
-    if self.permanent_was
-      # If marked as permanent, no changes are allowed
-      errors.add :base, :changes_not_allowed
+    return unless permanent_was
 
-      if ActiveRecord::VERSION::MAJOR < 5
-        false
-      else
-        throw :abort
-      end
+    # If marked as permanent, no changes are allowed
+    errors.add :base, :changes_not_allowed
+
+    if ActiveRecord::VERSION::MAJOR < 5
+      false
+    else
+      throw :abort
     end
   end
 end

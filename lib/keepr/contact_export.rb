@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Keepr::ContactExport
-  def initialize(accounts, header_options={}, &block)
+  def initialize(accounts, header_options = {}, &block)
     raise ArgumentError unless block_given?
 
     @accounts = accounts
@@ -15,22 +17,19 @@ class Keepr::ContactExport
     export.to_file(filename)
   end
 
-private
+  private
 
   def export
     export = Datev::ContactExport.new(@header_options)
 
     @accounts.reorder(:number).each do |account|
-      if account.debtor? || account.creditor?
-        export << to_datev(account)
-      end
+      export << to_datev(account) if account.debtor? || account.creditor?
     end
 
     export
   end
 
   def to_datev(account)
-    { 'Konto' => account.number
-    }.merge(@block.call(account))
+    { 'Konto' => account.number }.merge(@block.call(account))
   end
 end

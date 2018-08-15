@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :tax, class: Keepr::Tax do
     name 'USt19'

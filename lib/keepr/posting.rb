@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Keepr::Posting < ActiveRecord::Base
   self.table_name = 'keepr_postings'
 
@@ -17,12 +19,12 @@ class Keepr::Posting < ActiveRecord::Base
 
   def side
     @side || begin
-      (raw_amount < 0 ? SIDE_CREDIT : SIDE_DEBIT) if raw_amount
+      (raw_amount.negative? ? SIDE_CREDIT : SIDE_DEBIT) if raw_amount
     end
   end
 
   def side=(value)
-    raise ArgumentError unless [ SIDE_DEBIT, SIDE_CREDIT ].include?(value)
+    raise ArgumentError unless [SIDE_DEBIT, SIDE_CREDIT].include?(value)
     @side = value
     return unless amount
 
@@ -54,23 +56,25 @@ class Keepr::Posting < ActiveRecord::Base
   end
 
   def amount=(value)
-    raise ArgumentError.new('Negative amount not allowed!') if value.to_f < 0
     @side ||= SIDE_DEBIT
 
-    if credit?
-      self.raw_amount = -value.to_d
-    else
-      self.raw_amount = value.to_d
+    unless value
+      self.raw_amount = nil
+      return
     end
+
+    raise ArgumentError, 'Negative amount not allowed!' if value.to_d.negative?
+
+    self.raw_amount = credit? ? -value.to_d : value.to_d
   end
 
-private
+  private
+
   def cost_center_validation
-    if keepr_cost_center
-      unless keepr_account.profit_and_loss?
-        # allowed for expense or revenue accounts only
-        errors.add :keepr_cost_center_id, :allowed_for_expense_or_revenue_only
-      end
-    end
+    return unless keepr_cost_center
+    return if keepr_account.profit_and_loss?
+
+    # allowed for expense or revenue accounts only
+    errors.add :keepr_cost_center_id, :allowed_for_expense_or_revenue_only
   end
 end

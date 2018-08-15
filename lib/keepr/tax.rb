@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Keepr::Tax < ActiveRecord::Base
   self.table_name = 'keepr_taxes'
 

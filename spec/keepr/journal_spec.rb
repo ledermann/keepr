@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Keepr::Journal do
@@ -11,17 +13,17 @@ describe Keepr::Journal do
 
   let :simple_journal do
     Keepr::Journal.create keepr_postings_attributes: [
-                                { keepr_account: account_1000, amount: 100.99, side: 'debit' },
-                                { keepr_account: account_1200, amount: 100.99, side: 'credit' }
-                              ]
+      { keepr_account: account_1000, amount: 100.99, side: 'debit' },
+      { keepr_account: account_1200, amount: 100.99, side: 'credit' }
+    ]
   end
 
   let :complex_journal do
     Keepr::Journal.create keepr_postings_attributes: [
-                                { keepr_account: account_4920, amount:  8.40, side: 'debit' },
-                                { keepr_account: account_1576, amount:  1.60, side: 'debit' },
-                                { keepr_account: account_1600, amount: 10.00, side: 'credit' }
-                               ]
+      { keepr_account: account_4920, amount: 8.40, side: 'debit' },
+      { keepr_account: account_1576, amount: 1.60, side: 'debit' },
+      { keepr_account: account_1600, amount: 10.00, side: 'credit' }
+    ]
   end
 
   describe :initialization do
@@ -33,7 +35,7 @@ describe Keepr::Journal do
 
     context 'with date given' do
       it 'should not modify the date' do
-        old_date = Date.new(2013,10,1)
+        old_date = Date.new(2013, 10, 1)
         expect(Keepr::Journal.new(date: old_date).date).to eq(old_date)
       end
     end
@@ -54,37 +56,37 @@ describe Keepr::Journal do
 
     it 'should fail for journal with only one posting' do
       journal = Keepr::Journal.create keepr_postings_attributes: [
-                                  { keepr_account: account_4920, amount: 8.40, side: 'debit' }
-                                ]
+        { keepr_account: account_4920, amount: 8.40, side: 'debit' }
+      ]
       expect(journal).not_to be_valid
-      expect(journal.errors.added? :base, :account_missing).to eq(true)
+      expect(journal.errors.added?(:base, :account_missing)).to eq(true)
     end
 
     it 'should fail for booking the same account twice' do
       journal = Keepr::Journal.create keepr_postings_attributes: [
-                                  { keepr_account: account_1000, amount: 10, side: 'debit' },
-                                  { keepr_account: account_1000, amount: 10, side: 'credit' }
-                                ]
+        { keepr_account: account_1000, amount: 10, side: 'debit' },
+        { keepr_account: account_1000, amount: 10, side: 'credit' }
+      ]
       expect(journal).not_to be_valid
-      expect(journal.errors.added? :base, :account_missing).to eq(true)
+      expect(journal.errors.added?(:base, :account_missing)).to eq(true)
     end
 
     it 'should fail for unbalanced journal' do
       journal = Keepr::Journal.create keepr_postings_attributes: [
-                                  { keepr_account: account_1000, amount: 10, side: 'debit' },
-                                  { keepr_account: account_1200, amount: 10, side: 'debit' }
-                                ]
+        { keepr_account: account_1000, amount: 10, side: 'debit' },
+        { keepr_account: account_1200, amount: 10, side: 'debit' }
+      ]
       expect(journal).not_to be_valid
-      expect(journal.errors.added? :base, :amount_mismatch).to eq(true)
+      expect(journal.errors.added?(:base, :amount_mismatch)).to eq(true)
     end
 
     it 'should fail for nil amount' do
       journal = Keepr::Journal.create keepr_postings_attributes: [
-                                  { keepr_account: account_1000, amount: 10,  side: 'debit' },
-                                  { keepr_account: account_1200, amount: nil, side: 'credit' }
-                                ]
+        { keepr_account: account_1000, amount: 10, side: 'debit' },
+        { keepr_account: account_1200, amount: nil, side: 'credit' }
+      ]
       expect(journal).not_to be_valid
-      expect(journal.errors.added? :base, :amount_mismatch).to eq(true)
+      expect(journal.errors.added?(:base, :amount_mismatch)).to eq(true)
     end
   end
 
@@ -93,14 +95,14 @@ describe Keepr::Journal do
       simple_journal.update_attributes! permanent: true
     end
 
-    it "should not allow update" do
-      expect(simple_journal.update_attributes subject: 'foo').to eq(false)
-      expect(simple_journal.errors.added? :base, :changes_not_allowed).to eq(true)
+    it 'should not allow update' do
+      expect(simple_journal.update_attributes(subject: 'foo')).to eq(false)
+      expect(simple_journal.errors.added?(:base, :changes_not_allowed)).to eq(true)
     end
 
-    it "should not allow destroy" do
+    it 'should not allow destroy' do
       expect(simple_journal.destroy).to eq(false)
-      expect(simple_journal.errors.added? :base, :changes_not_allowed).to eq(true)
+      expect(simple_journal.errors.added?(:base, :changes_not_allowed)).to eq(true)
     end
   end
 
@@ -111,8 +113,8 @@ describe Keepr::Journal do
     end
 
     it 'should order postings' do
-      expect(simple_journal.keepr_postings.map(&:side)).to eq(['debit','credit'])
-      expect(complex_journal.keepr_postings.map(&:side)).to eq(['debit','debit','credit'])
+      expect(simple_journal.keepr_postings.map(&:side)).to eq(%w[debit credit])
+      expect(complex_journal.keepr_postings.map(&:side)).to eq(%w[debit debit credit])
     end
   end
 

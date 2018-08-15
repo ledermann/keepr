@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Keepr::ActiveRecordExtension do
@@ -13,14 +15,14 @@ describe Keepr::ActiveRecordExtension do
     end
 
     it 'has keepr_postings' do
-      journal = Keepr::Journal.create! keepr_postings_attributes: [
-                               { keepr_account: account,      amount: 30, side: 'debit'  },
-                               { keepr_account: account_1200, amount: 30, side: 'credit' }
-                             ]
-      other_journal = Keepr::Journal.create! keepr_postings_attributes: [
-                               { keepr_account: account_1000, amount: 20, side: 'debit'  },
-                               { keepr_account: account_1200, amount: 20, side: 'credit' }
-                             ]
+      Keepr::Journal.create! keepr_postings_attributes: [
+        { keepr_account: account,      amount: 30, side: 'debit'  },
+        { keepr_account: account_1200, amount: 30, side: 'credit' }
+      ]
+      Keepr::Journal.create! keepr_postings_attributes: [
+        { keepr_account: account_1000, amount: 20, side: 'debit'  },
+        { keepr_account: account_1200, amount: 20, side: 'credit' }
+      ]
 
       expect(ledger.keepr_postings.count).to eq(1)
       expect(ledger.keepr_postings.first.amount).to eq(30)
@@ -37,14 +39,14 @@ describe Keepr::ActiveRecordExtension do
     end
 
     it 'has keepr_postings' do
-      journal = Keepr::Journal.create! keepr_postings_attributes: [
-                               { keepr_account: account1,     amount: 30, side: 'debit'  },
-                               { keepr_account: account_1200, amount: 30, side: 'credit' }
-                             ]
-      other_journal = Keepr::Journal.create! keepr_postings_attributes: [
-                               { keepr_account: account_1000, amount: 20, side: 'debit'  },
-                               { keepr_account: account_1200, amount: 20, side: 'credit' }
-                             ]
+      Keepr::Journal.create! keepr_postings_attributes: [
+        { keepr_account: account1,     amount: 30, side: 'debit'  },
+        { keepr_account: account_1200, amount: 30, side: 'credit' }
+      ]
+      Keepr::Journal.create! keepr_postings_attributes: [
+        { keepr_account: account_1000, amount: 20, side: 'debit'  },
+        { keepr_account: account_1200, amount: 20, side: 'credit' }
+      ]
 
       expect(contact.keepr_postings.count).to eq(1)
       expect(contact.keepr_postings.first.amount).to eq(30)
@@ -70,7 +72,7 @@ describe Keepr::ActiveRecordExtension do
 
   describe 'scopes' do
     let!(:unbooked_document) { Document.create! number: 'Unbooked' }
-    let!(:booked_document) {
+    let!(:booked_document) do
       document = Document.create! number: 'Booked'
       Keepr::Journal.create! accountable: document,
                              keepr_postings_attributes: [
@@ -78,7 +80,7 @@ describe Keepr::ActiveRecordExtension do
                                { keepr_account: account_1200, amount: 100.99, side: 'credit' }
                              ]
       document
-    }
+    end
 
     describe :keepr_booked do
       subject { Document.keepr_booked }

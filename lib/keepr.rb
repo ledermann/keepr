@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ancestry'
 require 'datev'
 
@@ -19,7 +21,7 @@ class ActiveRecord::Base
 end
 
 Keepr::MIGRATION_BASE_CLASS = if ActiveRecord::VERSION::MAJOR >= 5
-  ActiveRecord::Migration[5.0]
-else
-  ActiveRecord::Migration
-end
+                                ActiveRecord::Migration[5.0]
+                              else
+                                ActiveRecord::Migration
+                              end

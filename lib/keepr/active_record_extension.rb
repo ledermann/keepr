@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Keepr::ActiveRecordExtension
   def self.included(base)
     base.extend ClassMethods
@@ -17,7 +19,7 @@ module Keepr::ActiveRecordExtension
     def has_keepr_journals
       has_many :keepr_journals, class_name: 'Keepr::Journal', as: :accountable, dependent: :restrict_with_error
 
-      class_eval <<-EOT
+      class_eval <<-CODE, __FILE__, __LINE__ + 1
         def keepr_booked?
           keepr_journals.exists?
         end
@@ -27,7 +29,7 @@ module Keepr::ActiveRecordExtension
                                     where('keepr_journals.id' => nil)
                                   }
         scope :keepr_booked,   -> { joins(:keepr_journals) }
-      EOT
+      CODE
     end
 
     def has_keepr_postings

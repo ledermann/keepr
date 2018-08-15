@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Keepr::Account < ActiveRecord::Base
   self.table_name = 'keepr_accounts'
 
   has_ancestry orphan_strategy: :restrict
 
-  enum kind: [ :asset, :liability, :revenue, :expense, :forward, :debtor, :creditor ]
+  enum kind: %i[asset liability revenue expense forward debtor creditor]
 
   validates_presence_of :number, :name
   validates_uniqueness_of :number
@@ -19,13 +21,13 @@ class Keepr::Account < ActiveRecord::Base
 
   default_scope { order(:number) }
 
-  def self.with_sums(options={})
+  def self.with_sums(options = {})
     raise ArgumentError unless options.is_a?(Hash)
 
-    subquery = Keepr::Posting.
-                 select('SUM(keepr_postings.amount)').
-                 joins(:keepr_journal).
-                 where('keepr_postings.keepr_account_id = keepr_accounts.id')
+    subquery = Keepr::Posting
+               .select('SUM(keepr_postings.amount)')
+               .joins(:keepr_journal)
+               .where('keepr_postings.keepr_account_id = keepr_accounts.id')
 
     date           = options[:date]
     permanent_only = options[:permanent_only]
@@ -40,27 +42,24 @@ class Keepr::Account < ActiveRecord::Base
       raise ArgumentError
     end
 
-    if permanent_only
-      subquery = subquery.where(keepr_journals: { permanent: true })
-    end
+    subquery = subquery.where(keepr_journals: { permanent: true }) if permanent_only
 
     select "keepr_accounts.*, (#{subquery.to_sql}) AS sum_amount"
   end
 
-  def self.merged_with_sums(options={})
+  def self.merged_with_sums(options = {})
     accounts = with_sums(options).to_a
 
     # Sum up child accounts to parent
     position = 0
-    while account = accounts[position] do
+    while (account = accounts[position])
       if account.parent_id && account.sum_amount
-        if parent_account = accounts.find { |a| a.id == account.parent_id }
-          parent_account.sum_amount ||= 0
-          parent_account.sum_amount += account.sum_amount
-          accounts.delete_at(position)
-        else
-          raise RuntimeError
-        end
+        parent_account = accounts.find { |a| a.id == account.parent_id }
+        raise RuntimeError unless parent_account
+
+        parent_account.sum_amount ||= 0
+        parent_account.sum_amount += account.sum_amount
+        accounts.delete_at(position)
       else
         position += 1
       end
@@ -74,33 +73,33 @@ class Keepr::Account < ActiveRecord::Base
   end
 
   def keepr_postings
-    Keepr::Posting.
-      joins(:keepr_account).
-      where(subtree_conditions)
+    Keepr::Posting
+      .joins(:keepr_account)
+      .where(subtree_conditions)
   end
 
-  def balance(date=nil)
+  def balance(date = nil)
     scope = case date
-    when nil
-      keepr_postings
-    when Date
-      keepr_postings.
-        joins(:keepr_journal).
-        where('keepr_journals.date <= ?', date)
-    when Range
-      keepr_postings.
-        joins(:keepr_journal).
-        where(keepr_journals: { date: date.first..date.last })
-    else
-      raise ArgumentError
-    end
+            when nil
+              keepr_postings
+            when Date
+              keepr_postings
+            .joins(:keepr_journal)
+            .where('keepr_journals.date <= ?', date)
+            when Range
+              keepr_postings
+            .joins(:keepr_journal)
+            .where(keepr_journals: { date: date.first..date.last })
+            else
+              raise ArgumentError
+            end
 
     scope.sum(:amount)
   end
 
   def number_as_string
     if number < 1000
-      "%04d" % number
+      format('%04d', number)
     else
       number.to_s
     end
@@ -110,7 +109,8 @@ class Keepr::Account < ActiveRecord::Base
     "#{number_as_string} (#{name})"
   end
 
-private
+  private
+
   def group_validation
     return unless keepr_group.present?
 

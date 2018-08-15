@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SpecMigration < Keepr::MIGRATION_BASE_CLASS
   def self.up
     create_table Contact, force: true do |t|

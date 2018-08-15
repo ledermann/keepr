@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class KeeprMigration < Keepr::MIGRATION_BASE_CLASS
   def self.up
     create_table Keepr::Group, force: true do |t|
