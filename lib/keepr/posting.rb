@@ -25,6 +25,7 @@ class Keepr::Posting < ActiveRecord::Base
 
   def side=(value)
     raise ArgumentError unless [SIDE_DEBIT, SIDE_CREDIT].include?(value)
+
     @side = value
     return unless amount
 
