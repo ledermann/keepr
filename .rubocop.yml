@@ -22,6 +22,10 @@ Style/ClassAndModuleChildren:
   Enabled: false
 
 
+Layout/AlignHash:
+  Enabled: false
+
+
 Naming/PredicateName:
   Enabled: false
 
