@@ -35,7 +35,7 @@ describe Keepr::GroupsCreator do
     end
   end
 
-private
+  private
 
   def compare_with_source(scope, filename)
     full_filename = File.join(File.dirname(__FILE__), "../../lib/keepr/groups_creator/#{filename}")
