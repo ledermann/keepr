@@ -92,11 +92,11 @@ describe Keepr::Journal do
 
   describe :permanent do
     before :each do
-      simple_journal.update_attributes! permanent: true
+      simple_journal.update! permanent: true
     end
 
     it 'should not allow update' do
-      expect(simple_journal.update_attributes(subject: 'foo')).to eq(false)
+      expect(simple_journal.update(subject: 'foo')).to eq(false)
       expect(simple_journal.errors.added?(:base, :changes_not_allowed)).to eq(true)
     end
 
