@@ -1,4 +1,4 @@
-Copyright (c) 2013-2018 Georg Ledermann
+Copyright (c) 2013-2019 Georg Ledermann
 
 MIT License
 

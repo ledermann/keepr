@@ -64,4 +64,4 @@ TODO: Write usage instructions here
 * https://github.com/bigfleet/accountable
 
 
-Copyright (c) 2013-2018 [Georg Ledermann](http://www.georg-ledermann.de), released under the MIT license
+Copyright (c) 2013-2019 [Georg Ledermann](http://www.georg-ledermann.de), released under the MIT license
