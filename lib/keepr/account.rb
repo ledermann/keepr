@@ -75,7 +75,7 @@ class Keepr::Account < ActiveRecord::Base
   def keepr_postings
     Keepr::Posting
       .joins(:keepr_account)
-      .where(subtree_conditions)
+      .merge(subtree)
   end
 
   def balance(date = nil)
