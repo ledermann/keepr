@@ -1,8 +1,8 @@
 language: ruby
 rvm:
-  - 2.4.6
-  - 2.5.5
-  - 2.6.3
+  - 2.5.8
+  - 2.6.6
+  - 2.7.1
 gemfile:
   - ci/Gemfile-rails-4-2
   - ci/Gemfile-rails-5-0
@@ -11,9 +11,9 @@ gemfile:
   - ci/Gemfile-rails-6-0
 matrix:
   exclude:
-    - rvm: 2.4.6
-      gemfile: ci/Gemfile-rails-6-0
-  script:
+    - rvm: 2.7.1
+      gemfile: ci/Gemfile-rails-4-2
+script:
   - bundle exec rake
 before_install:
   - gem update --system
