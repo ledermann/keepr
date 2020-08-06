@@ -37,7 +37,9 @@ class Keepr::Group < ActiveRecord::Base
   private
 
   def set_target_from_parent
-    self.target = parent.target if parent
+    self.class.unscoped do
+      self.target = parent.target if parent
+    end
   end
 
   def check_result_and_target
