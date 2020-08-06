@@ -16,6 +16,5 @@ matrix:
 script:
   - bundle exec rake
 before_install:
-  - gem update --system
   - gem update bundler
 sudo: false
