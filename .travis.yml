@@ -1,3 +1,5 @@
+os: linux
+dist: xenial
 language: ruby
 rvm:
   - 2.5.8
@@ -17,4 +19,3 @@ script:
   - bundle exec rake
 before_install:
   - gem update bundler
-sudo: false
