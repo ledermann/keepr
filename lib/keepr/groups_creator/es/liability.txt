@@ -1,0 +1,28 @@
+A. Equidad
+  I. Capital dibujado
+  II. Reserva de capital
+  III. Ganancias retenidas
+    1. Reserva legal
+    2. Reserva para acciones de una empresa controladora o de propiedad mayoritaria
+    3. Reservas legales
+    4. otras ganancias retenidas
+  IV. Beneficios arrastrados / pérdidas arrastradas
+  V. Superávit / déficit anual
+B. Provisiones
+  1. Provisiones para pensiones y obligaciones similares
+  2. Disposiciones fiscales
+  3. otras disposiciones
+C. Pasivos
+  1. Bonos
+    de los cuales convertible
+  2. Pasivos con los bancos
+  3. Anticipos recibidos en pedidos
+  4. Cuentas comerciales por pagar
+  5. Pasivos por la aceptación de letras de cambio giradas y la emisión de letras de cambio propias
+  6. Pasivos con empresas afiliadas
+  7. Pasivos frente a empresas con las que existe relación de participación
+  8. otros pasivos
+    a) de los cuales de impuestos
+    b) de los cuales en el contexto de la seguridad social
+D. Gastos pagados por adelantado
+E. Pasivos por impuestos diferidos

@@ -1,0 +1,31 @@
+01. Ventas
+02. Aumento o disminución de existencias de productos terminados y sin terminar
+03. otro trabajo propio capitalizado
+04. otros ingresos operativos
+05. Costo de materiales
+  a) Gastos por materias primas, consumibles y suministros y por bienes adquiridos
+  b) Gastos por servicios adquiridos
+06. Gastos de personal
+  a) Sueldos y salarios
+  b) Seguridad social y gastos de pensión y manutención.
+    de eso para pensiones
+07. Depreciación
+  a) sobre activos intangibles y propiedades, planta y equipo
+  b) de los activos corrientes, en la medida en que estos excedan la depreciación habitual en la corporación
+08. otros gastos operativos
+09. Ingresos de inversiones
+  a) de los cuales de empresas afiliadas
+10. Ingresos de otros valores y préstamos de activos financieros
+  a) de los cuales de empresas afiliadas
+11. otros intereses e ingresos similares
+  a) de los cuales de empresas afiliadas
+12. Depreciación de activos financieros y valores mantenidos como activo corriente
+13. Intereses y gastos similares
+  de los cuales a empresas afiliadas
+14. Resultados de las actividades comerciales ordinarias
+15. Ingresos extraordinarios
+16. Gastos extraordinarios
+17. Resultado extraordinario
+18. Impuestos sobre la renta y las ganancias
+19. Otros impuestos
+20. Superávit anual / déficit anual
