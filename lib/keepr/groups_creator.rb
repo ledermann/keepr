@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Keepr::GroupsCreator
-  def initialize(target, language)
+  def initialize(target, language = :de)
     raise ArgumentError unless %i[balance profit_and_loss].include?(target)
     raise ArgumentError unless %i[de es en].include?(language)
 

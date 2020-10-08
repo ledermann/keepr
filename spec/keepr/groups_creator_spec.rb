@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Keepr::GroupsCreator do
   context 'balance groups in german' do
     before :each do
-      Keepr::GroupsCreator.new(:balance, :de).run
+      Keepr::GroupsCreator.new(:balance).run
     end
 
     it 'should create groups' do
@@ -24,7 +24,7 @@ describe Keepr::GroupsCreator do
 
   context 'profit & loss groups' do
     before :each do
-      Keepr::GroupsCreator.new(:profit_and_loss, :de).run
+      Keepr::GroupsCreator.new(:profit_and_loss).run
     end
 
     it 'should create profit & loss groups' do
