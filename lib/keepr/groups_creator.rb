@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 class Keepr::GroupsCreator
-  def initialize(target)
+  def initialize(target, language = :de)
     raise ArgumentError unless %i[balance profit_and_loss].include?(target)
+    raise ArgumentError unless %i[de es en].include?(language)
 
-    @target = target
+    @target   = target
+    @language = language
   end
 
   def run
@@ -20,7 +22,7 @@ class Keepr::GroupsCreator
   private
 
   def load(filename, options)
-    full_filename = File.join(File.dirname(__FILE__), "groups_creator/#{filename}".downcase)
+    full_filename = File.join(File.dirname(__FILE__), "groups_creator/#{@language.to_s}/#{filename}".downcase)
     lines = File.readlines(full_filename)
     last_depth = 0
     parents = []
@@ -33,7 +35,7 @@ class Keepr::GroupsCreator
       number, name = line.lstrip.match(/^(.*?)\s(.+)$/).to_a[1..-1]
 
       attributes = options.merge(name: name, number: number)
-      attributes[:is_result] = true if @target == :balance && name == 'Jahresüberschuss/Jahresfehlbetrag'
+      attributes[:is_result] = true if @target == :balance && name == annual_surplus
 
       if depth.zero?
         parents = []
@@ -46,6 +48,17 @@ class Keepr::GroupsCreator
       parents.push(group)
 
       last_depth = depth
+    end
+  end
+
+  def annual_surplus
+    case @language
+    when :en
+      return 'Annual surplus / annual deficit'
+    when :es
+      return 'Superávit anual / déficit anual'
+    when :de
+      return 'Jahresüberschuss/Jahresfehlbetrag'
     end
   end
 end

@@ -1,0 +1,31 @@
+01. Sales
+02. Increase or decrease in stocks of finished and unfinished products
+03. other capitalized own work
+04. other operating income
+05. Cost of materials
+  a) Expenses for raw materials, consumables and supplies and for purchased goods
+  b) Expenses for services acquired
+06. Personnel expenses
+  a) Wages and salaries
+  b) Social security and pension and living expenses.
+    of that for pensions
+07. Depreciation
+  a) on intangible assets and property, plant and equipment
+  b) of current assets, to the extent that these exceed the usual depreciation in the corporation
+08. other operating expenses
+09. Investment income
+  a) of which from affiliated companies
+10. Income from other securities and loans from financial assets
+  a) of which from affiliated companies
+11. other similar interest and income
+  a) of which from affiliated companies
+12. Depreciation of financial assets and securities held as current assets
+13. Interest and similar expenses
+  of which to affiliated companies
+14. Results of ordinary business activities
+15. Extraordinary income
+16. Extraordinary expenses
+17. Extraordinary result
+18. Income and income taxes
+19. Other taxes
+20. Annual surplus / annual deficit

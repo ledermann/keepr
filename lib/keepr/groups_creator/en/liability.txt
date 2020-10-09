@@ -1,0 +1,28 @@
+A. Equity
+  I. Drawn capital
+  II. Capital reserve
+  III. Retained earnings
+    1. Legal reserve
+    2. Reserve for shares of a controlling or majority-owned company
+    3. Legal reserves
+    4. other retained earnings
+  IV. Carry-over profit / carry-over loss
+  V. Annual surplus / deficit
+B. Provisions
+  1. Provisions for pensions and similar obligations
+  2. Tax provisions
+  3. other provisions
+C. Liabilities
+  1. Bonds
+    of which convertible
+  2. Liabilities with banks
+  3. Advances received on orders
+  4. Trade accounts payable
+  5. Liabilities for the acceptance of drafted bills of exchange and the issuance of own bills of exchange
+  6. Liabilities with affiliated companies
+  7. Liabilities to companies with which there is a participation relationship
+  8. other liabilities
+    a) of which tax
+    b) of which in the context of social security
+D. Prepaid expenses
+E. Deferred tax liabilities

@@ -1,0 +1,36 @@
+A. Activos fijos
+  I. Activos intangibles
+    1. Derechos de propiedad industrial de creación propia y derechos y valores similares
+    2. Concesiones adquiridas a cambio de un canon, derechos de propiedad industrial y derechos y valores similares, así como licencias sobre dichos derechos y valores
+    3. Fondo de comercio
+    4. Anticipos efectuados
+  II. Activos materiales
+    1. Terrenos, derechos territoriales y edificios, incluidos los edificios en terrenos de terceros
+    2. sistemas técnicos y máquinas
+    3. otros equipos, equipos de fábrica y de oficina
+    4. Anticipos efectuados y activos en construcción
+  III. Activos financieros
+    1. Acciones en empresas afiliadas
+    2. Préstamos a empresas afiliadas
+    3. Explotaciones
+    4. Préstamos a empresas con las que existe relación de participación
+    5. Valores mantenidos como activo fijo
+    6. otros préstamos
+B. Activo corriente
+  I. Inventarios
+    1. Materias primas y suministros
+    2. productos sin terminar, servicios sin terminar
+    3. productos terminados y mercancías
+    4. Anticipos efectuados
+  II. Cuentas por cobrar y otros activos
+    1. Cuentas por cobrar por entregas y servicios
+    2. Cuentas por cobrar de empresas afiliadas
+    3. Reclamaciones frente a empresas con las que existe relación de participación
+    4. otros activos
+  III. Valores
+    1. Acciones en empresas afiliadas
+    2. otros valores
+  IV. Efectivo en caja, saldos del Bundesbank, saldos bancarios y cheques
+C. Gastos pagados por adelantado
+D. Activos por impuestos diferidos
+E. Diferencia activa de compensación de activos
