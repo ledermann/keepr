@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'keepr'
   spec.version       = Keepr::VERSION
   spec.authors       = 'Georg Ledermann'
-  spec.email         = 'mail@georg-ledermann.de'
+  spec.email         = 'georg@ledermann.dev'
   spec.description   = 'Double entry bookkeeping with Rails'
   spec.summary       = 'Some basic ActiveRecord models to build a double entry bookkeeping application'
   spec.homepage      = 'https://github.com/ledermann/keepr'

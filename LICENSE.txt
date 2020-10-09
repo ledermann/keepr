@@ -1,4 +1,4 @@
-Copyright (c) 2013-2019 Georg Ledermann
+Copyright (c) 2013-2020 Georg Ledermann <georg@ledermann.dev>
 
 MIT License
 
