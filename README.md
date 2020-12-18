@@ -20,7 +20,7 @@ This Ruby gem provides a double entry accounting system for use in any Rails app
 ## Dependencies
 
 * Ruby 2.5+
-* Rails 4.2+ (including Rails 6.0)
+* Rails 4.2+ (including Rails 6.1)
 
 
 ## Installation
