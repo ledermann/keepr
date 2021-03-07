@@ -40,8 +40,8 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
-
+    $ rails g keepr:migration
+    $ rake db:migrate
 
 ## Contributing
 
