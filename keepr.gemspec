@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'datev', '>= 0.5.0'
 
   spec.add_development_dependency 'bundler'
-  spec.add_development_dependency 'coveralls', '~> 0.8'
+  spec.add_development_dependency 'coveralls_reborn'
   spec.add_development_dependency 'database_cleaner'
   spec.add_development_dependency 'factory_bot'
   spec.add_development_dependency 'rake'
