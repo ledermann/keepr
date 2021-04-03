@@ -8,7 +8,7 @@ This Ruby gem provides a double entry accounting system for use in any Rails app
 
 ## Features
 
-* Journal entries with two or more postings
+* Journal entries with two or more postings follow [Double Entry](https://www.accountingcoach.com/blog/what-is-the-double-entry-system) principle 
 * Accounts (including subaccounts and groups)
 * Tax
 * Cost center
@@ -19,7 +19,7 @@ This Ruby gem provides a double entry accounting system for use in any Rails app
 
 ## Dependencies
 
-* Ruby 2.5+
+* Ruby 2.5+ 
 * Rails 4.2+ (including Rails 6.1)
 
 
@@ -38,10 +38,92 @@ Or install it yourself as:
     $ gem install keepr
 
 
+## Getting started
+
+After install run following 
+
+	rails g keepr:migration  
+	rails db:migrate
+
+It will create database migration file and add new models
+
 ## Usage
+### Account
+All accounting entries are stored inside "Account", just like what described in accounting principle. To create account, use following:
 
-TODO: Write usage instructions here
+	Keepr::Account.create!(number: 27, name: 'Software', kind: :asset)
 
+"kind" can be one of following value:
+	
+	[asset liability revenue expense forward debtor creditor]
+
+Account can be have "child account". All entries posted in child account will be show in the "parent account".
+To create child account, use:
+
+	account_1400 = Keepr::Account.create!(number: 1400, name: 'Software', kind: :expense)
+	account_14001 = Keepr::Account.create!(number: 14001, name: 'Rails', parent: account_1400 , kind: :expense)
+
+Accounts can be organise inside Group
+
+	group = Keepr::Group.create!(is_result: true, target: :liability, name: 'foo')  
+	Keepr::Account.create!(number: 100, name: 'Trade payable', kind: :liability, keepr_group: group)
+
+And you can also organise group in "parent-child" if you wish
+
+	parent_group = Keepr::Group.create!(is_result: true, target: :liability, name: 'foo')  
+	child_group = parent_group.children.create! name: 'Bar'
+
+### Journal
+
+
+Simple Journal
+
+    simple_journal = Keepr::Journal.create keepr_postings_attributes: [
+      { keepr_account: account_1000, amount: 100.99, side: 'debit' },
+      { keepr_account: account_1200, amount: 100.99, side: 'credit' }
+    ]
+    
+
+Complex journal
+
+    complex_journal = Keepr::Journal.create keepr_postings_attributes: [
+      { keepr_account: account_4920, amount: 8.40, side: 'debit' },
+      { keepr_account: account_1576, amount: 1.60, side: 'debit' },
+      { keepr_account: account_1600, amount: 10.00, side: 'credit' }
+    ]
+
+Entry can be lock for changing data
+
+	simple_journal.update! permanent: true
+
+
+### Account balance 
+We can get account balance as follow 
+
+	account_1000.balance 
+
+	account_1000.balance(Date.today)
+
+	account_1000.balance(Date.yesterday...Date.today)
+
+### Tax account 
+	
+	// Create Tax keeping account
+	Keepr::Account.create! number: 1776, name: 'Umsatzsteuer 19%', kind: :asset
+	
+	Keepr::Tax.create! name: 'USt19',
+	                       description: 'Umsatzsteuer 19%',
+	                       value: 19.0,
+	                       keepr_account: tax_account
+
+	// Create sale account that link to tax
+	account = Keepr::Account.new number: 8400,
+                                 name: 'Erlöse 19% USt',
+                                 kind: :revenue,
+                                 keepr_tax: tax 
+
+
+                        
 
 ## Contributing
 
