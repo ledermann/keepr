@@ -8,7 +8,7 @@ This Ruby gem provides a double entry accounting system for use in any Rails app
 
 ## Features
 
-* Journal entries with two or more postings follow [Double Entry](https://www.accountingcoach.com/blog/what-is-the-double-entry-system) principle 
+* Journal entries with two or more postings follow [Double Entry](https://www.accountingcoach.com/blog/what-is-the-double-entry-system) principle
 * Accounts (including subaccounts and groups)
 * Tax
 * Cost center
@@ -40,9 +40,9 @@ Or install it yourself as:
 
 ## Getting started
 
-After install run following 
+After install run following
 
-	rails g keepr:migration  
+	rails g keepr:migration
 	rails db:migrate
 
 It will create database migration file and add new models
@@ -54,7 +54,7 @@ All accounting entries are stored inside "Account", just like what described in 
 	Keepr::Account.create!(number: 27, name: 'Software', kind: :asset)
 
 "kind" can be one of following value:
-	
+
 	[asset liability revenue expense forward debtor creditor]
 
 Account can be have "child account". All entries posted in child account will be show in the "parent account".
@@ -65,12 +65,12 @@ To create child account, use:
 
 Accounts can be organise inside Group
 
-	group = Keepr::Group.create!(is_result: true, target: :liability, name: 'foo')  
+	group = Keepr::Group.create!(is_result: true, target: :liability, name: 'foo')
 	Keepr::Account.create!(number: 100, name: 'Trade payable', kind: :liability, keepr_group: group)
 
 And you can also organise group in "parent-child" if you wish
 
-	parent_group = Keepr::Group.create!(is_result: true, target: :liability, name: 'foo')  
+	parent_group = Keepr::Group.create!(is_result: true, target: :liability, name: 'foo')
 	child_group = parent_group.children.create! name: 'Bar'
 
 ### Journal
@@ -82,7 +82,7 @@ Simple Journal
       { keepr_account: account_1000, amount: 100.99, side: 'debit' },
       { keepr_account: account_1200, amount: 100.99, side: 'credit' }
     ]
-    
+
 
 Complex journal
 
@@ -97,20 +97,20 @@ Entry can be lock for changing data
 	simple_journal.update! permanent: true
 
 
-### Account balance 
-We can get account balance as follow 
+### Account balance
+We can get account balance as follow
 
-	account_1000.balance 
+	account_1000.balance
 
 	account_1000.balance(Date.today)
 
 	account_1000.balance(Date.yesterday...Date.today)
 
-### Tax account 
-	
+### Tax account
+
 	// Create Tax keeping account
 	Keepr::Account.create! number: 1776, name: 'Umsatzsteuer 19%', kind: :asset
-	
+
 	Keepr::Tax.create! name: 'USt19',
 	                       description: 'Umsatzsteuer 19%',
 	                       value: 19.0,
@@ -120,10 +120,10 @@ We can get account balance as follow
 	account = Keepr::Account.new number: 8400,
                                  name: 'Erlöse 19% USt',
                                  kind: :revenue,
-                                 keepr_tax: tax 
+                                 keepr_tax: tax
 
 
-                        
+
 
 ## Contributing
 
