@@ -13,14 +13,14 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Some basic ActiveRecord models to build a double entry bookkeeping application'
   spec.homepage      = 'https://github.com/ledermann/keepr'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '>= 2.6'
+  spec.required_ruby_version = '>= 2.7'
 
   spec.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'activerecord', '>= 4.2'
+  spec.add_dependency 'activerecord', '>= 6.0'
   spec.add_dependency 'ancestry', '>= 3.1.0'
   spec.add_dependency 'datev', '>= 0.5.0'
 
