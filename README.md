@@ -11,10 +11,10 @@ This Ruby gem provides a double entry accounting system for use in any Rails app
 * Journal entries with two or more postings follow the [Double Entry](https://www.accountingcoach.com/blog/what-is-the-double-entry-system) principle
 * Accounts (including subaccounts and groups)
 * Taxes
-* Cost center
-* Balance sheet
-* Profit and loss statement
-* DATEV export
+* Cost centers
+* Balance sheets
+* Profit and loss statements
+* DATEV exports
 
 
 ## Dependencies
@@ -40,17 +40,17 @@ Or install it yourself as:
 
 ## Getting started
 
-After install run the following:
+After installation run the following:
 
 	rails g keepr:migration
 	rails db:migrate
 
-This will create database migration file and add new models.
+This will create the database migration files and add new models.
 
 ## Usage
 ### Account
-All accounting entries are stored inside "accounts", per standard accounting principles.
-To create an account, use the following format:
+All accounting entries are stored inside "accounts", per standard accounting
+principles. To create an account, use the following format:
 
 	Keepr::Account.create!(number: 27, name: 'Software', kind: :asset)
 
@@ -58,8 +58,8 @@ To create an account, use the following format:
 
 	[asset liability revenue expense forward debtor creditor]
 
-Accounts can have "child" accounts. All entries posted in a child account will be shown in the "parent" account as well.
-To create a child account, use:
+Accounts can have "child" accounts. All entries posted in a child account will
+be shown in the "parent" account as well. To create a child account:
 
 	account_1400 = Keepr::Account.create!(number: 1400, name: 'Software', kind: :expense)
 	account_14001 = Keepr::Account.create!(number: 14001, name: 'Rails', parent: account_1400 , kind: :expense)
@@ -109,10 +109,10 @@ We can get an account balance as follows:
 
 ### Tax account
 
-	// Create Tax keeping account
+	// Create Tax account
 	Keepr::Account.create! number: 1776, name: 'Umsatzsteuer 19%', kind: :asset
 
-	Keepr::Tax.create! name: 'USt19',
+	tax = Keepr::Tax.create! name: 'USt19',
 	                       description: 'Umsatzsteuer 19%',
 	                       value: 19.0,
 	                       keepr_account: tax_account
