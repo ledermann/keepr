@@ -5,7 +5,7 @@ class Keepr::Account < ActiveRecord::Base
 
   has_ancestry orphan_strategy: :restrict
 
-  enum kind: %i[asset liability revenue expense forward debtor creditor]
+  enum kind: %i[asset liability revenue expense forward debtor creditor equity]
 
   validates_presence_of :number, :name
   validates_uniqueness_of :number
