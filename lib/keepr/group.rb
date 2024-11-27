@@ -5,7 +5,7 @@ class Keepr::Group < ActiveRecord::Base
 
   has_ancestry orphan_strategy: :restrict
 
-  enum target: %i[asset liability profit_and_loss]
+  enum :target, %i[asset liability profit_and_loss]
 
   validates_presence_of :name
 
