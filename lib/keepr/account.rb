@@ -7,7 +7,7 @@ class Keepr::Account < ActiveRecord::Base
 
   enum kind: %i[asset liability revenue expense forward debtor creditor equity]
 
-  validates_presence_of :number, :name
+  validates_presence_of :name
   validates_uniqueness_of :number
   validate :group_validation
   validate :tax_validation
