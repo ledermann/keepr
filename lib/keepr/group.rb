@@ -5,7 +5,11 @@ class Keepr::Group < ActiveRecord::Base
 
   has_ancestry orphan_strategy: :restrict
 
-  enum target: %i[asset liability profit_and_loss]
+  if ActiveRecord.version >= Gem::Version.new('7.1')
+    enum :target, %i[asset liability profit_and_loss]
+  else
+    enum target: %i[asset liability profit_and_loss]
+  end
 
   validates_presence_of :name
 

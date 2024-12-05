@@ -5,7 +5,11 @@ class Keepr::Account < ActiveRecord::Base
 
   has_ancestry orphan_strategy: :restrict
 
-  enum kind: %i[asset liability revenue expense forward debtor creditor]
+  if ActiveRecord.version >= Gem::Version.new('7.1')
+    enum :kind, %i[asset liability revenue expense forward debtor creditor]
+  else
+    enum kind: %i[asset liability revenue expense forward debtor creditor]
+  end
 
   validates_presence_of :number, :name
   validates_uniqueness_of :number
