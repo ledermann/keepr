@@ -146,4 +146,4 @@ We can get an account balance as follows:
 * https://github.com/bigfleet/accountable
 
 
-Copyright (c) 2013-2023 [Georg Ledermann](https://ledermann.dev), released under the MIT license
+Copyright (c) 2013-2024 [Georg Ledermann](https://ledermann.dev), released under the MIT license
